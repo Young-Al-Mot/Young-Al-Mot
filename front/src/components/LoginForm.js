@@ -8,13 +8,22 @@ const LoginForm = ({
   handleSubmit,
   validate,
 }) => {
+  
+  const handleKeyPress = (e) =>{
+    if(e.charCode==13){//엔터치면 로그인되게 함
+      handleSubmit();
+    }
+  }
+
+
+
   return (
     <div className="Login">
-      <form onSubmit={handleSubmit}>
+     
         아이디
         <input
           type="text"
-          name="id"
+          name="username"
           value={username}
           onChange={handleChangeUsername}
         />
@@ -24,11 +33,12 @@ const LoginForm = ({
           type="password"
           value={password}
           onChange={handleChangePassword}
+          onKeyPress = {handleKeyPress}
         />
-        <button disabled={!validate} type="submit">
+        <a onClick={handleSubmit}>
           로그인
-        </button>
-      </form>
+        </a>
+  
     </div>
   );
 };

@@ -1,10 +1,12 @@
 import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
 
 import LoginForm from "../components/LoginForm";
 import {loginRequest} from "../modules/auth";
 
 const LoginContainer = () => {
+  const history= useHistory();
   const dispatch = useDispatch();
   const { login, status } = useSelector((state) => state.auth);
   const [username, setUsername] = useState("");
@@ -19,8 +21,11 @@ const LoginContainer = () => {
   }, []);
 
   const handleSubmit = useCallback((e) => {
-    e.preventDefault();
+    //e.preventDefault();
     dispatch(loginRequest(username,password));
+  
+    history.push('/');
+
   },[dispatch,username,password]);
 
   const validateForm = (username,password)=>{

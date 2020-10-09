@@ -2,12 +2,16 @@ import React from 'react';
 
 import Headers from '../components/Header'
 import LoginContainer from '../containers/LoginContainer'
+import styled from 'styled-components';
 
+const LoginLabel= styled.div`
+margin:none;
+` 
 
 const Login = () => {
     return (
-        <div>
-            <Headers/>
+        <div name= 'Login'>
+            <Headers />
             <LoginContainer/>
             
         </div>

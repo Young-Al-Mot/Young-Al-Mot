@@ -1,17 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import Headers from '../components/Header';
-
+import Headers from "../components/Header";
 
 const Home = () => {
-    return (
-        <div>
-            <h2>
-                <Headers/>
-                메인화면
-            </h2>
-        </div>
-    );
+  return (
+    <div>
+      <Headers />
+      메인화면
+    </div>
+  );
 };
 
 export default Home;
