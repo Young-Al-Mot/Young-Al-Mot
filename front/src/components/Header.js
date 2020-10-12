@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 
 const flexCenterAlign = css`
   display: flex;
@@ -30,20 +31,43 @@ const AuthLabel = styled.span`
 
 const EmptyLabel = styled.span`
   flex: 1;
-  height:1px;
+  height: 1px;
 `;
 
-const LoginLabel=styled.span`
-  margin-right:10px;
-`
-
-const RegisterLabel=styled.span`
-  margin-left:10px;
-`
-
-
+const InAuthLabel = styled.span`
+  margin-right: 10px;
+`;
 
 const Header = () => {
+  const { status } = useSelector((state) => state.auth);
+
+  const unLoginView = (
+    <AuthLabel>
+      <InAuthLabel>
+        <Link style={{ textDecoration: "none" }} to="/login">
+          로그인
+        </Link>
+      </InAuthLabel>
+      <InAuthLabel>
+        <Link style={{ textDecoration: "none" }} to="/register">
+          회원가입
+        </Link>
+      </InAuthLabel>
+    </AuthLabel>
+  );
+
+  //이미 로그인 되있으면 유저 이름 뜨게
+  const loginView = (
+    <AuthLabel>
+      <InAuthLabel>{status.currentUser}님</InAuthLabel>
+      <InAuthLabel>
+        <Link style={{ textDecoration: "none" }} to="/logout">
+          로그아웃
+        </Link>
+      </InAuthLabel>
+    </AuthLabel>
+  );
+
   return (
     <HeaderLabel>
       <LogoLabel>
@@ -52,18 +76,7 @@ const Header = () => {
         </Link>
       </LogoLabel>
       <EmptyLabel></EmptyLabel>
-      <AuthLabel>
-        <LoginLabel>
-        <Link style={{ textDecoration: "none" }} to="/login">
-          로그인
-        </Link>
-        </LoginLabel>
-        <RegisterLabel>
-        <Link style={{ textDecoration: "none" }} to="/register">
-          회원가입
-        </Link>
-        </RegisterLabel>
-      </AuthLabel>
+      {status.isLoggedIn ? loginView : unLoginView}
     </HeaderLabel>
   );
 };

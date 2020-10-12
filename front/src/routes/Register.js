@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import Headers from '../components/Header'
-import RegisterContainer from '../containers/RegisterContainer'
+import Headers from "../components/Header";
+import RegisterContainer from "../containers/RegisterContainer";
 
 const Register = () => {
-    return (
-        <div>
-            <Headers/>
-            <RegisterContainer/>
-        </div>
-    );
+  return (
+    <div>
+      <Headers />
+      <RegisterContainer />
+    </div>
+  );
 };
 
 export default Register;

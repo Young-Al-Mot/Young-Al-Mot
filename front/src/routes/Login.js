@@ -1,21 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import Headers from '../components/Header'
-import LoginContainer from '../containers/LoginContainer'
-import styled from 'styled-components';
-
-const LoginLabel= styled.div`
-margin:none;
-` 
+import Headers from "../components/Header";
+import LoginContainer from "../containers/LoginContainer";
 
 const Login = () => {
-    return (
-        <div name= 'Login'>
-            <Headers />
-            <LoginContainer/>
-            
-        </div>
-    );
+  return (
+    <div name="Login">
+      <Headers />
+      <LoginContainer />
+    </div>
+  );
 };
 
 export default Login;
