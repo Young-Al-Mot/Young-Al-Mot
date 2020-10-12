@@ -4,7 +4,8 @@ import styled, { createGlobalStyle } from "styled-components";
 
 import Home from "./routes/Home";
 import Login from "./routes/Login";
-import reset from "styled-reset";
+import Register from "./routes/Register";
+
 
 const GlobalStyle = createGlobalStyle`  
   body{
@@ -19,6 +20,7 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
       </Switch>
     </Router>
   );
