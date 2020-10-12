@@ -34,37 +34,39 @@ const EmptyLabel = styled.span`
   height: 1px;
 `;
 
-const LoginLabel = styled.span`
+const InAuthLabel = styled.span`
   margin-right: 10px;
 `;
-
-const RegisterLabel = styled.span`
-  margin-left: 10px;
-`;
-
-
-
 
 const Header = () => {
   const { status } = useSelector((state) => state.auth);
 
   const unLoginView = (
     <AuthLabel>
-      <LoginLabel>
+      <InAuthLabel>
         <Link style={{ textDecoration: "none" }} to="/login">
           로그인
         </Link>
-      </LoginLabel>
-      <RegisterLabel>
+      </InAuthLabel>
+      <InAuthLabel>
         <Link style={{ textDecoration: "none" }} to="/register">
           회원가입
         </Link>
-      </RegisterLabel>
+      </InAuthLabel>
     </AuthLabel>
   );
-  
+
   //이미 로그인 되있으면 유저 이름 뜨게
-  const loginView = <AuthLabel>{status.currentUser}님</AuthLabel>;
+  const loginView = (
+    <AuthLabel>
+      <InAuthLabel>{status.currentUser}님</InAuthLabel>
+      <InAuthLabel>
+        <Link style={{ textDecoration: "none" }} to="/logout">
+          로그아웃
+        </Link>
+      </InAuthLabel>
+    </AuthLabel>
+  );
 
   return (
     <HeaderLabel>
