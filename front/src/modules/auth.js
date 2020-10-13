@@ -62,25 +62,30 @@ export function registerRequest(username, password, nickname, email) {
   };
 }
 
-export const loginRequest = (username, password) => (dispatch) => {
+export const loginRequest = (userid, password) => (dispatch) => {
   // Inform Login API is starting
   dispatch(login());
 
   // API REQUEST
   return (
-    // dispatch(loginSuccess(username,"test"))
-    //백엔드 주소확인하고 다시 고쳐
-    axios
-      .post("/login", { username, password })
-      .then((response) => {
-        // SUCCEED
-        //로그인 성공하면 백엔드에서 유저 nickname보내줘야함
-        dispatch(loginSuccess(username, response.data.nickname));
-      })
-      .catch((error) => {
-        // FAILED
-        dispatch(loginFailure()); //로그인은 에러처리없이 그냥 아이디 또는 비밀번호가 잘못되었습니다 보여주면됨
-      })
+    axios({
+      method: "POST",
+      url: 'http://localhost:5000/loginchk',
+      data:{
+        "userid": userid,
+        "password": password
+      }
+    })
+    .then((response) => {
+      // SUCCEED
+      console.log(response.data.nickname);
+      dispatch(loginSuccess(userid, response.data.nickname));
+    })
+    .catch((error) => {
+      // FAILED
+      console.log('fail');
+      dispatch(loginFailure()); //로그인은 에러처리없이 그냥 아이디 또는 비밀번호가 잘못되었습니다 보여주면됨
+    })
   );
 };
 
