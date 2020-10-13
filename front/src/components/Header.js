@@ -61,7 +61,7 @@ const Header = () => {
   //이미 로그인 되있으면 유저 이름 뜨게
   const loginView = (
     <AuthLabel>
-      <InAuthLabel>{status.currentUser}님</InAuthLabel>
+      <InAuthLabel>{status.currentNickname}님</InAuthLabel>
       <InAuthLabel>
         <Logout/>
       </InAuthLabel>
