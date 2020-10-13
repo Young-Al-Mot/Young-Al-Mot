@@ -1,6 +1,19 @@
-var qs = require('querystring');
-var template = require('./lib/template.js');
-var mysql = require('mysql');
+const fs = require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const cors = require('cors');
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const data = fs.readFileSync('./database.json');
+const conf = JSON.parse(data);
+const mysql = require('mysql');
+
+const multer = require('multer');
+const upload = multer({dest: './upload'});
+
 var db = mysql.createConnection({
     host:'localhost',
     user:'root',
@@ -9,95 +22,56 @@ var db = mysql.createConnection({
 });
 db.connect();
 
-exports.create = function(request, response){
-    var body = '';
-    request.on('data', function(data){
-        body = body + data;
-    });
-    request.on('end', function(){
-        var post = qs.parse(body);
-        var id = post.user_id;
-        var password = post.password;
-        var name = post.user_name;
-        var email = post.email;
+exports.create = app.post('/user_create', upload.single(), (req, res) =>{
+    let sql = `SELECT * FROM user WHERE user_id=?`;
+    let id = req.body.userid;
+    let password = req.body.password;
+    let name = req.body.nickname;
+    let email = req.body.email;
+    let list = [id];
+    db.query(sql, list, (err, idrows, fields) => {
+        if(err) throw err;
 
-        db.query(
-            `SELECT * FROM user WHERE user_id=?`, [id],
-            function(error, results){
-                if(error) throw error;
+        if(idrows[0]){
+           return res.status(400).json({
+               error: "id already exists."
+            });
+        }
+        else{
+            sql = `SELECT * FROM user WHERE user_name=?`;
+            list = [name];
+            db.query(sql, list, (err2, namerows, fields) => {
+                if(err2) throw err2;
 
-                if(results[0]) {
-                    var html = template.HTML(
-                        `<script>
-                            alert('id already exists.');
-                            window.history.back();
-                        </script>`
-                    );
-                    response.end(html);
+                if(namerows[0]){
+                    return res.status(400).json({
+                        error: "name already exists."
+                    });
                 }
                 else{
-                    if(password.length < 8){
-                        var html2 = template.HTML(
-                            `<script>
-                                alert('password must be written at least 8 characters.');
-                                window.history.back();
-                            </script>`
-                        );
-                        response.end(html2);
-                    }
-                    else{
-                        db.query(
-                            `SELECT * FROM user WHERE user_name=?`,[name],
-                            function(error3, results3){
-                                if(error3) throw error3;
+                    sql = `SELECT * FROM user WHERE email=?`;
+                    list = [email];
+                    db.query(sql, list, (err3, emailrows, fields) => {
+                        if(err3) throw err3;
 
-                                if(results3[0]){
-                                    var html3 = template.HTML(
-                                        `<script>
-                                            alert('name already exists.');
-                                            window.history.back();
-                                        </script>`
-                                    );
-                                    response.end(html3);
-                                }
-                                else{
-                                    db.query(
-                                        `SELECT * FROM user WHERE email=?`,[email],
-                                        function(error4, results4){
-                                            if(error4) throw error4;
-        
-                                            if(results4[0]){
-                                                var html4 = template.HTML(
-                                                    `<script>
-                                                        alert('email already exists.');
-                                                        window.history.back();
-                                                    </script>`
-                                                );
-                                                response.end(html4);
-                                            }
-                                            else{
-                                                var post = qs.parse(body);
+                        if(emailrows[0]){
+                            return res.status(400).json({
+                                error: "email already exists."
+                            });
+                        }
+                        else{
+                            sql = `INSERT INTO user(user_id, password, user_name, email) VALUES(?,?,?,?)`;
+                            list = [id, password, name, email];
 
-                                                db.query(
-                                                    `INSERT INTO user(user_id, password, user_name, email)
-                                                    VALUES(?, ?, ?, ?)`,
-                                                    [id, password, name, email],
-                                                    function(error, result){
-                                                        if(error) throw error;
-                                                        
-                                                        response.writeHead(302, {Location: `/`});
-                                                        response.end();
-                                                    }
-                                                );
-                                            }
-                                        }
-                                    );
-                                }
-                            }
-                        );
-                    }
+                            db.query(sql, list, (err4, result, fields) => {
+                                if(err4) throw err4;
+
+                                res.json({success: true});
+                            }) //sign up
+                        }
+                    }) //emailrows end
                 }
-            }
-        );
-    });
-};
+            }) //namerows end
+        }
+    }) //idrows end
+});
