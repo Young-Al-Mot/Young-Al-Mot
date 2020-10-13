@@ -78,7 +78,6 @@ export const loginRequest = (userid, password) => (dispatch) => {
     })
     .then((response) => {
       // SUCCEED
-      console.log(response.data.nickname);
       dispatch(loginSuccess(userid, response.data.nickname));
     })
     .catch((error) => {
