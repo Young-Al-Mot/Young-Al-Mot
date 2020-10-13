@@ -41,7 +41,12 @@ exports.main = app.post('/loginchk', upload.single(), (req, res) =>{
                     error: "the password is incorrect."
                  });
             }
+            else{
+                res.json({
+                    success: true,
+                    nickname: rows[0].user_name
+                });
+            }
         }
-        res.json({success: true});
     })
 });
