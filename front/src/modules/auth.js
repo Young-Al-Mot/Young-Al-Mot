@@ -37,13 +37,8 @@ const initialState = {
 };
 
 //thunk (middleware)
-export function registerRequest(
-  username,
-  password,
-  nickname,
-  email
-) {
-  return  (dispatch) => {
+export function registerRequest(username, password, nickname, email) {
+  return (dispatch) => {
     // Inform Register API is starting
     dispatch(register());
 
@@ -80,7 +75,7 @@ export const loginRequest = (username, password) => (dispatch) => {
       .then((response) => {
         // SUCCEED
         //로그인 성공하면 백엔드에서 유저 nickname보내줘야함
-        dispatch(loginSuccess(username,response.data.nickname));
+        dispatch(loginSuccess(username, response.data.nickname));
       })
       .catch((error) => {
         // FAILED
@@ -89,17 +84,12 @@ export const loginRequest = (username, password) => (dispatch) => {
   );
 };
 
-export const logoutRequest = () => async (dispatch) => {
-  
-  dispatch(logout());
-
-  // API REQUEST
+export const logoutRequest = () => (dispatch) => {
   return (
+    //백엔드 주소확인하고 다시 고쳐
     axios
-      //백엔드 주소확인하고 다시 고쳐
-      .post("/logout", {})
+      .post("/logout")
       .then((response) => {
-        // SUCCEED
         dispatch(logout());
       })
   );
@@ -131,7 +121,7 @@ export function login() {
   };
 }
 
-export function loginSuccess(username,nickname) {
+export function loginSuccess(username, nickname) {
   return {
     type: AUTH_LOGIN_SUCCESS,
     username,
@@ -217,7 +207,7 @@ const auth = (state = initialState, action) => {
           ...state.status,
           isLoggedIn: true,
           currentUser: action.username,
-          currentNickname:action.nickname,
+          currentNickname: action.nickname,
         },
       };
     case AUTH_LOGIN_FAILURE:
@@ -229,8 +219,13 @@ const auth = (state = initialState, action) => {
       };
     case AUTH_LOGOUT:
       return {
-        initialState,//이거 에러나는지 확인하고 고치던가 해
-      };
+        ...state,
+        status: {
+          ...state.status,
+          isLoggedIn: false,
+          currentUser: ''
+        }
+      }
     // case AUTH_USER_INFO:
     //   return {
     //     ...state,

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import Logout from "./Logout";
+
 const flexCenterAlign = css`
   display: flex;
   align-items: center;
@@ -61,9 +63,7 @@ const Header = () => {
     <AuthLabel>
       <InAuthLabel>{status.currentUser}님</InAuthLabel>
       <InAuthLabel>
-        <Link style={{ textDecoration: "none" }} to="/logout">
-          로그아웃
-        </Link>
+        <Logout/>
       </InAuthLabel>
     </AuthLabel>
   );
