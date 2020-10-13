@@ -37,7 +37,7 @@ const initialState = {
 };
 
 //thunk (middleware)
-export function registerRequest(username, password, nickname, email) {
+export function registerRequest(userid, password, nickname, email) {
   return (dispatch) => {
     // Inform Register API is starting
     dispatch(register());
@@ -45,17 +45,19 @@ export function registerRequest(username, password, nickname, email) {
     return (
       axios
         //백엔드 주소확인하고 다시 고쳐
-        .post("/user_create", {
-          username,
-          password,
-          nickname,
-          email,
+        .post("http://localhost:5000/user_create", {
+          "userid": userid,
+          "password": password,
+          "nickname": nickname,
+          "email": email,
         })
         .then((response) => {
+          console.log('success');
           dispatch(registerSuccess());
         })
         .catch((error) => {
           //
+          console.log(error.response.data);
           dispatch(registerFailure(error.response.data)); //백엔드에서 넘어오는거 보고 고쳐야댐
         })
     );
