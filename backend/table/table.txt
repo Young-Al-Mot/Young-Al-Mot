@@ -1,3 +1,7 @@
+#테이블 생성 전에 yam데이터베이스 생성
+create database yam;
+
+#user 테이블
 create table user(
    `user_no` int NOT NULL auto_increment,
    `user_id` varchar(20) NOT NULL,
@@ -6,3 +10,6 @@ create table user(
    `email` varchar(40) NOT NULL,
    primary key(`user_no`)
 );
+
+#회원가입 시 user_no 1부터 다시 증가 (행 삭제 시 이용)
+ALTER TABLE user AUTO_INCREMENT=1;
