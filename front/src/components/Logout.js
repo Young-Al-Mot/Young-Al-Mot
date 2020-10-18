@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import { useDispatch} from "react-redux";
 
-import logoutRequest from "../modules/auth";
+import {logoutRequest} from "../modules/auth";
 
 const Logout = () => {
     const history = useHistory();
