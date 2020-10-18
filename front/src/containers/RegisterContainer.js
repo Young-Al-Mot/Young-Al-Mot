@@ -75,7 +75,7 @@ const RegisterContainer = () => {
       } else {
         dispatch(registerRequest(username, password, nickname, email)).then((res)=>{
             //백엔드에서 어떻게 넘어오는지 보고 수정해
-            
+            console.log(res);
             //성공이면 
             history.push("/login");
 

@@ -8,9 +8,7 @@ const AUTH_LOGOUT = "AUTH_LOGOUT"; //로그아웃
 const AUTH_REGISTER = "AUTH_REGISTER"; //회원가입
 const AUTH_REGISTER_SUCCESS = "AUTH_REGISTER_SUCCESS";
 const AUTH_REGISTER_FAILURE = "AUTH_REGISTER_FAILURE";
-// const AUTH_USER_INFO = "AUTH_USER_INFO"; //회원정보 가져오기
-// const AUTH_USER_INFO_SUCCESS = "AUTH_USER_INFO_SUCCESS";
-// const AUTH_USER_INFO_FAILURE = "AUTH_USER_INFO_FAILURE";
+const USER_INFO_UPDATE = "USER_INFO_UPDATE";
 
 //초기상태 선언
 const initialState = {
@@ -27,13 +25,6 @@ const initialState = {
     currentUser: "",
     currentNickname: "",
   },
-  // userInfo: {
-  //   //내정보 같은데서 유저정보 확인할때를 위해 일단 만들어둠
-  //   status: "INIT",
-  //   username: "",
-  //   nickname: "",
-  //   email: "",
-  // },
 };
 
 //thunk (middleware)
@@ -42,25 +33,18 @@ export function registerRequest(userid, password, nickname, email) {
     // Inform Register API is starting
     dispatch(register());
 
-    return (
-      axios
-        //백엔드 주소확인하고 다시 고쳐
-        .post("http://localhost:5000/user_create", {
-          "userid": userid,
-          "password": password,
-          "nickname": nickname,
-          "email": email,
-        })
-        .then((response) => {
-          console.log('success');
-          dispatch(registerSuccess());
-        })
-        .catch((error) => {
-          //
-          console.log(error.response.data);
-          dispatch(registerFailure(error.response.data)); //백엔드에서 넘어오는거 보고 고쳐야댐
-        })
-    );
+    return axios
+      .post("http://localhost:5000/user_create", {
+        userid: userid,
+        password: password,
+        nickname: nickname,
+        email: email,
+      })
+      .then((response) => {
+        //성공
+        return dispatch(registerSuccess());
+      })
+      .catch((error) => dispatch(registerFailure(error.response.data)));
   };
 }
 
@@ -69,36 +53,50 @@ export const loginRequest = (userid, password) => (dispatch) => {
   dispatch(login());
 
   // API REQUEST
-  return (
-    axios({
-      method: "POST",
-      url: 'http://localhost:5000/loginchk',
-      data:{
-        "userid": userid,
-        "password": password
-      }
-    })
+  return axios({
+    method: "POST",
+    url: "http://localhost:5000/loginchk",
+    data: {
+      userid: userid,
+      password: password,
+    },
+  })
     .then((response) => {
       // SUCCEED
-      dispatch(loginSuccess(userid, response.data.nickname));
+      return dispatch(loginSuccess(userid, response.data.nickname, response.data.token));
     })
     .catch((error) => {
       // FAILED
-      console.log('fail');
-      dispatch(loginFailure()); //로그인은 에러처리없이 그냥 아이디 또는 비밀번호가 잘못되었습니다 보여주면됨
-    })
-  );
+      return dispatch(loginFailure()); //로그인은 에러처리없이 그냥 아이디 또는 비밀번호가 잘못되었습니다 보여주면됨
+    });
 };
 
 export const logoutRequest = () => (dispatch) => {
-  return (
-    //백엔드 주소확인하고 다시 고쳐
-    axios
-      .post("/logout")
-      .then((response) => {
-        dispatch(logout());
-      })
-  );
+  return dispatch(logout());
+  //테스트를 위해 일단 서버쪽은 주석처리해둠
+  // return axios.post("/logout").then((response) => {
+  //   return dispatch(logout());
+  // });
+};
+
+export const userInfoRequest = (username, nickname, token) => (dispatch) => {
+  return dispatch(userInfoUpdate(username,nickname,token));
+  //테스트를 위해 일단 서버쪽은 주석처리해둠
+  // return axios({
+  //   method: "POST",
+  //   usrl: "/",
+  //   data: {
+  //     token: token,
+  //   },
+  // })
+  //   .then((res) => {
+  //     return dispatch(
+  //       userInfoUpdate(res.data.username, res.data.usernickname, res.data.token)
+  //     );
+  //   })
+  //   .catch((error) => {
+  //     return dispatch(logout());
+  //   });
 };
 
 //액션 생성함수
@@ -127,11 +125,12 @@ export function login() {
   };
 }
 
-export function loginSuccess(username, nickname) {
+export function loginSuccess(username, nickname,token) {
   return {
     type: AUTH_LOGIN_SUCCESS,
     username,
     nickname,
+    token
   };
 }
 
@@ -147,27 +146,14 @@ export const logout = () => {
   };
 };
 
-//유저정보 조회 관련 일단 만들어두고 주석처리해둠
-// export const userInfo = () => {
-//   return {
-//     type: AUTH_USER_INFO,
-//   };
-// };
-
-// export const userInfoSuccess = (username, nickname, email) => {
-//   return {
-//     type: AUTH_USER_INFO_SUCCESS,
-//     username,
-//     nickname,
-//     email,
-//   };
-// };
-
-// export const userInfoFailure = () => {
-//   return {
-//     type: AUTH_USER_INFO_FAILURE,
-//   };
-// };
+export const userInfoUpdate = (username,nickname,token) => {
+  return {
+    type: USER_INFO_UPDATE,
+    username,
+    nickname,
+    token,
+  };
+};
 
 //리듀서
 const auth = (state = initialState, action) => {
@@ -204,6 +190,14 @@ const auth = (state = initialState, action) => {
         },
       };
     case AUTH_LOGIN_SUCCESS:
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          username: action.username,
+          nickname: action.nickname,
+          token: action.token,
+        })
+      );
       return {
         ...state,
         login: {
@@ -224,41 +218,37 @@ const auth = (state = initialState, action) => {
         },
       };
     case AUTH_LOGOUT:
+      localStorage.removeItem("userInfo");
       return {
         ...state,
         status: {
           ...state.status,
           isLoggedIn: false,
-          currentUser: ''
-        }
-      }
-    // case AUTH_USER_INFO:
-    //   return {
-    //     ...state,
-    //     userInfo: {
-    //       ...state.userInfo,
-    //       status: "WAITING",
-    //     },
-    //   };
-    // case AUTH_USER_INFO_SUCCESS:
-    //   return {
-    //     ...state,
-    //     userInfo: {
-    //       status: "SUCCESS",
-    //       username: action.username,
-    //       nickname: action.nickname,
-    //       email: action.email,
-    //     },
-    //   };
-    // case AUTH_USER_INFO_FAILURE:
-    //   return {
-    //     ...state,
-    //     userInfo: {
-    //       ...state.userInfo,
-    //       status: "FAILURE",
-    //     },
-    //   };
-
+          currentUser: "",
+          currentNickname: "",
+        },
+      };
+    case USER_INFO_UPDATE:
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          username: action.username,
+          nickname: action.nickname,
+          token: action.token,
+        })
+      );
+      return {
+        ...state,
+        login: {
+          status: "SUCCESS",
+        },
+        status: {
+          ...state.status,
+          isLoggedIn: true,
+          currentUser: action.username,
+          currentNickname: action.nickname,
+        },
+      };
     default:
       return state;
   }

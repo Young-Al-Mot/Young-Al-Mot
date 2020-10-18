@@ -5,7 +5,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import Home from "./routes/Home";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
-
+import BaseContainer from"./containers/BaseContainer"
 
 const GlobalStyle = createGlobalStyle`  
   body{
@@ -14,6 +14,8 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
+
+
   return (
     <Router>
       <GlobalStyle/>
@@ -22,6 +24,7 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />        
       </Switch>
+      <BaseContainer/>
     </Router>
   );
 };
