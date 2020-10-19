@@ -8,4 +8,4 @@ const Room = () => {
     );
 };
 
-export default Room;방 UI
+export default Room;

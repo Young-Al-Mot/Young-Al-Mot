@@ -1,15 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
-const RoomChat = (message, logs, handleChangeMessage, send) => {
-  const user = useSelector((state) => state.auth.status.currentNickname);
-  const messages = logs.map((e) => (
-    <div key={e.key} >
-      <span>{e.name}</span>
-      <span>: {e.message}</span>
-      <p style={{ clear: "both" }} />
-    </div>
-  ));
+const RoomChat = ({
+  user,
+  message,
+  handleChangeMessage,
+  send,
+  allmessage,
+}) => {
   return (
     <div>
       <div>
@@ -17,10 +14,9 @@ const RoomChat = (message, logs, handleChangeMessage, send) => {
         <br />
         <input value={message} onChange={handleChangeMessage} />
         <br />
-        <button onClick={send()}>전송</button>
+        <button onClick={send}>전송</button>
       </div>
-
-      <div>{messages}</div>
+      {allmessage}
     </div>
   );
 };
