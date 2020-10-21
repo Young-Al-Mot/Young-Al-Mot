@@ -4,16 +4,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
-var login = require('./login');
 var member = require('./member');
 var create = require('./user_create');
 var main = require('./main');
 const socketio = require('socket.io');
-const io = socketio.listen(server);
 const server = require('http').createServer(app);
-server.listen(portNo, () => {
-  console.log('서버 실행 완료:', 'http://localhost:' + port);
-});
+const io = socketio.listen(server);
 
 app.use('/public', express.static('./public'))
 app.use(cors());
@@ -40,4 +36,4 @@ io.on('connection', (socket) => {
     });
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port, () => console.log(`Listening on port ${port}`));
