@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import RoomChat from "../components/RoomChat";
 
 //서버 주소
-const socket = socketio.connect("http://192.168.0.16:5000");
+const socket = socketio.connect("http://localhost:5000");
 const RoomContainer = () => {
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
