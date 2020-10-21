@@ -1,12 +1,14 @@
 import React from "react";
 
 import Headers from "../components/Header";
+import HomeContent from "../components/HomeContent";
+
 
 const Home = () => {
   return (
     <div>
       <Headers />
-      메인화면
+      <HomeContent/>
     </div>
   );
 };

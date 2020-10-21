@@ -7,6 +7,8 @@ import Login from "./routes/Login";
 import Register from "./routes/Register";
 import BaseContainer from"./containers/BaseContainer"
 import Room from "./routes/Room";
+import RoomList from "./routes/RoomList";
+
 
 const GlobalStyle = createGlobalStyle`  
   body{
@@ -24,6 +26,7 @@ const App = () => {
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />  
+        <Route path="/roomList" component={RoomList} />       
         <Route path="/room" component={Room} />        
       </Switch>
       <BaseContainer/>
