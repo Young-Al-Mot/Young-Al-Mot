@@ -3,9 +3,16 @@ import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+
+
+const AllContent =styled.div`
+margin-left:20%;
+margin-right:20%;
+`
+
 const Gameguide = styled.div`
   height: 300px;
-  width: 99vw;
+  width: 100%;
   border: solid thin;
   border-top: none;
   margin: 5px;
@@ -59,14 +66,14 @@ const HomeContent = () => {
   );
 
   return (
-    <div>
+    <AllContent>
       <Gameguide>게임소개</Gameguide>
       <BottomContent>
         <LeftContent>{status.isLoggedIn ? login : unlogin}</LeftContent>
         <MiddleContent>공지사항</MiddleContent>
         <RightContent>랭킹</RightContent>
       </BottomContent>
-    </div>
+    </AllContent>
   );
 };
 
