@@ -4,14 +4,13 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
-var member = require('./member');
 var create = require('./user_create');
 var main = require('./main');
+var roomnumber = require('./routes/roomnumber');
 const socketio = require('socket.io');
 const server = require('http').createServer(app);
 const io = socketio.listen(server);
 
-app.use('/public', express.static('./public'))
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,12 +18,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const data = fs.readFileSync('./database.json');
 const conf = JSON.parse(data);
 
-app.get('/member', member.member);
 app.post('/user_create', create.create);
 app.post('/loginchk', main.main);
-app.get('/', (req, res) => { // 루트에 접근하면 /public로 리다이렉트
-    res.redirect(302, '/public');
-});
+app.post('/roomnumber', roomnumber.roomnumber);
+
 // 클라이언트가 접속했을 때의 이벤트 설정 --- (※4)
 io.on('connection', (socket) => {
     console.log('사용자 접속:', socket.client.id);
