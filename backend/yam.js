@@ -7,6 +7,7 @@ const cors = require('cors');
 var create = require('./routes/user_create');
 var main = require('./routes/main');
 var roomnumber = require('./routes/roomnumber');
+var roomlist = require('./routes/roomlist');
 const socketio = require('socket.io');
 const server = require('http').createServer(app);
 const io = socketio.listen(server);
@@ -21,6 +22,7 @@ const conf = JSON.parse(data);
 app.post('/user_create', create.create);
 app.post('/loginchk', main.main);
 app.post('/roomnumber', roomnumber.roomnumber);
+app.post('/roomlist', roomlist.roomlist);
 
 // 클라이언트가 접속했을 때의 이벤트 설정 --- (※4)
 io.on('connection', (socket) => {
