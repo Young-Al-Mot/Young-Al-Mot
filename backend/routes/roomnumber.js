@@ -25,17 +25,21 @@ db.connect();
 exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
     let sql = `SELECT * FROM roomlist WHERE nowplayer=0`;
     // 프론트에서 와야함
-    // let roomname = req.body.roomname;
-    // let gamename = req.body.gamename;
-    // let maxplayer = req.body.maxplayer;
-
+    let roomname = req.body.title;
+    let gamename = req.body.gametype;
+    let maxplayer = req.body.peoplemaxnum;
+    // 비밀번호 password로 넘김
+    console.log(roomname);
+    console.log(gamename);
+    
+    
     db.query(sql, [], (err, rows, fields) => {
         if(err) throw err;
         
         if(rows[0]){
             let sql2 = `UPDATE roomlist SET room_name=?, game_name=?, nowplayer=1, maxplayer=?, createtime=now() WHERE room_no=?`;
             //프론트에서 room_name, game_name, maxplayer 주면 수정
-            let list = ['rr', 'game', 8, rows[0].room_no];
+            let list = [roomname, gamename, maxplayer, rows[0].room_no];
             db.query(sql2, list, (err2, rows2, fields2) => {
                 if(err2) throw err2;
                 
