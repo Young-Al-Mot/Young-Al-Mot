@@ -15,7 +15,7 @@ const Gameguide = styled.div`
   width: 100%;
   border: solid thin;
   border-top: none;
-  margin: 5px;
+
 `;
 
 const BottomContent = styled.div`
@@ -31,21 +31,21 @@ const LeftContent = styled.div`
   border: solid thin;
   justify-content: center;
   align-items: center;
-  margin: 5px;
+  margin: 10px;
 `;
 
 const MiddleContent = styled.div`
   height: 300px;
   width: 75%;
   border: solid thin;
-  margin: 5px;
+  margin: 10px;
 `;
 
 const RightContent = styled.div`
   height: 300px;
   width: 200px;
   border: solid thin;
-  margin: 5px;
+  margin: 10px;
 `;
 
 const HomeContent = () => {
