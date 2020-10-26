@@ -48,14 +48,21 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
   });
 };
 
-export const roomInRequest = (roomid) => (dispatch) => {
+export const roomInRequest = (roomid,password) => (dispatch) => {
   return axios({
     method: "POST",
     url: "",
     data: {
       roomid,
+      password
     },
-  });
+  }).then((res)=>{
+    if(res.data.success)
+      return dispatch(roomin(roomid));
+    else{
+      alert("비번틀림");
+    }
+  })
 };
 
 //리듀서

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import RoomCreate from "../components/RoomCreate";
 import RoomContainer from "./RoomContainer";
@@ -13,6 +14,7 @@ const RoomCreateContainer = () => {
   const [gametype, setGametype] = useState("십자말풀이");
   const [peopleMaxNum, setPeopleMaxNum] = useState(0);
   const dispatch = useDispatch();
+  const history = useHistory();
 
 
   const handleChangeTitle = (e) => {
@@ -35,7 +37,8 @@ const RoomCreateContainer = () => {
       gametype,
       peopleMaxNum
     )).then((res) => {
-      
+        //방만들기 성공하면 방안으로 입장
+        history.push("/room");
     });
   };
 
