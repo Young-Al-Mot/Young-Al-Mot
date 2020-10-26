@@ -5,7 +5,7 @@
 ## Requirement
 ### front
 * react-dom
-* react-route-dom
+* react-router-dom
 * styled-components
 * axios
 * redux-thunk
