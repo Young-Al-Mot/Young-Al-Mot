@@ -83,14 +83,15 @@ const RoomList = ({
   isRoomCreate,
   handleChangeIsRoomCreate,
   handleChangeIsRoomCreateFalse,
+  ClickRoom,
 }) => {
   console.log("방정보");
   console.log(roomInfo);
 
   const roomInfoList = roomInfo.map((val) => (
-    <BodyContent key={val.room_no}>
+    <BodyContent key={val.room_no} onClick={()=>ClickRoom(val.room_no)}>
       <RoomNo>{val.room_no}</RoomNo> <RoomName>{val.room_name}</RoomName>
-      <GameName>{val.game_name}</GameName>{" "}
+      <GameName>{val.game_name}</GameName>
       <Player>
         {val.nowplayer}/{val.maxplayer}
       </Player>

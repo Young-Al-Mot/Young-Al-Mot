@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
+
 import RoomList from "../components/RoomList";
+import {roomInRequest} from "../modules/room";
+import RoomContainer from "./RoomContainer";
+
 
 const RoomListContainer = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [roomInfo, setRoomInfo] = useState([]);
   const [isRoomCreate, setIsRoomCreate] = useState(false);
@@ -26,6 +32,16 @@ const RoomListContainer = () => {
     });
   };
 
+  const ClickRoom =(val) =>{
+    //리듀서에 유저 현재 방정보 업데이트
+    console.log("clickroom",val)
+    dispatch(roomInRequest(val))
+
+    //방으로 넘어갈때 방 id넘겨줌
+    history.push("/room");
+  }
+
+
   useEffect(()=>{
     getInfo();
   },[]);
@@ -37,6 +53,7 @@ const RoomListContainer = () => {
       isRoomCreate={isRoomCreate}
       handleChangeIsRoomCreate={handleChangeIsRoomCreate}
       handleChangeIsRoomCreateFalse={handleChangeIsRoomCreateFalse}
+      ClickRoom={ClickRoom}
     />
   );
 };
