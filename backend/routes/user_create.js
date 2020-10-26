@@ -14,10 +14,12 @@ const mysql = require('mysql');
 const multer = require('multer');
 const upload = multer({dest: './upload'});
 
-var db = mysql.createConnection({
+const _secret = fs.readFileSync('./secret.txt','utf8').split(" ");
+
+const db = mysql.createConnection({
     host:'localhost',
-    user:'nodejs',
-    password:'0000',
+    user:_secret[0],
+    password:_secret[1],
     database:'yam'
 });
 db.connect();
