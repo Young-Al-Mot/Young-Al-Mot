@@ -14,10 +14,13 @@ const mysql = require('mysql');
 const multer = require('multer');
 const upload = multer({dest: './upload'});
 
+//파일에서 문자열 받아와서 스페이스로나눔
+const _secret = fs.readFileSync('./secret.txt','utf8').split(" ");
+
 const db = mysql.createConnection({
     host:'localhost',
-    user:'nodejs',
-    password:'0000',
+    user:_secret[0],
+    password:_secret[1],
     database:'yam'
 });
 db.connect();
