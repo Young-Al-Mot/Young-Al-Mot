@@ -62,7 +62,7 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
     else{
       alert("비번틀림");
     }
-  }).catch();
+  })
 };
 
 //리듀서

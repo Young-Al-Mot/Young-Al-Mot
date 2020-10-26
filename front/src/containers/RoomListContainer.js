@@ -4,9 +4,8 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 import RoomList from "../components/RoomList";
-import {roomInRequest} from "../modules/room";
+import { roomInRequest } from "../modules/room";
 import RoomContainer from "./RoomContainer";
-
 
 const RoomListContainer = () => {
   const history = useHistory();
@@ -32,19 +31,18 @@ const RoomListContainer = () => {
     });
   };
 
-  const ClickRoom =(val) =>{
+  const ClickRoom = (val) => {
     //리듀서에 유저 현재 방정보 업데이트
-    console.log("clickroom",val)
-    dispatch(roomInRequest(val))
+    console.log("clickroom", val);
+    dispatch(roomInRequest(val)).then(() => {
+      //방으로 넘어갈때 방 id넘겨줌
+      history.push("/room");
+    })
+  };
 
-    //방으로 넘어갈때 방 id넘겨줌
-    history.push("/room");
-  }
-
-
-  useEffect(()=>{
+  useEffect(() => {
     getInfo();
-  },[]);
+  }, []);
 
   return (
     <RoomList
