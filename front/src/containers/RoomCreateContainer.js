@@ -12,7 +12,7 @@ const RoomCreateContainer = () => {
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
   const [gametype, setGametype] = useState("십자말풀이");
-  const [peopleMaxNum, setPeopleMaxNum] = useState(0);
+  const [peopleMaxNum, setPeopleMaxNum] = useState(2);
   const dispatch = useDispatch();
   const history = useHistory();
 

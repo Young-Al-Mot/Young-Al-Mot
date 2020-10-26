@@ -16,7 +16,7 @@ const RoomCreateContent = styled.div`
   position: absolute;
   top: 150px;
   width: 60%;
-  background-color: gray;
+  background-color: #FFFFF0;
   border: solid thin;
 `;
 

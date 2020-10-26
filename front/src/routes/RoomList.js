@@ -10,7 +10,7 @@ const RoomList = () => {
         <div>
             <Headers/>
             <RoomListContainer/>
-            <Link style={{ textDecoration: "none" }} to='/room' >테스트 방</Link>
+            {/* <Link style={{ textDecoration: "none" }} to='/room' >테스트 방</Link> */}
         </div>
     );
 };
