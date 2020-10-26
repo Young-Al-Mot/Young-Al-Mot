@@ -41,31 +41,59 @@ const MiddleContent = styled.div`
 `;
 
 const Header = styled.div`
+  display: flex;
   border-bottom: solid;
 `;
 
 const BodyContent = styled.div`
+  display: flex;
   border-top: solid thin;
 `;
 
-const RoomList = ({ roomInfo, getInfo }) => {
-  const [isRoomCreate, setIsRoomCreate] = useState(false);
+const RoomNo = styled.span`
+  display: flex;
+  justify-content: center;
+  border-right: solid thin;
+  flex: 1;
+`;
 
-  const handleChangeIsRoomCreate = (e) => {
-    setIsRoomCreate(true);
-  };
-  const handleChangeIsRoomCreateFalse = (e) => {
-    setIsRoomCreate(false);
-  };
+const RoomName = styled.span`
+  display: flex;
+  justify-content: center;
+  border-right: solid thin;
+  flex: 3;
+`;
 
+const GameName = styled.span`
+  display: flex;
+  justify-content: center;
+  border-right: solid thin;
+  flex: 2;
+`;
+
+const Player = styled.span`
+  display: flex;
+  justify-content: center;
+  flex: 1;
+`;
+
+const RoomList = ({
+  roomInfo,
+  getInfo,
+  isRoomCreate,
+  handleChangeIsRoomCreate,
+  handleChangeIsRoomCreateFalse,
+}) => {
   console.log("방정보");
   console.log(roomInfo);
 
   const roomInfoList = roomInfo.map((val) => (
-    <BodyContent>
-      <span>{val.room_no}</span> ,<span>{val.room_name}</span> ,
-      <span>{val.game_name}</span> ,<span>{val.nowplayer}</span> ,
-      <span>{val.maxplayer}</span>
+    <BodyContent key={val.room_no}>
+      <RoomNo>{val.room_no}</RoomNo> <RoomName>{val.room_name}</RoomName>
+      <GameName>{val.game_name}</GameName>{" "}
+      <Player>
+        {val.nowplayer}/{val.maxplayer}
+      </Player>
     </BodyContent>
   ));
 
@@ -80,9 +108,13 @@ const RoomList = ({ roomInfo, getInfo }) => {
           </FuncBotton>
         </TopContent>
         <MiddleContent>
-          <Header>방번호 제목 게임 인원 입장</Header>
+          <Header>
+            <RoomNo>방번호</RoomNo>
+            <RoomName>제목</RoomName>
+            <GameName>게임</GameName>
+            <Player>인원</Player>
+          </Header>
           {roomInfoList}
-          {/* BodyContent를 서버에서 방 정보를 받아와서 갯수만큼 반복시켜야됨 */}
         </MiddleContent>
       </RoomContent>
 
