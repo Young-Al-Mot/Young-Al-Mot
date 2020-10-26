@@ -6,6 +6,14 @@ import RoomList from "../components/RoomList";
 const RoomListContainer = () => {
   const dispatch = useDispatch();
   const [roomInfo, setRoomInfo] = useState([]);
+  const [isRoomCreate, setIsRoomCreate] = useState(false);
+
+  const handleChangeIsRoomCreate = (e) => {
+    setIsRoomCreate(true);
+  };
+  const handleChangeIsRoomCreateFalse = (e) => {
+    setIsRoomCreate(false);
+  };
 
   //방정보 받아오는거
   const getInfo = () => {
@@ -18,9 +26,19 @@ const RoomListContainer = () => {
     });
   };
 
+  useEffect(()=>{
+    getInfo();
+  },[]);
 
-
-  return <RoomList getInfo={getInfo} roomInfo={roomInfo} />;
+  return (
+    <RoomList
+      getInfo={getInfo}
+      roomInfo={roomInfo}
+      isRoomCreate={isRoomCreate}
+      handleChangeIsRoomCreate={handleChangeIsRoomCreate}
+      handleChangeIsRoomCreateFalse={handleChangeIsRoomCreateFalse}
+    />
+  );
 };
 
 export default RoomListContainer;

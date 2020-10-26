@@ -14,7 +14,7 @@ const RoomCreate = ({
   return (
     <div>
       방 제목: <input onChange={handleChangeTitle} value={title} type="text" />
-      {/* 비밀번호: <input onChange={handleChangePassword} type="password" /> */}
+      비밀번호: <input onChange={handleChangePassword} type="password" />
       <br />
       게임:
       <select onChange={handleChangeGametype}>
