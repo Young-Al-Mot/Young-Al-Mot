@@ -12,7 +12,8 @@ const RegisterContainer = () => {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-
+  //이메일 체크
+  const [emailError, setEmailError] = useState(false);
   //패스워드 같은지
   const [isSame, setIsSame] = useState(false);
   const [isSameMessage, setIsSameMessage] = useState("");
@@ -34,6 +35,11 @@ const RegisterContainer = () => {
     let ret3=/[0-9]/g.test(str)
     
     return ret1&&ret2&&ret3;
+  }
+
+  const isEmail = (email) => {
+    const emailreg = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    return emailreg.test(email);
   }
 
   const handleChangePassword = useCallback(
@@ -61,8 +67,15 @@ const RegisterContainer = () => {
   const handleChangeEmail = useCallback(
     (e) => {
       setEmail(e.target.value);
+      if(!isEmail(e.target.value)){
+        setEmailError('이메일 형식에 맞춰주세요');
+        setIsValid(false);
+      }else{
+        setEmailError('');
+        setIsValid(true);
+      }
     },
-    [setEmail]
+    [setEmail,setEmailError, setIsValid]
   );
 
   const handleSubmit = useCallback(
@@ -108,6 +121,7 @@ const RegisterContainer = () => {
       email={email}
       passwordError={passwordError}
       isSame={isSame}
+      emailError={emailError}
       passwordIsSame={isSameMessage}
       handleChangeUsername={handleChangeUsername}
       handleChangePassword={handleChangePassword}

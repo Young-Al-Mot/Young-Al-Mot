@@ -64,6 +64,7 @@ const RegisterForm = ({
   handleChangeNickname,
   handleChangeEmail,
   handleSubmit,
+  emailError,
   passwordConfirm,
 }) => {
   const handleKeyPress = (e) => {
@@ -115,6 +116,7 @@ const RegisterForm = ({
             value={email}
             onChange={handleChangeEmail}
           />
+          <ErrorMessage>{emailError}</ErrorMessage>
         </LineLabel>
       </FormLabel>
       <RegisterButton onClick={handleSubmit}>회원가입 하기</RegisterButton>

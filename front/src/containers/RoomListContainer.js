@@ -1,39 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import RoomList from "../components/RoomList";
 
 const RoomListContainer = () => {
   const dispatch = useDispatch();
-  const [roomNum, setRoomNum] = useState(-1);
-  const userId = useSelector((state) => state.auth.status.currentUser);
+  const [roomInfo, setRoomInfo] = useState([]);
+  const [isRoomCreate, setIsRoomCreate] = useState(false);
 
-  const handleChangeRoomNum = (e) => {
-    setRoomNum(e.target.value);
+  const handleChangeIsRoomCreate = (e) => {
+    setIsRoomCreate(true);
   };
-
-  //서버에 방정보 보내는거
-  const sendInfo = () => {
-    axios({
-      method: "POST",
-      url: "",
-      data: {
-        userid: userId,
-        roomnum: roomNum,
-      },
-    });
+  const handleChangeIsRoomCreateFalse = (e) => {
+    setIsRoomCreate(false);
   };
 
   //방정보 받아오는거
   const getInfo = () => {
     axios({
-      method: "GET",
-      url: "",
+      method: "POST",
+      url: "http://localhost:5000/roomlist",
+      data: {},
+    }).then((res) => {
+      return setRoomInfo(res.data.list);
     });
   };
 
-  
-  return <RoomList></RoomList>;
+  useEffect(()=>{
+    getInfo();
+  },[]);
+
+  return (
+    <RoomList
+      getInfo={getInfo}
+      roomInfo={roomInfo}
+      isRoomCreate={isRoomCreate}
+      handleChangeIsRoomCreate={handleChangeIsRoomCreate}
+      handleChangeIsRoomCreateFalse={handleChangeIsRoomCreateFalse}
+    />
+  );
 };
 
 export default RoomListContainer;
