@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import RoomCreate from "../components/RoomCreate";
 import RoomContainer from "./RoomContainer";
-import { roomCreateRequest } from "../modules/room";
+import { roomCreateRequest, roomInRequest } from "../modules/room";
 
 
 const RoomCreateContainer = () => {
@@ -11,7 +11,7 @@ const RoomCreateContainer = () => {
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
   const [gametype, setGametype] = useState("십자말풀이");
-  const [peopleMaxNum, setPeopleMaxNum] = useState(2);
+  const [peopleMaxNum, setPeopleMaxNum] = useState(0);
   const dispatch = useDispatch();
 
 
@@ -35,7 +35,7 @@ const RoomCreateContainer = () => {
       gametype,
       peopleMaxNum
     )).then((res) => {
-        //방만들기 성공하면 방안으로 입장
+      
     });
   };
 
