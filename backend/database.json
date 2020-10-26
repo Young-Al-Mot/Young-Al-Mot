@@ -1,6 +1,6 @@
 {
     "host": "localhost",
-    "user": "root",
-    "password": "emost22",
+    "user": "nodejs",
+    "password": "0000",
     "database": "yam"
 }

@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from "react";
 import socketio from "socket.io-client";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
 
 import RoomChat from "../components/RoomChat";
+
+const ChatName = styled.span`
+  display:flex;
+  flex:1;
+  align-items: center;
+  justify-content:center;
+  border-right: solid thin;
+`;
+
+const ChatMessage = styled.span`
+  flex:4;
+  padding-left:5px;
+`;
+
+const BodyContent = styled.div`
+  display:flex;
+  border-bottom:solid thin;
+`;
 
 //서버 주소
 const socket = socketio.connect("http://localhost:5000");
@@ -21,7 +40,7 @@ const RoomContainer = () => {
 
   const send = (e) => {
     //백엔드 완성되면 수정해야됨
-    socket.emit(room.roomid, {
+    socket.emit('chat-msg', {
       name: user.currentNickname,
       message: message,
     });
@@ -32,17 +51,16 @@ const RoomContainer = () => {
   useEffect(() => {
     // 실시간으로 로그를 받게 설정
     //백엔드 완성되면 수정해야됨
-    socket.on(room.roomid, (obj) => {
+    socket.on('chat-msg', (obj) => {
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
       setLogs(logs2);
       const tmp = logs.map((e) => (
-        <div key={e.key}>
-          <span>{e.name}</span>
-          <span>: {e.message}</span>
-          <p />
-        </div>
+        <BodyContent key={e.key}>
+          <ChatName>{e.name}</ChatName>
+          <ChatMessage>{e.message}</ChatMessage>
+        </BodyContent>
       ));
       setAllmessage(tmp);
       console.log("chat",tmp);
