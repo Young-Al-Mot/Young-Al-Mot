@@ -40,7 +40,8 @@ const RoomContainer = () => {
 
   const send = (e) => {
     //백엔드 완성되면 수정해야됨
-    socket.emit('chat-msg', {
+    socket.emit('msg', {
+      roomno: room.roomid,
       name: user.currentNickname,
       message: message,
     });
@@ -51,7 +52,7 @@ const RoomContainer = () => {
   useEffect(() => {
     // 실시간으로 로그를 받게 설정
     //백엔드 완성되면 수정해야됨
-    socket.on('chat-msg', (obj) => {
+    socket.on(room.roomid, (obj) => {
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
