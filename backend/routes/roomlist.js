@@ -25,7 +25,7 @@ const db = mysql.createConnection({
 db.connect();
 
 exports.roomlist = app.post('/roomlist', upload.single(), (req, res) =>{
-    let sql = `SELECT * FROM roomlist WHERE nowplayer > 0`;
+    let sql = `SELECT * FROM roomlist WHERE nowplayer > 0 ORDER BY createtime ASC`;
 
     db.query(sql, [], (err, rows, fields) => {
         if(err) throw err;
