@@ -51,7 +51,7 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
 export const roomInRequest = (roomid,password) => (dispatch) => {
   return axios({
     method: "POST",
-    url: "",
+    url: "http://localhost:5000/roominchk",
     data: {
       roomid,
       password
@@ -59,10 +59,11 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
   }).then((res)=>{
     if(res.data.success)
       return dispatch(roomin(roomid));
-    else{
-      alert("비번틀림");
-    }
+    
+  }).catch(()=>{
+    alert("비번틀림");
   })
+    
 };
 
 //리듀서
