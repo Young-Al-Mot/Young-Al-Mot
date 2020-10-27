@@ -30,7 +30,7 @@ const RoomCreate = ({
         <option value="4">4</option>
       </select>
       <br />
-      <a onClick={handleCreateroom}>방생성</a>
+      <button onClick={handleCreateroom}>방생성</button>
     </div>
   );
 };

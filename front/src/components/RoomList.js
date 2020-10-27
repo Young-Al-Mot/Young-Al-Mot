@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import RoomCreateContainer from "../containers/RoomCreateContainer";
 
@@ -16,7 +17,7 @@ const RoomCreateContent = styled.div`
   position: absolute;
   top: 150px;
   width: 60%;
-  background-color: #FFFFF0;
+  background-color: #fffff0;
   border: solid thin;
 `;
 
@@ -77,20 +78,65 @@ const Player = styled.span`
   flex: 1;
 `;
 
+const Password= styled.div`
+  position: absolute;
+  top: 50px;
+  width: 60%;
+  background-color: #fffff0;
+  border: solid thin;
+`;
+
 const RoomList = ({
   roomInfo,
   getInfo,
   isRoomCreate,
+  isPasswordConfirm,
   handleChangeIsRoomCreate,
   handleChangeIsRoomCreateFalse,
+  handleChangeIsPasswordConfirm,
+  handleChangeIsPasswordConfirmFalse,
+  handleChangeRoomId,
+  handleChangePassword,
   ClickRoom,
 }) => {
-  console.log("방정보");
-  console.log(roomInfo);
+  const roomCreate = (
+    <RoomCreateContent>
+      <RoomCreateContainer />
+      <br />
+      <button onClick={handleChangeIsRoomCreateFalse}>나가기</button>
+    </RoomCreateContent>
+  );
+
+  const confirmPassword = (
+    <Password>
+      <input type="passowrd" onChange={handleChangePassword} />
+      <button onClick={() => ClickRoom()}>확인</button>
+      <button onClick={handleChangeIsPasswordConfirmFalse}>나가기</button>
+    </Password>
+  );
 
   const roomInfoList = roomInfo.map((val) => (
-    <BodyContent key={val.room_no} onClick={()=>ClickRoom(val.room_no)}>
-      <RoomNo>{val.room_no}</RoomNo> <RoomName>{val.room_name}</RoomName>
+    <BodyContent
+      key={val.room_no}
+      onClick={() => {
+        if (val.password == null) {
+          ClickRoom(val.room_no);
+          handleChangeIsPasswordConfirmFalse();
+        } else {
+          if (isPasswordConfirm == true) handleChangeIsPasswordConfirmFalse();
+          else {
+            handleChangeRoomId(val.room_no);
+            handleChangeIsPasswordConfirm();
+          }
+        }
+      }}
+    >
+      {val.password == null ? (
+        <RoomNo>{val.room_no}</RoomNo>
+      ) : (
+        <RoomNo>비밀방 {val.room_no}</RoomNo>
+      )}
+      <RoomName>{val.room_name}</RoomName>
       <GameName>{val.game_name}</GameName>
       <Player>
         {val.nowplayer}/{val.maxplayer}
@@ -116,20 +162,12 @@ const RoomList = ({
             <Player>인원</Player>
           </Header>
           {roomInfoList}
+          {isPasswordConfirm ? confirmPassword : true}
         </MiddleContent>
       </RoomContent>
 
       {/* 방만들기 */}
-      {isRoomCreate ? (
-        <RoomCreateContent>
-          <RoomCreateContainer />
-          <br />
-          <a onClick={handleChangeIsRoomCreateFalse}>나가기</a>
-        </RoomCreateContent>
-      ) : (
-        //아무의미없음
-        true
-      )}
+      {isRoomCreate ? roomCreate : true}
     </AllContent>
   );
 };
