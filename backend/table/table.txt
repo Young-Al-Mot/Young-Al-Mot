@@ -31,6 +31,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS roomlistinit$$
 CREATE PROCEDURE roomlistinit(a int)
 BEGIN
+   DELETE FROM roomlist;
 	WHILE a < 100 DO
 		INSERT INTO roomlist VALUES (a, 'default', NULL, 'default', 0, 0, now());
 		SET a = a + 1;
