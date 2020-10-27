@@ -27,7 +27,7 @@ db.connect();
 exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
     let sql = `SELECT * FROM roomlist WHERE room_no=?`;
     let roomno = req.body.roomid;
-    let password = 11; //비번입력 생기면 수정
+    let password = req.body.password;
     
     db.query(sql, roomno, (err, rows, fields) => {
         if(err) throw err;
