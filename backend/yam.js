@@ -9,8 +9,8 @@ var main = require('./routes/main');
 var roomnumber = require('./routes/roomnumber');
 var roomlist = require('./routes/roomlist');
 var roominchk = require('./routes/roominchk');
-var roomin = require('./routes/roomin');
 const socketio = require('socket.io');
+const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 const server = require('http').createServer(app);
 const io = socketio.listen(server);
 
@@ -26,16 +26,14 @@ app.post('/loginchk', main.main);
 app.post('/roomnumber', roomnumber.roomnumber);
 app.post('/roomlist', roomlist.roomlist);
 app.post('/roominchk', roominchk.roominchk);
-app.post('/roomin', roomin.roomin);
 
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
-    console.log('사용자 접속:', socket.client.id);
     // 메시지를 받으면
-    socket.on('chat-msg', (msg) => {
-        console.log('message:', msg);
+    socket.on('msg', (msg) => {
+        console.log(msg);
         // 모든 클라이언트에게 전송
-        io.emit('chat-msg', msg);
+        io.emit(msg.roomno, msg);
     });
 });
 
