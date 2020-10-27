@@ -11,6 +11,7 @@
 * redux-thunk
 * redux
 * socket.io-client
+* polished
 ### backend
 * express
 * pm2
