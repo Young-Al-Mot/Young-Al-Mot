@@ -12,12 +12,28 @@ const RoomListContainer = () => {
   const dispatch = useDispatch();
   const [roomInfo, setRoomInfo] = useState([]);
   const [isRoomCreate, setIsRoomCreate] = useState(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+  const [roomid, setroomid] = useState(0);
+  const [password, setpassword] = useState("");
 
-  const handleChangeIsRoomCreate = (e) => {
+  const handleChangeIsRoomCreate = () => {
     setIsRoomCreate(true);
   };
-  const handleChangeIsRoomCreateFalse = (e) => {
+  const handleChangeIsRoomCreateFalse = () => {
     setIsRoomCreate(false);
+  };
+
+  const handleChangeIsPasswordConfirm = () => {
+    setIsPasswordConfirm(true);
+  };
+  const handleChangeIsPasswordConfirmFalse = () => {
+    setIsPasswordConfirm(false);
+  };
+  const handleChangeRoomId = (val) => {
+    setroomid(val);
+  };
+  const handleChangePassword = (e) => {
+    setpassword(e.target.value);
   };
 
   //방정보 받아오는거
@@ -33,11 +49,20 @@ const RoomListContainer = () => {
 
   const ClickRoom = (val) => {
     //리듀서에 유저 현재 방정보 업데이트
-    console.log("clickroom", val);
-    dispatch(roomInRequest(val)).then(() => {
-      //방으로 넘어갈때 방 id넘겨줌
-      history.push("/room");
-    })
+    if (val == null) {
+      console.log("clickroom", roomid);
+      console.log(password);
+      dispatch(roomInRequest(roomid, password)).then((res) => {
+        //리듀서에 방정보 넣어둿으니 여기선 그냥 넘겨만줌
+        if (res.roomid != 0) history.push("/room");
+      });
+    }else{
+      console.log("clickroom", val);
+      dispatch(roomInRequest(val, password)).then((res) => {
+        //리듀서에 방정보 넣어둿으니 여기선 그냥 넘겨만줌
+        if (res.roomid != 0) history.push("/room");
+      });
+    }
   };
 
   useEffect(() => {
@@ -46,11 +71,16 @@ const RoomListContainer = () => {
 
   return (
     <RoomList
-      getInfo={getInfo}
       roomInfo={roomInfo}
       isRoomCreate={isRoomCreate}
+      isPasswordConfirm={isPasswordConfirm}
+      getInfo={getInfo}
       handleChangeIsRoomCreate={handleChangeIsRoomCreate}
       handleChangeIsRoomCreateFalse={handleChangeIsRoomCreateFalse}
+      handleChangeIsPasswordConfirm={handleChangeIsPasswordConfirm}
+      handleChangeIsPasswordConfirmFalse={handleChangeIsPasswordConfirmFalse}
+      handleChangeRoomId={handleChangeRoomId}
+      handleChangePassword={handleChangePassword}
       ClickRoom={ClickRoom}
     />
   );
