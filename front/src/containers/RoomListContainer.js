@@ -44,6 +44,7 @@ const RoomListContainer = () => {
       url: "http://localhost:5000/roomlist",
       data: {},
     }).then((res) => {
+      console.log(res.data.list);
       return setRoomInfo(res.data.list);
     });
   };
@@ -53,15 +54,24 @@ const RoomListContainer = () => {
     if (val == null) {
       console.log("clickroom", roomid);
       console.log(password);
+      //비번 있는방
       dispatch(roomInRequest(roomid, password)).then((res) => {
         //리듀서에 방정보 넣어둿으니 여기선 그냥 넘겨만줌
-        if (res.roomid != 0) history.push("/room");
+        if(res.error==4){
+          alert("방이 가득찼습니다");
+          getInfo();
+        }else if(res.error==5){
+          alert("비밀번호가 틀렸습니다");
+        }else if (res.roomid != 0) history.push("/room");
       });
-    }else{
+    }else{//비번 없는방
       console.log("clickroom", val);
       dispatch(roomInRequest(val, password)).then((res) => {
         //리듀서에 방정보 넣어둿으니 여기선 그냥 넘겨만줌
-        if (res.roomid != 0) history.push("/room");
+        if(res.error==4){
+          alert("방이 가득찼습니다");
+          getInfo();
+        }else if (res.roomid != 0) history.push("/room");
       });
     }
   };
