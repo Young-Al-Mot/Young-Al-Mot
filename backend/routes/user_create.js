@@ -36,7 +36,7 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
 
         if(idrows[0]){
            return res.status(400).json({
-               error: 0
+               error: 0//이미 존재하는 아이디입니다
             });
         }
         else{
@@ -47,7 +47,7 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
 
                 if(namerows[0]){
                     return res.status(400).json({
-                        error: 1
+                        error: 1//이미 존재하는 닉네임입니다
                     });
                 }
                 else{
@@ -58,7 +58,7 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
 
                         if(emailrows[0]){
                             return res.status(400).json({
-                                error: 2
+                                error: 2//이미 존재하는 이메일입니다
                             });
                         }
                         else{

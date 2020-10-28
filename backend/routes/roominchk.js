@@ -35,7 +35,7 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
         if(rows[0].password == null || password == rows[0].password){
             if(rows[0].nowplayer == rows[0].maxplayer){
                 return res.status(400).json({
-                    error: 4
+                    error: 4//방이 가득찼습니다
                  });
             }
             else{
@@ -48,7 +48,7 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
             }
         }
         else return res.status(400).json({
-            error: 5
+            error: 5//방 비밀번호가 일치하지 않습니다
          });
     })
 });
