@@ -45,7 +45,8 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
     },
   }).then((res) => {
     console.log("서버에서 방정보를 받아왔습니다");
-    return dispatch(roomin(res.data.roomid));
+    console.log("res",res);
+    return dispatch(roomin(res.data.roomnum));
   });
 };
 
