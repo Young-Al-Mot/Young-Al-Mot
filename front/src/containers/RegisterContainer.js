@@ -1,3 +1,4 @@
+import { em } from "polished";
 import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -13,13 +14,16 @@ const RegisterContainer = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   //이메일 체크
+  const [isValideEmail,setIsValidEmail]=useState(false);
   const [emailError, setEmailError] = useState(false);
   //패스워드 같은지
   const [isSame, setIsSame] = useState(false);
   const [isSameMessage, setIsSameMessage] = useState("");
-  
-  const [isValid, setIsValid] = useState(false);
+
+  const [isValidPassword, setIsValidPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+
+
 
   const handleChangeUsername = useCallback(
     (e) => {
@@ -29,18 +33,18 @@ const RegisterContainer = () => {
   );
 
   //영문자 혼합 8이상 20이하 검사
-  const isMixedPassword = (str) =>{
-    let ret1=/^[a-zA-Z0-9]{8,20}$/.test(str)
-    let ret2=/[a-zA-Z]/g.test(str)
-    let ret3=/[0-9]/g.test(str)
-    
-    return ret1&&ret2&&ret3;
-  }
+  const isMixedPassword = (str) => {
+    let ret1 = /^[a-zA-Z0-9]{8,20}$/.test(str);
+    let ret2 = /[a-zA-Z]/g.test(str);
+    let ret3 = /[0-9]/g.test(str);
+
+    return ret1 && ret2 && ret3;
+  };
 
   const isEmail = (email) => {
     const emailreg = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     return emailreg.test(email);
-  }
+  };
 
   const handleChangePassword = useCallback(
     (e) => {
@@ -48,13 +52,13 @@ const RegisterContainer = () => {
       //숫자 글자 섞였는지 확인도 추가
       if (!isMixedPassword(e.target.value)) {
         setPasswordError("비밀번호는 영문자 혼합 8자리 이상으로 작성해주세요");
-        setIsValid(false);
-      }else {
-        setPasswordError("")
-        setIsValid(true);
+        setIsValidPassword(false);
+      } else {
+        setPasswordError("");
+        setIsValidPassword(true);
       }
     },
-    [setPassword, setPasswordError, setIsValid]
+    [setPassword, setPasswordError, setIsValidPassword]
   );
 
   const handleChangeNickname = useCallback(
@@ -67,37 +71,52 @@ const RegisterContainer = () => {
   const handleChangeEmail = useCallback(
     (e) => {
       setEmail(e.target.value);
-      if(!isEmail(e.target.value)){
-        setEmailError('이메일 형식에 맞춰주세요');
-        setIsValid(false);
-      }else{
-        setEmailError('');
-        setIsValid(true);
+      if (!isEmail(e.target.value)) {
+        setEmailError("이메일 형식에 맞춰주세요");
+        setIsValidEmail(false);
+      } else {
+        setEmailError("");
+        setIsValidEmail(true);
       }
     },
-    [setEmail,setEmailError, setIsValid]
+    [setEmail, setEmailError, setIsValidEmail]
   );
 
   const handleSubmit = useCallback(
     (e) => {
-      //e.preventDefault();
-      if (!isValid) {
+      //e.preventDefault();     
+      if(username.length==0){
+        alert("아이디를 입력해주세요");
+      }else if(username.length!= username.replace(/ /g,"").length){
+        alert("아이디에 공백을 사용할수 없습니다")
+      }else if (!isValidPassword) {
         alert("비밀번호는 문자와 숫자를 혼합하여 8글자이상으로 작성해 주세요");
       } else if (!isSame) {
         alert("비밀번호가 다릅니다");
+      }else if(nickname.length==0){
+        alert("닉네임을 입력해주세요")
+      }else if(nickname.length!= nickname.replace(/ /g,"").length){
+        alert("닉네임에 공백을 사용할수 없습니다")
+      }else if(!isValideEmail){
+        alert("이메일이 유효한 형식이 아닙니다");
       } else {
-        dispatch(registerRequest(username, password, nickname, email)).then((res)=>{
+        dispatch(registerRequest(username, password, nickname, email)).then(
+          (res) => {
             //백엔드에서 어떻게 넘어오는지 보고 수정해
-            console.log(res);
-            //성공이면 
-            history.push("/login");
-
-            //실패이면
-            //response 값에서 error가져와서 출력해줘야됨
-        });
+            if (res.type == "AUTH_REGISTER_SUCCESS") history.push("/login");
+            else{
+              if(res.error==0)
+                alert("이미 존재하는 아이디입니다");
+              else if(res.error==1)
+                alert("이미 존재하는 닉네임입니다");
+              else if(res.error==2)
+                alert("이미 존재하는 이메일입니다");
+            }
+          }
+        );
       }
     },
-    [dispatch, isValid, isSame, username, password, nickname, email]
+    [dispatch, isValidPassword, isSame, username, password, nickname, email]
   );
 
   const passwordConfirm = useCallback(
@@ -105,12 +124,12 @@ const RegisterContainer = () => {
       if (e.target.value == password) {
         setIsSame(true);
         setIsSameMessage("");
-      }else{
+      } else {
         setIsSame(false);
         setIsSameMessage("비밀번호가 다릅니다");
       }
     },
-    [password, setIsSame,setIsSameMessage]
+    [password, setIsSame, setIsSameMessage]
   );
 
   return (

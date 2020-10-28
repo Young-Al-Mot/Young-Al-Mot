@@ -44,8 +44,6 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
       peoplemaxnum,
     },
   }).then((res) => {
-    console.log("서버에서 방정보를 받아왔습니다");
-    console.log("res",res);
     return dispatch(roomin(res.data.roomnum));
   });
 };
@@ -61,9 +59,17 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
   }).then((res)=>{
     if(res.data.success)
       return dispatch(roomin(roomid));
-  }).catch(()=>{
-    alert("비번틀림");
-    return {roomid:0};
+  }).catch((e)=>{
+    //e.response.data
+    if(e.response.data.error==4){
+      alert("플래이어가 가득찼습니다")
+      return {roomid:0, error:4};
+    }
+    else if(e.response.data.error==5){
+      alert("비번틀림");
+      return {roomid:0,error:5};
+    }
+    return{roomid:0};
   })
 };
 
