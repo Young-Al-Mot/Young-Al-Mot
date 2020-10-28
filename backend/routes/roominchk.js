@@ -33,10 +33,22 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
         if(err) throw err;
 
         if(rows[0].password == null || password == rows[0].password){
-            return res.json({ success: true });
+            if(rows[0].nowplayer == rows[0].maxplayer){
+                return res.status(400).json({
+                    error: 4
+                 });
+            }
+            else{
+                let sql2 = `UPDATE roomlist SET nowplayer=nowplayer+1 WHERE room_no=?`;
+
+                db.query(sql2, roomno, (err2, rows2, fields2) =>{
+                    if(err2) throw err2;
+                })
+                return res.json({ success: true });
+            }
         }
         else return res.status(400).json({
-            error: "the password is incorrect."
+            error: 5
          });
     })
 });
