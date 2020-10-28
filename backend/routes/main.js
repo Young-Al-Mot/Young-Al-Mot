@@ -35,13 +35,13 @@ exports.main = app.post('/loginchk', upload.single(), (req, res) =>{
 
         if(!rows[0]){
            return res.status(400).json({
-               error: "id doesn't exist."
+               error: 3
             });
         }
         else{
             if(password != rows[0].password){
                 return res.status(400).json({
-                    error: "the password is incorrect."
+                    error: 3
                  });
             }
             else{

@@ -36,7 +36,7 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
 
         if(idrows[0]){
            return res.status(400).json({
-               error: "id already exists."
+               error: 0
             });
         }
         else{
@@ -47,7 +47,7 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
 
                 if(namerows[0]){
                     return res.status(400).json({
-                        error: "name already exists."
+                        error: 1
                     });
                 }
                 else{
@@ -58,7 +58,7 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
 
                         if(emailrows[0]){
                             return res.status(400).json({
-                                error: "email already exists."
+                                error: 2
                             });
                         }
                         else{
