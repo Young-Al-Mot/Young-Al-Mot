@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import socketio from "socket.io-client";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import RoomChat from "../components/RoomChat";
@@ -27,6 +28,7 @@ const BodyContent = styled.div`
 const socket = socketio.connect("http://localhost:5000");
 
 const RoomContainer = () => {
+  const history = useHistory();
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
   const user = useSelector((state) => state.auth.status);
@@ -35,24 +37,27 @@ const RoomContainer = () => {
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
-
   const [allmessage, setAllmessage] = useState("");
 
   const send = (e) => {
     //백엔드 완성되면 수정해야됨
     socket.emit('msg', {
-      roomno: room.roomid,
+      //roomno: room.roomid,
+      roomno: Number(sessionStorage.setRoomId),
       name: user.currentNickname,
       message: message,
     });
     setMessage("");
   };
-
   //마운트 되었을때
   useEffect(() => {
+    //session에 아무것도 없으면 roomList로 이동
+    if(sessionStorage.setRoomId === undefined){
+      history.push("/roomList");
+    }
     // 실시간으로 로그를 받게 설정
     //백엔드 완성되면 수정해야됨
-    socket.on(room.roomid, (obj) => {
+    socket.on(Number(sessionStorage.setRoomId)/*room.roomid*/, (obj) => {
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
@@ -68,7 +73,7 @@ const RoomContainer = () => {
     });
   }, [logs]);
 
-  console.log(room.roomid);
+  console.log((sessionStorage.setRoomId));
 
   return (
     <div>
