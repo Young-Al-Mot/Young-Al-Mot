@@ -44,7 +44,7 @@ export function registerRequest(userid, password, nickname, email) {
         //성공
         return dispatch(registerSuccess());
       })
-      .catch((error) => dispatch(registerFailure(error.response.data)));
+      .catch((error) => dispatch(registerFailure(error.response.data.error)));
   };
 }
 
