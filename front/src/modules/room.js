@@ -62,11 +62,9 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
   }).catch((e)=>{
     //e.response.data
     if(e.response.data.error==4){
-      alert("플래이어가 가득찼습니다")
       return {roomid:0, error:4};
     }
     else if(e.response.data.error==5){
-      alert("비번틀림");
       return {roomid:0,error:5};
     }
     return{roomid:0};
