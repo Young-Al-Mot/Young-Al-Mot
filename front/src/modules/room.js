@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 // 액션타입
 const ROOM_IN = "ROOM_IN";
@@ -59,17 +60,17 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
   }).then((res)=>{
     if(res.data.success)
       return dispatch(roomin(roomid));
-    
   }).catch(()=>{
     alert("비번틀림");
+    return {roomid:0};
   })
-    
 };
 
 //리듀서
 const room = (state = initialState, action) => {
   switch (action.type) {
     case ROOM_IN:
+      sessionStorage.setRoomId = action.roomid;
       return {
         ...state,
         room: {
