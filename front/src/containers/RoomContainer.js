@@ -18,20 +18,23 @@ const AllContent = styled.div`
 
 const ChatName = styled.span`
   display: flex;
-  flex: 1;
+  max-width:20%;
+  min-width:210px;
   align-items: center;
   justify-content: center;
   border-right: solid thin;
 `;
 
 const ChatMessage = styled.span`
-  flex: 4;
+  width:80%;
   padding-left: 5px;
+  word-break:break-all;
 `;
 
 const ChatBodyContent = styled.div`
   display: flex;
   border-bottom: solid thin;
+  max-width:100%;
 `;
 
 const BodyContent = styled.div`
