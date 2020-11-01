@@ -71,6 +71,20 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
   })
 };
 
+export const roomOutRequest = (roomid) => (dispatch) => {
+  return axios({
+    method: "POST",
+    url: "",
+    data: {
+      roomid,
+    },
+  }).then((res)=>{
+    if(res.data.success)
+      return dispatch(roomout());
+  })
+};
+
+
 //리듀서
 const room = (state = initialState, action) => {
   switch (action.type) {
@@ -83,6 +97,7 @@ const room = (state = initialState, action) => {
         },
       };
     case ROOM_OUT:
+      sessionStorage.removeItem('setRoomId');
       return {
         ...state,
         room: {
