@@ -20,20 +20,20 @@ const TextContent = styled.div`
   border: 1px solid black;
   border-radius:5px;
   font-size:110%;
+  margin-top:15px;
 `;
 
 const MessageContent = styled.div`
   display:flex;
   justify-content:space-around;
   align-items:center;
-  width:100%;
+  max-width:100%;
   height:20%;
   border: 1px solid black;
   border-radius:5px;
 `;
 
 const MessageInput = styled.input`
-  
   width:85%;
   height:60%;
   font-family:message-box;
@@ -48,7 +48,7 @@ const SendButton = styled.button`
   align-items:center;
   color: white;
   cursor: pointer;
-  height: 80%;
+  height: 70%;
   width:15%;
   max-width: 90px;
   min-width:50px;
