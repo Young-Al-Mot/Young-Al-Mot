@@ -111,7 +111,7 @@ const RoomContainer = () => {
   }, [logs]);
 
   const roomOut = () => {
-    dispatch(roomOutRequest(room.roomid,user.currentUser)).then((res) => {
+    dispatch(roomOutRequest(room.roomid)).then((res) => {
       history.push("/roomList");
     });
   };
@@ -140,7 +140,7 @@ const RoomContainer = () => {
         />
         </BotMid>
         <BotRight>
-          <RoomOut roomout={roomOut} />
+          <RoomOut roomOut={roomOut} />
         </BotRight>
       </BottomContent>
     </AllContent>
