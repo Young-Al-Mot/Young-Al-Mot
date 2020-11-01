@@ -30,6 +30,8 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
     let password = req.body.password;
     let gamename = req.body.gametype;
     let maxplayer = req.body.peoplemaxnum;
+    //let user_name = req.body.username; 프론트에서 닉네임 넘어와야함
+    let user_name = 'ysys';
     if(password == "") password=null;
     
     db.query(sql, [], (err, rows, fields) => {
@@ -41,6 +43,16 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
             db.query(sql2, list, (err2, rows2, fields2) => {
                 if(err2) throw err2;
                 
+                let sql3 = `SELECT * FROM user WHERE user_name=?`;
+                db.query(sql3, user_name, (err3, row, field) => {
+                    if(err3) throw err3;
+
+                    let sql4 = `INSERT INTO roomuser VALUES (?,?)`;
+                    db.query(sql4, [row[0].user_no, rows[0].room_no], (err4, r, f) => {
+                        if(err4) throw err4;
+                    })
+                })
+
                 return res.json({
                     success: true,
                     roomnum: rows[0].room_no
