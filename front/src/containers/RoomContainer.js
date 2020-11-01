@@ -51,6 +51,7 @@ const BotLeft = styled.div`
 `;
 
 const BotMid = styled.div`
+  height: 100%;
   flex: 3;
   margin-bottom: 3vh;
 `;
@@ -77,14 +78,15 @@ const RoomContainer = () => {
   const [allmessage, setAllmessage] = useState("");
 
   const send = (e) => {
-    //백엔드 완성되면 수정해야됨
-    socket.emit("msg", {
-      //roomno: room.roomid,
-      roomno: Number(sessionStorage.setRoomId),
-      name: user.currentNickname,
-      message: message,
-    });
-    setMessage("");
+    if (message != "") {
+      socket.emit("msg", {
+        //roomno: room.roomid,
+        roomno: Number(sessionStorage.setRoomId),
+        name: user.currentNickname,
+        message: message,
+      });
+      setMessage("");
+    }
   };
   //마운트 되었을때
   useEffect(() => {
@@ -129,15 +131,15 @@ const RoomContainer = () => {
         {/* 채팅, 나가기 */}
         <BotLeft></BotLeft>
         <BotMid>
-        <RoomChat
-          user={user}
-          message={message}
-          roomid={room.roomid}
-          handleChangeMessage={handleChangeMessage}
-          send={send}
-          setLogs={setLogs}
-          allmessage={allmessage}
-        />
+          <RoomChat
+            user={user}
+            message={message}
+            roomid={room.roomid}
+            handleChangeMessage={handleChangeMessage}
+            send={send}
+            setLogs={setLogs}
+            allmessage={allmessage}
+          />
         </BotMid>
         <BotRight>
           <RoomOut roomOut={roomOut} />
