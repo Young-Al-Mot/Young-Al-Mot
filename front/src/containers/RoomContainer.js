@@ -111,7 +111,7 @@ const RoomContainer = () => {
   }, [logs]);
 
   const roomOut = () => {
-    dispatch(roomOutRequest(room.roomid)).then((res) => {
+    dispatch(roomOutRequest(room.roomid,user.currentUser)).then((res) => {
       history.push("/roomList");
     });
   };
