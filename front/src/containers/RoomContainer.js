@@ -47,18 +47,18 @@ const BottomContent = styled.div`
 
 const BotLeft = styled.div`
   flex: 1;
-  margin-bottom: 3vh;
+  margin-bottom:1%;
 `;
 
 const BotMid = styled.div`
-  height: 100%;
+  height: 99%;
   flex: 3;
-  margin-bottom: 3vh;
+  margin-bottom:1%;
 `;
 
 const BotRight = styled.div`
   flex: 1;
-  margin-bottom: 3vh;
+  margin-bottom:1%;
 `;
 
 //서버 주소
