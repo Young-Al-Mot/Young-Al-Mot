@@ -9,6 +9,7 @@ var main = require('./routes/main');
 var roomnumber = require('./routes/roomnumber');
 var roomlist = require('./routes/roomlist');
 var roominchk = require('./routes/roominchk');
+var roomout = require('./routes/roomout');
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 const server = require('http').createServer(app);
@@ -26,6 +27,7 @@ app.post('/loginchk', main.main);
 app.post('/roomnumber', roomnumber.roomnumber);
 app.post('/roomlist', roomlist.roomlist);
 app.post('/roominchk', roominchk.roominchk);
+app.post('/roomout', roomout.roomout);
 
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
