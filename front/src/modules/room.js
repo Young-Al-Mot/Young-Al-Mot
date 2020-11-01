@@ -76,7 +76,7 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
 export const roomOutRequest = (roomid) => (dispatch) => {
   return axios({
     method: "POST",
-    url: "",
+    url: "http://localhost:5000/roomout",
     data: {
       roomid,
       userid : JSON.parse(sessionStorage.userInfo).username,
