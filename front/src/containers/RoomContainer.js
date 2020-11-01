@@ -50,18 +50,18 @@ const BottomContent = styled.div`
 
 const BotLeft = styled.div`
   flex: 1;
-  margin-bottom:1%;
+  margin-bottom: 1%;
 `;
 
 const BotMid = styled.div`
   height: 99%;
   flex: 3;
-  margin-bottom:1%;
+  margin-bottom: 1%;
 `;
 
 const BotRight = styled.div`
   flex: 1;
-  margin-bottom:1%;
+  margin-bottom: 1%;
 `;
 
 //서버 주소
@@ -93,10 +93,20 @@ const RoomContainer = () => {
   };
   //마운트 되었을때
   useEffect(() => {
-    //session에 아무것도 없으면 roomList로 이동
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
     if (sessionStorage.setRoomId === undefined) {
       history.push("/roomList");
     }
+    window.onpageshow = function (event) {
+      if (event.persisted) {
+        console.log("BFCahe로부터 복원됨");
+      } else {
+        console.log("새로 열린 페이지");
+      }
+    };
     // 실시간으로 로그를 받게 설정
     //백엔드 완성되면 수정해야됨
     socket.on(Number(sessionStorage.setRoomId) /*room.roomid*/, (obj) => {
