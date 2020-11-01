@@ -5,7 +5,6 @@ import Headers from "../components/Header";
 const Room = () => {
   return (
     <div>
-      <Headers/>
       <RoomContainer />
     </div>
   );
