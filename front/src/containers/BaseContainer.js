@@ -6,7 +6,7 @@ const BaseContainer = () => {
   const dispatch = useDispatch();
 
   const checkUser = () => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
     if (userInfo) {
       //원래는 인자로 토큰만 넣으면되는데 테스트용으로 이름이랑 닉네임 넣어줌
       dispatch(

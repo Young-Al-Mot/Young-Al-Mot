@@ -190,7 +190,7 @@ const auth = (state = initialState, action) => {
         },
       };
     case AUTH_LOGIN_SUCCESS:
-      localStorage.setItem(
+      sessionStorage.setItem(
         "userInfo",
         JSON.stringify({
           username: action.username,
@@ -218,7 +218,7 @@ const auth = (state = initialState, action) => {
         },
       };
     case AUTH_LOGOUT:
-      localStorage.removeItem("userInfo");
+      sessionStorage.removeItem("userInfo");
       return {
         ...state,
         status: {
@@ -229,7 +229,7 @@ const auth = (state = initialState, action) => {
         },
       };
     case USER_INFO_UPDATE:
-      localStorage.setItem(
+      sessionStorage.setItem(
         "userInfo",
         JSON.stringify({
           username: action.username,

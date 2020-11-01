@@ -38,6 +38,7 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
     method: "POST",
     url: "http://localhost:5000/roomnumber",
     data: {
+      userid : sessionStorage.userid,
       title,
       password,
       gametype,
@@ -53,6 +54,7 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
     method: "POST",
     url: "http://localhost:5000/roominchk",
     data: {
+      userid : sessionStorage.userid,
       roomid,
       password
     },
@@ -71,13 +73,13 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
   })
 };
 
-export const roomOutRequest = (roomid,userid) => (dispatch) => {
+export const roomOutRequest = (roomid) => (dispatch) => {
   return axios({
     method: "POST",
     url: "",
     data: {
       roomid,
-      userid,
+      userid : sessionStorage.userid,
     },
   }).then((res)=>{
     if(res.data.success)
