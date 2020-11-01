@@ -28,8 +28,8 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
     let sql = `SELECT * FROM roomlist WHERE room_no=?`;
     let roomno = req.body.roomid;
     let password = req.body.password;
-    //let user_name = req.body.username; 프론트에서 닉네임 넘어와야함
-    let user_name = 'aa';
+    let userid = req.body.userid;
+    console.log(userid);
     
     db.query(sql, roomno, (err, rows, fields) => {
         if(err) throw err;
@@ -47,8 +47,8 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
                     if(err2) throw err2;
                 })
 
-                let sql3 = `SELECT * FROM user WHERE user_name=?`;
-                db.query(sql3, user_name, (err3, row, field) => {
+                let sql3 = `SELECT * FROM user WHERE user_id=?`;
+                db.query(sql3, userid, (err3, row, field) => {
                     if(err3) throw err3;
 
                     let sql4 = `INSERT INTO roomuser VALUES (?,?)`;
