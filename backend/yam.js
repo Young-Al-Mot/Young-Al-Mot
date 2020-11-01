@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
     socket.on('msg', (msg) => {
         console.log(msg);
         // 모든 클라이언트에게 전송
-        io.emit(msg.roomno, msg);
+        if(msg.message != "") io.emit(msg.roomno, msg);
     });
 });
 
