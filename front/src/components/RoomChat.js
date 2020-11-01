@@ -2,36 +2,57 @@ import React from "react";
 import styled from "styled-components";
 import { darken, lighten } from 'polished';
 
-const MessageArea = styled.div`
-  position: absolute;
-  top:90%;
-  left:27%;
-  width:40%;
-  height:6%;
+const ChatContent=styled.div`
+  height:100%;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+`;
+
+const TextContent = styled.div`
+  color: black;
+  overflow: auto;
+  height: 70%;
+  min-height:200px;
+  width: 100%;
+  min-width: 300px;
+  border: 1px solid black;
+  border-radius:5px;
+  font-size:110%;
+`;
+
+const MessageContent = styled.div`
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  width:100%;
+  height:20%;
   border: 1px solid black;
   border-radius:5px;
 `;
 
 const MessageInput = styled.input`
-  position:absolute;
-  top:10%;
-  left:1%;
-  width:90%;
-  height:70%;
+  
+  width:85%;
+  height:60%;
   font-family:message-box;
   font-size:150%;
+
 `;
 
 const SendButton = styled.button`
-  position: absolute;
-  left:93%;
-  top:10%;
-  display: inline-flex;
+  display: flex;
   border-radius: 8px;
+  justify-content:center;
+  align-items:center;
   color: white;
   cursor: pointer;
   height: 80%;
-  font-size: 80%;
+  width:15%;
+  max-width: 90px;
+  min-width:50px;
+  font-size: 100%;
   background: #555273;
   line-height:270%;
   border-radius:5px;
@@ -43,19 +64,7 @@ const SendButton = styled.button`
   }
 `;
 
-const TextContent = styled.div`
-  position: absolute;
-  left:27%;
-  top:63%;
-  vertical-align: bottom;
-  color: black;
-  overflow: auto;
-  height: 25%;
-  width: 40%;
-  border: 1px solid black;
-  border-radius:5px;
-  font-size:110%;
-`;
+
 
 
 const RoomChat = ({
@@ -73,8 +82,10 @@ const RoomChat = ({
     }
   };
   return (
-    <div>
-      <MessageArea>
+    <ChatContent>
+      <TextContent>{allmessage}</TextContent>
+
+      <MessageContent>
           <MessageInput
             type="text"
             name="message"
@@ -83,9 +94,9 @@ const RoomChat = ({
             onKeyPress={handleKeyPress}
           />
         <SendButton onClick={send}>전송</SendButton>
-      </MessageArea>
-      <TextContent>{allmessage}</TextContent>
-    </div>
+      </MessageContent>
+      
+    </ChatContent>
   );
 };
 
