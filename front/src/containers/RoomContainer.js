@@ -18,8 +18,8 @@ const AllContent = styled.div`
 
 const ChatName = styled.span`
   display: flex;
-  max-width:20%;
-  min-width:210px;
+  width:20%;
+  min-width:220px;
   align-items: center;
   justify-content: center;
   border-right: solid thin;
