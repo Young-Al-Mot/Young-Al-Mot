@@ -33,9 +33,16 @@ app.post('/roomout', roomout.roomout);
 io.on('connection', (socket) => {
     // 메시지를 받으면
     socket.on('msg', (msg) => {
+        var chk = false;
         console.log(msg);
+        for(var i = 0; i < msg.message.length; i++){
+            if(msg.message[i]!=' '){
+                chk=true;
+                break;
+            }
+        }
         // 모든 클라이언트에게 전송
-        if(msg.message != "") io.emit(msg.roomno, msg);
+        if(chk) io.emit(msg.roomno, msg);
     });
 });
 
