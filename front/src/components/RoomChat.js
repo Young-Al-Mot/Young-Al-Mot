@@ -66,6 +66,12 @@ const RoomChat = ({
   send,
   allmessage,
 }) => {
+  const handleKeyPress = (e) => {
+    if (e.charCode == 13) {
+      //엔터치면 로그인되게 함
+      send();
+    }
+  };
   return (
     <div>
       <MessageArea>
@@ -74,6 +80,7 @@ const RoomChat = ({
             name="message"
             value={message}
             onChange={handleChangeMessage}
+            onKeyPress={handleKeyPress}
           />
         <SendButton onClick={send}>전송</SendButton>
       </MessageArea>
