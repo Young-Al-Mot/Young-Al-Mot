@@ -41,3 +41,10 @@ DELIMITER ;
 
 #프로시저 실행
 CALL roomlistinit(1);
+
+#roomuser 테이블
+create table roomuser(
+   `user_no` int NOT NULL,
+   `room_no` int NOT NULL,
+   primary key(`user_no`)
+);
