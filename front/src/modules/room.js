@@ -71,12 +71,13 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
   })
 };
 
-export const roomOutRequest = (roomid) => (dispatch) => {
+export const roomOutRequest = (roomid,userid) => (dispatch) => {
   return axios({
     method: "POST",
     url: "",
     data: {
       roomid,
+      userid,
     },
   }).then((res)=>{
     if(res.data.success)
