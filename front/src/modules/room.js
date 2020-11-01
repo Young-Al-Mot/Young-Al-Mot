@@ -38,7 +38,7 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
     method: "POST",
     url: "http://localhost:5000/roomnumber",
     data: {
-      userid : sessionStorage.userid,
+      userid : JSON.parse(sessionStorage.userInfo).username,
       title,
       password,
       gametype,
@@ -54,7 +54,7 @@ export const roomInRequest = (roomid,password) => (dispatch) => {
     method: "POST",
     url: "http://localhost:5000/roominchk",
     data: {
-      userid : sessionStorage.userid,
+      userid : JSON.parse(sessionStorage.userInfo).username,
       roomid,
       password
     },
@@ -79,7 +79,7 @@ export const roomOutRequest = (roomid) => (dispatch) => {
     url: "",
     data: {
       roomid,
-      userid : sessionStorage.userid,
+      userid : JSON.parse(sessionStorage.userInfo).username,
     },
   }).then((res)=>{
     if(res.data.success)
