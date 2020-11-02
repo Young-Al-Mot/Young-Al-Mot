@@ -131,6 +131,11 @@ const RoomContainer = () => {
 
   
   const roomOut = () => {
+    socket.emit('msg',{
+      roomno:Number(sessionStorage.setRoomId),
+      name:"system",
+      message:user.currentNickname + " has been left the game.",
+    })
     dispatch(roomOutRequest(room.roomid)).then((res) => {
       history.push("/roomList");
     });
