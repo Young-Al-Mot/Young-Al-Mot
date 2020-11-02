@@ -25,11 +25,11 @@ const App = () => {
       <GlobalStyle/>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />  
-        <Route exact path="/roomList" component={RoomList} />       
-        <Route exact path="/room" component={Room} />        
-        <Route exact path="/*" component={notfound} />        
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />  
+        <Route path="/roomList" component={RoomList} />       
+        <Route path="/room" component={Room} />        
+        <Route path="/*" component={notfound} />        
       </Switch>
       <BaseContainer/>
     </Router>
