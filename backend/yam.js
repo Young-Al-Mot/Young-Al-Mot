@@ -16,6 +16,8 @@ const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 const server = require('http').createServer(app);
 const io = socketio.listen(server);
 
+exports.io=io;
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
