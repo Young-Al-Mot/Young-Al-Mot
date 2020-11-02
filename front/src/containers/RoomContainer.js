@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { buttons } from "polished";
+import axios from "axios";
 
 import RoomChat from "../components/RoomChat";
 import RoomOut from "../components/RoomOut";
+import GameReady from "../components/GameReady";
 import { roomOutRequest } from "../modules/room";
 
 const AllContent = styled.div`
@@ -72,6 +74,7 @@ const RoomContainer = () => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
+  const [isReady, setisReady] = useState(false);
   const user = useSelector((state) => state.auth.status);
   const room = useSelector((state) => state.room.room);
 
@@ -85,6 +88,22 @@ const RoomContainer = () => {
 
   const [allmessage, setAllmessage] = useState("");
 
+  const handleReadyClick = (e) => {
+    axios({
+      method: "POST",
+      url: "http://localhost:5000/ready",
+      data: {
+        nickname: user.currentNickname,
+        roomid: room.roomid,
+      },
+    }).then((res) => {
+        setisReady(res.data.ready);
+    }).catch((e)=>{
+      console.log("서버와 통신에 실패했습니다");
+    });
+  };
+
+  //채팅정보 소켓통신 전송
   const send = (e) => {
     if (message != "") {
       socket.emit("msg", {
@@ -96,13 +115,29 @@ const RoomContainer = () => {
       setMessage("");
     }
   };
+
   //마운트 되었을때
   useEffect(() => {
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
+    window.onunload = function () {
+      console.log("aa");
+      dispatch(roomOutRequest(room.roomid)).then(()=>{
+        console.log("bb");
+      });
+    };
+    window.onkeydown = logKey;
+    function logKey(e) {
+      if (e.ctrlKey && e.key === "w") {
+        dispatch(roomOutRequest(room.roomid));
+      }
+    }
     if (sessionStorage.setRoomId === undefined) {
       history.push("/roomList");
     }
-    // 실시간으로 로그를 받게 설정
-    //백엔드 완성되면 수정해야됨
+    //소켓통신 받는거 채팅 메세지 받아옴
     socket.on(Number(sessionStorage.setRoomId) /*room.roomid*/, (obj) => {
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
@@ -133,6 +168,7 @@ const RoomContainer = () => {
     }
   }, [logs]);
 
+  //방 나가기
 
 
   
@@ -146,7 +182,6 @@ const RoomContainer = () => {
       history.push("/roomList");
     });
   };
-
   console.log(sessionStorage.setRoomId);
 
   return (
@@ -158,7 +193,10 @@ const RoomContainer = () => {
 
       <BottomContent>
         {/* 채팅, 나가기 */}
-        <BotLeft></BotLeft>
+        <BotLeft>
+          <GameReady isReady={isReady} 
+          handleReadyClick={handleReadyClick}/>
+        </BotLeft>
         <BotMid>
           <RoomChat
             user={user}
