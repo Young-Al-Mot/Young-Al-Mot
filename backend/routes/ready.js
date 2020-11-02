@@ -25,30 +25,20 @@ const db = mysql.createConnection({
 db.connect();
 
 exports.ready = app.post('/ready', upload.single(), (req, res) =>{
-    let sql = `SELECT * FROM roomuser WHERE user_name=?`;
-    let sql2 = `UPDATE roomuser SET ready=1 WHERE user_name=?`;
-    let sql3 = `UPDATE roomuser SET ready=0 WHERE user_name=?`;
-    let username = req.body.username;
-    let roomno = req.body.roomno;
-    db.query(sql, list, (err, ready, fields) => {
+    let sql = `UPDATE roomuser SET ready=1-ready WHERE user_name=?`;
+    let username = req.body.nickname;
+    db.query(sql, username, (err, row, field) => {
         if(err) throw err;
 
-        if(ready[0].ready == 0){
-            db.query(sql2, username, (err2, row2, field2) => {
-                if(err2) throw err2;
-            })
-            return res.json({
-                ready: true
-            });
-        }
-        else{
-            db.query(sql3, username, (err3, row3, field3) => {
-                if(err3) throw err3;
-            })
-            return res.json({
-                ready: false
-            });
-        }
+        let sql2 = `SELECT * FROM roomuser WHERE user_name=?`;
 
+        db.query(sql2, username, (err2, row2, field2) => {
+            if(err2) throw err2;
+
+            return res.json({
+                success: true,
+                ready: row2[0].ready
+            });
+        })
     }) 
 });
