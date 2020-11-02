@@ -74,6 +74,7 @@ const RoomContainer = () => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
+  const [isReady, setisReady] = useState(false);
   const user = useSelector((state) => state.auth.status);
   const room = useSelector((state) => state.room.room);
 
@@ -83,15 +84,19 @@ const RoomContainer = () => {
 
   const [allmessage, setAllmessage] = useState("");
 
-  const handleReadyClick=(e)=>{
+  const handleReadyClick = (e) => {
     axios({
       method: "POST",
-      url: "",
+      url: "http://localhost:5000/ready",
       data: {
-      
+        nickname: user.currentNickname,
+        roomid: room.roomid,
       },
-    })
-
+    }).then((res) => {
+        setisReady(res.data.ready);
+    }).catch((e)=>{
+      console.log("서버와 통신에 실패했습니다");
+    });
   };
 
   //채팅정보 소켓통신 전송
@@ -114,25 +119,20 @@ const RoomContainer = () => {
       history.go(1);
     };
     window.onunload = function () {
-      dispatch(roomOutRequest(room.roomid));
+      console.log("aa");
+      dispatch(roomOutRequest(room.roomid)).then(()=>{
+        console.log("bb");
+      });
     };
     window.onkeydown = logKey;
-    function logKey(e){
-      if(e.ctrlKey && e.key === 'w'){
+    function logKey(e) {
+      if (e.ctrlKey && e.key === "w") {
         dispatch(roomOutRequest(room.roomid));
       }
     }
     if (sessionStorage.setRoomId === undefined) {
       history.push("/roomList");
     }
-    window.onpageshow = function (event) {
-      if (event.persisted) {
-        console.log("BFCahe로부터 복원됨");
-      } else {
-        console.log("새로 열린 페이지");
-      }
-    };
-    
     //소켓통신 받는거 채팅 메세지 받아옴
     socket.on(Number(sessionStorage.setRoomId) /*room.roomid*/, (obj) => {
       const logs2 = logs;
@@ -168,7 +168,8 @@ const RoomContainer = () => {
       <BottomContent>
         {/* 채팅, 나가기 */}
         <BotLeft>
-          <GameReady/>
+          <GameReady isReady={isReady} 
+          handleReadyClick={handleReadyClick}/>
         </BotLeft>
         <BotMid>
           <RoomChat

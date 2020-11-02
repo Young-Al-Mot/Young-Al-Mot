@@ -8,8 +8,8 @@ const Ready = styled.button`
   margin:10px;
 `;
 
-const GameReady = ({text,handleOnclick}) => {
-  return <Ready onClick={handleOnclick}>{text}</Ready>;
+const GameReady = ({isReady,handleReadyClick}) => {
+  return <Ready onClick={handleReadyClick}>{isReady?"준비완료":"준비하기"}</Ready>;
 };
 
 export default GameReady;
