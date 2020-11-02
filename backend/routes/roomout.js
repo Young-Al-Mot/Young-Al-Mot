@@ -24,11 +24,16 @@ const db = mysql.createConnection({
 });
 db.connect();
 
+const io= require('../yam');
+
+
 exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
     let roomno = req.body.roomid;
     let username = req.body.userid;
     let sql = `SELECT * FROM user WHERE user_id=?`;
     
+    
+
     db.query(sql, username, (err, row, field) => {
         if(err) throw err;
         
@@ -65,6 +70,8 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                 })
             }
         })
+        console.log("name",username)
+        io.io.emit(1,{name:'System',message: username+'님이 방을 나갔습니다'});
         return res.json({ success: true });
     })
 });
