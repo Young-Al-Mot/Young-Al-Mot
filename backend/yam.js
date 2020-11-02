@@ -10,6 +10,7 @@ var roomnumber = require('./routes/roomnumber');
 var roomlist = require('./routes/roomlist');
 var roominchk = require('./routes/roominchk');
 var roomout = require('./routes/roomout');
+var ready = require('./routes/ready');
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 const server = require('http').createServer(app);
@@ -28,6 +29,7 @@ app.post('/roomnumber', roomnumber.roomnumber);
 app.post('/roomlist', roomlist.roomlist);
 app.post('/roominchk', roominchk.roominchk);
 app.post('/roomout', roomout.roomout);
+app.post('/ready', ready.ready)
 
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
@@ -44,6 +46,12 @@ io.on('connection', (socket) => {
         // 모든 클라이언트에게 전송
         if(chk) io.emit(msg.roomno, msg);
     });
+
+    /*socket.on('ready',function(ready){
+        console.log(ready);
+        
+        socket.emit(ready.roomno, ready);
+    })*/
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
