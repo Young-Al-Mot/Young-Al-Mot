@@ -23,6 +23,7 @@ create table roomlist(
    `nowplayer` int NOT NULL,
    `maxplayer` int NOT NULL,
    `createtime` datetime,
+   `state` int,
    primary key(`room_no`)
 );
 
@@ -33,7 +34,7 @@ CREATE PROCEDURE roomlistinit(a int)
 BEGIN
    DELETE FROM roomlist;
 	WHILE a < 100 DO
-		INSERT INTO roomlist VALUES (a, 'default', NULL, 'default', 0, 0, now());
+		INSERT INTO roomlist VALUES (a, 'default', NULL, 'default', 0, 0, now(), 1);
 		SET a = a + 1;
 	END WHILE;
 END$$
@@ -47,12 +48,14 @@ create table roomuser(
    `user_no` int NOT NULL,
    `user_name` varchar(12) NOT NULL,
    `room_no` int NOT NULL,
+   `master` int,
    `ready` int,
    `turn` int,
+   `intime` datetime,
    primary key(`user_no`)
 );
 
-#chat 테이블
+#chatting 테이블
 create table chatting(
    `room_no` int NOT NULL,
    `chat` varchar(50) NOT NULL,

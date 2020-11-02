@@ -34,7 +34,6 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
         
         let sql2 = `DELETE FROM roomuser WHERE user_no=?`;
 
-        console.log(row);
         db.query(sql2, row[0].user_no, (err2, row2, field2) => {
             if(err2) throw err2;
         })
@@ -48,9 +47,19 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                 db.query(sql4, roomno, (err3, row3, field3) => {
                     if(err3) throw err3;
                 })
+
+                let sql5 = `SELECT * FROM roomuser WHERE room_no=?`;
+                db.query(sql5, roomno, (err4, row4, field4) => {
+                    if(err4) throw err4;
+
+                    let sql6 = `UPDATE roomuser SET master=1 WHERE user_no=?`;
+                    db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
+                        if(err5) throw err5;
+                    })
+                })
             }
             else{
-                let sql4 = `UPDATE roomlist SET room_name='default', password=null, game_name='default', nowplayer=0, maxplayer=0 WHERE room_no=?`;
+                let sql4 = `UPDATE roomlist SET room_name='default', password=null, game_name='default', nowplayer=0, maxplayer=0, state=1 WHERE room_no=?`;
                 db.query(sql4, roomno, (err3, row3, field3) => {
                     if(err3) throw err3;
                 })

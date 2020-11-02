@@ -20,23 +20,23 @@ const AllContent = styled.div`
 
 const ChatName = styled.span`
   display: flex;
-  width:20%;
-  min-width:220px;
+  width: 20%;
+  min-width: 220px;
   align-items: center;
   justify-content: center;
   border-right: solid thin;
 `;
 
 const ChatMessage = styled.span`
-  width:80%;
+  width: 80%;
   padding-left: 5px;
-  word-break:break-all;
+  word-break: break-all;
 `;
 
 const ChatBodyContent = styled.div`
   display: flex;
   border-bottom: solid thin;
-  max-width:100%;
+  max-width: 100%;
 `;
 
 const BodyContent = styled.div`
@@ -80,6 +80,7 @@ const RoomContainer = () => {
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
+
   const [allmessage, setAllmessage] = useState("");
 
   const handleReadyClick=(e)=>{
@@ -112,6 +113,15 @@ const RoomContainer = () => {
     window.onpopstate = function () {
       history.go(1);
     };
+    window.onunload = function () {
+      dispatch(roomOutRequest(room.roomid));
+    };
+    window.onkeydown = logKey;
+    function logKey(e){
+      if(e.ctrlKey && e.key === 'w'){
+        dispatch(roomOutRequest(room.roomid));
+      }
+    }
     if (sessionStorage.setRoomId === undefined) {
       history.push("/roomList");
     }
