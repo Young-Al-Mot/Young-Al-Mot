@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { buttons } from "polished";
+import axios from "axios";
 
 import RoomChat from "../components/RoomChat";
 import RoomOut from "../components/RoomOut";
+import GameReady from "../components/GameReady";
 import { roomOutRequest } from "../modules/room";
 
 const AllContent = styled.div`
@@ -80,6 +82,18 @@ const RoomContainer = () => {
   };
   const [allmessage, setAllmessage] = useState("");
 
+  const handleReadyClick=(e)=>{
+    axios({
+      method: "POST",
+      url: "",
+      data: {
+      
+      },
+    })
+
+  };
+
+  //채팅정보 소켓통신 전송
   const send = (e) => {
     if (message != "") {
       socket.emit("msg", {
@@ -91,6 +105,7 @@ const RoomContainer = () => {
       setMessage("");
     }
   };
+
   //마운트 되었을때
   useEffect(() => {
     window.history.pushState(null, null, window.location.href);
@@ -107,8 +122,8 @@ const RoomContainer = () => {
         console.log("새로 열린 페이지");
       }
     };
-    // 실시간으로 로그를 받게 설정
-    //백엔드 완성되면 수정해야됨
+    
+    //소켓통신 받는거 채팅 메세지 받아옴
     socket.on(Number(sessionStorage.setRoomId) /*room.roomid*/, (obj) => {
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
@@ -125,12 +140,12 @@ const RoomContainer = () => {
     });
   }, [logs]);
 
+  //방 나가기
   const roomOut = () => {
     dispatch(roomOutRequest(room.roomid)).then((res) => {
       history.push("/roomList");
     });
   };
-
   console.log(sessionStorage.setRoomId);
 
   return (
@@ -142,7 +157,9 @@ const RoomContainer = () => {
 
       <BottomContent>
         {/* 채팅, 나가기 */}
-        <BotLeft></BotLeft>
+        <BotLeft>
+          <GameReady/>
+        </BotLeft>
         <BotMid>
           <RoomChat
             user={user}
