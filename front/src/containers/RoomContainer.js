@@ -79,6 +79,10 @@ const RoomContainer = () => {
     setMessage(e.target.value);
   };
 
+  function winUnload() {
+    dispatch(roomOutRequest(room.roomid));
+  }
+
   const [allmessage, setAllmessage] = useState("");
 
   const send = (e) => {
@@ -94,19 +98,6 @@ const RoomContainer = () => {
   };
   //마운트 되었을때
   useEffect(() => {
-    window.history.pushState(null, null, window.location.href);
-    window.onpopstate = function () {
-      history.go(1);
-    };
-    window.onunload = function () {
-      dispatch(roomOutRequest(room.roomid));
-    };
-    window.onkeydown = logKey;
-    function logKey(e){
-      if(e.ctrlKey && e.key === 'w'){
-        dispatch(roomOutRequest(room.roomid));
-      }
-    }
     if (sessionStorage.setRoomId === undefined) {
       history.push("/roomList");
     }
@@ -126,7 +117,22 @@ const RoomContainer = () => {
       setAllmessage(tmp);
       console.log("chat", tmp);
     });
+
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
+    window.onbeforeunload = function () {
+      winUnload();
+    };
+    window.onkeydown = logKey;
+    function logKey(e){
+      if(e.ctrlKey && e.key === 'w'){
+        dispatch(roomOutRequest(room.roomid));
+      }
+    }
   }, [logs]);
+
 
 
   
