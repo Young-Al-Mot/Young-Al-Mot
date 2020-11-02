@@ -8,6 +8,7 @@ import Register from "./routes/Register";
 import BaseContainer from"./containers/BaseContainer"
 import Room from "./routes/Room";
 import RoomList from "./routes/RoomList";
+import notfound from "./routes/404notfound";
 
 
 const GlobalStyle = createGlobalStyle`  
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/register" component={Register} />  
         <Route path="/roomList" component={RoomList} />       
         <Route path="/room" component={Room} />        
+        <Route path="/*" component={notfound} />        
       </Switch>
       <BaseContainer/>
     </Router>
