@@ -51,8 +51,8 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
                 db.query(sql3, userid, (err3, row, field) => {
                     if(err3) throw err3;
 
-                    let sql4 = `INSERT INTO roomuser VALUES (?,?,?,?,?)`;
-                    db.query(sql4, [row[0].user_no, row[0].user_name, rows[0].room_no, 0, 0], (err4, r, f) => {
+                    let sql4 = `INSERT INTO roomuser VALUES (?,?,?,?,?,?,now())`;
+                    db.query(sql4, [row[0].user_no, row[0].user_name, rows[0].room_no, 0, 0, 0], (err4, r, f) => {
                         if(err4) throw err4;
                     })
                 })
