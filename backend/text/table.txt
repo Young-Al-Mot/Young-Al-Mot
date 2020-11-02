@@ -45,6 +45,16 @@ CALL roomlistinit(1);
 #roomuser 테이블
 create table roomuser(
    `user_no` int NOT NULL,
+   `user_name` varchar(12) NOT NULL,
    `room_no` int NOT NULL,
+   `ready` int,
+   `turn` int,
    primary key(`user_no`)
+);
+
+#chat 테이블
+create table chatting(
+   `room_no` int NOT NULL,
+   `chat` varchar(50) NOT NULL,
+   primary key(`room_no`)
 );
