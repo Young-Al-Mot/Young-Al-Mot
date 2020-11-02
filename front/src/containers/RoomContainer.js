@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import socketio from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +9,7 @@ import { buttons } from "polished";
 import RoomChat from "../components/RoomChat";
 import RoomOut from "../components/RoomOut";
 import { roomOutRequest } from "../modules/room";
+import GameReady from "../components/GameReady";
 
 const AllContent = styled.div`
   height: 100vh;
@@ -72,6 +74,7 @@ const RoomContainer = () => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
+  const [isReady,setisReady] = useState(false);
   const user = useSelector((state) => state.auth.status);
   const room = useSelector((state) => state.room.room);
 
@@ -82,6 +85,21 @@ const RoomContainer = () => {
   function winUnload() {
     dispatch(roomOutRequest(room.roomid));
   }
+
+  const handleReadyClick = (e) => {
+    axios({
+      method: "POST",
+      url: "http://localhost:5000/ready",
+      data: {
+        nickname: user.currentNickname,
+        roomid: room.roomid,
+      },
+    }).then((res) => {
+        setisReady(res.data.ready);
+    }).catch((e)=>{
+      console.log("서버와 통신에 실패했습니다");
+    });
+  };
 
   const [allmessage, setAllmessage] = useState("");
 
@@ -158,7 +176,12 @@ const RoomContainer = () => {
 
       <BottomContent>
         {/* 채팅, 나가기 */}
-        <BotLeft></BotLeft>
+        <BotLeft>
+          <GameReady
+          isReady={isReady}
+          handleReadyClick={handleReadyClick}
+          />
+        </BotLeft>
         <BotMid>
           <RoomChat
             user={user}
