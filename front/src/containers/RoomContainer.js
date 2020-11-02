@@ -118,14 +118,17 @@ const RoomContainer = () => {
 
   //마운트 되었을때
   useEffect(() => {
-    window.history.pushState(null, null, window.location.href);//두로가기 막음
+    window.history.pushState(null, null, window.location.href);
     window.onpopstate = function () {
       history.go(1);
     };
-    window.onbeforeunload = function () {
-      winUnload();
+    window.onunload = function () {
+      console.log("aa");
+      dispatch(roomOutRequest(room.roomid)).then(()=>{
+        console.log("bb");
+      });
     };
-    window.onkeydown = logKey;//ctrl+w누르면 방 나가지게
+    window.onkeydown = logKey;
     function logKey(e) {
       if (e.ctrlKey && e.key === "w") {
         dispatch(roomOutRequest(room.roomid));
