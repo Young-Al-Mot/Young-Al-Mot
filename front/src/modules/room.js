@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-
+import socketio from "socket.io-client";
 // 액션타입
 const ROOM_IN = "ROOM_IN";
 const ROOM_OUT = "ROOM_OUT";
-
+const socket = socketio.connect("http://localhost:5000");
 
 //초기값
 const initialState = {
@@ -62,7 +62,13 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
     },
   })
     .then((res) => {
-      if (res.data.success) return dispatch(roomin(roomid));
+      if (res.data.success) {
+        socket.emit('join', {
+          roomno: roomid,
+          name: JSON.parse(sessionStorage.userInfo).username
+        });
+        return dispatch(roomin(roomid));
+      }
     })
     .catch((e) => {
       //e.response.data
