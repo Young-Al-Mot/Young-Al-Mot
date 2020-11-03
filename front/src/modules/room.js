@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import socketio from "socket.io-client";
+
 // 액션타입
 const ROOM_IN = "ROOM_IN";
 const ROOM_OUT = "ROOM_OUT";
@@ -17,10 +18,13 @@ const initialState = {
 };
 
 //액션 생성함수
-export const roomin = (roomid) => {
+export const roomin = (roomid, title, gametype, peoplemaxnum) => {
   return {
     type: ROOM_IN,
     roomid,
+    title,
+    gametype,
+    peoplemaxnum,
   };
 };
 
@@ -29,7 +33,6 @@ export const roomout = () => {
     type: ROOM_OUT,
   };
 };
-
 
 //thunk (middleware)
 export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
@@ -47,7 +50,7 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
       peoplemaxnum,
     },
   }).then((res) => {
-    return dispatch(roomin(res.data.roomnum));
+    return dispatch(roomin(res.data.roomnum, title, gametype, peoplemaxnum));
   });
 };
 
@@ -63,11 +66,20 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
   })
     .then((res) => {
       if (res.data.success) {
-        socket.emit('join', {
+        const roominfo = res.data.roominfo;
+
+        socket.emit("join", {
           roomno: roomid,
-          name: JSON.parse(sessionStorage.userInfo).username
+          name: JSON.parse(sessionStorage.userInfo).username,
         });
-        return dispatch(roomin(roomid));
+        return dispatch(
+          roomin(
+            roomid,
+            roominfo.room_name,
+            roominfo.game_name,
+            roominfo.maxplayer
+          )
+        );
       }
     })
     .catch((e) => {
@@ -93,7 +105,6 @@ export const roomOutRequest = (userid) => (dispatch) => {
   });
 };
 
-
 //리듀서
 const room = (state = initialState, action) => {
   switch (action.type) {
@@ -101,6 +112,9 @@ const room = (state = initialState, action) => {
       return {
         ...state,
         room: {
+          title: action.title,
+          gametype: action.gametype,
+          peoplemaxnum: action.peoplemaxnum,
           roomid: action.roomid,
         },
       };
