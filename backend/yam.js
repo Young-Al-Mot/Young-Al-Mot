@@ -46,7 +46,8 @@ app.post('/ready', ready.ready)
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
     // 메시지를 받으면
-
+    console.log("connect",socket.id);
+    
     socket.on('join', (msg) => {
         console.log('join success');
         socket.join(msg.roomno, () => {
@@ -59,8 +60,8 @@ io.on('connection', (socket) => {
             //     //io.to(msg.roomno).emit('join', {names: row});
             // })
             
-            //입장 시 메시지
-            io.emit(msg.roomno,{name:'System',message: msg.name+'님이 방에 들어왔습니다.'});
+            //입장 시 메시지 (일단 to잘되는거 보여줄려고 'msg'로 해둠)
+            io.to(msg.roomno).emit('msg',{name:'System',message: msg.name+'님이 방에 들어왔습니다.'});
         });
     });
 
@@ -74,7 +75,7 @@ io.on('connection', (socket) => {
             }
         }
         // 모든 클라이언트에게 전송
-        if(chk) io.emit(msg.roomno, msg);
+        if(chk) io.to(msg.roomno).emit("msg", msg);
     });
 });
 
