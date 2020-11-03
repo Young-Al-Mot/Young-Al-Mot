@@ -122,10 +122,8 @@ const RoomContainer = () => {
 
   //마운트 되었을때
   useEffect(() => {
-    console.log("rc",socket);
-    console.log("rc",soc);
     //msg소켓 받는거
-    socket.on(room.roomid /*room.roomid*/, (obj) => {
+    socket.on('msg', (obj) => {
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
@@ -139,6 +137,8 @@ const RoomContainer = () => {
       setAllmessage(tmp);
       console.log("chat", tmp);
     });
+
+  
 
 
     //방 들어오면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
