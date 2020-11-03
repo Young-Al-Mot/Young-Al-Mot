@@ -12,7 +12,7 @@ var roominchk = require('./routes/roominchk');
 var roomout = require('./routes/roomout');
 var ready = require('./routes/ready');
 const socketio = require('socket.io');
-const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
+const { DH_UNABLE_TO_CHECK_GENERATOR, SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require('constants');
 const server = require('http').createServer(app);
 const io = socketio.listen(server);
 
@@ -24,6 +24,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const data = fs.readFileSync('./database.json');
 const conf = JSON.parse(data);
+
+const mysql = require('mysql');
+const _secret = fs.readFileSync('./secret.txt','utf8').split(" ");
+const db = mysql.createConnection({
+    host:'localhost',
+    user:_secret[0],
+    password:_secret[1],
+    database:'yam'
+});
+db.connect();
 
 app.post('/user_create', create.create);
 app.post('/loginchk', main.main);
@@ -41,7 +51,18 @@ io.on('connection', (socket) => {
         console.log('join success');
         socket.join(msg.roomno, () => {
             console.log(msg.name+' join a '+msg.roomno);
-            io.to(msg.roomno).emit('join', {name: msg.name});
+            // let sql = `SELECT * FROM roomuser WHERE room_no=?`
+            // db.query(sql, msg.roomno, (err, row, field) => {
+            //     if(err) throw err;
+
+            //     //여기에 row를 io로 보낼수 있을까
+            // })
+            
+            //io.to.emit
+            //io.to(msg.roomno).emit('join', {name: msg.name});
+            
+            //이건 그냥 메시지, 나중에 to.emit 되면 지움
+            io.emit(msg.roomno,{name:'System',message: msg.name+'님이 방에 들어왔습니다.'});
         });
     });
 
@@ -57,12 +78,6 @@ io.on('connection', (socket) => {
         // 모든 클라이언트에게 전송
         if(chk) io.emit(msg.roomno, msg);
     });
-
-    /*socket.on('ready',function(ready){
-        console.log(ready);
-        
-        socket.emit(ready.roomno, ready);
-    })*/
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
