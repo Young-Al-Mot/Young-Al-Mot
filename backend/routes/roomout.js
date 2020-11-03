@@ -26,20 +26,19 @@ db.connect();
 
 const io= require('../yam');
 
-
 exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
     let roomno = req.body.roomid;
-    let username = req.body.userid;
+    let userid = req.body.userid;
     let sql = `SELECT * FROM user WHERE user_id=?`;
     
     console.log("roomno",roomno);
-    console.log("username",username);
+    console.log("userid",userid);
     
-    if(username==""){
+    if(userid==""){
         return res.status(400).json();
     }
 
-    db.query(sql, username, (err, row, field) => {
+    db.query(sql, userid, (err, row, field) => {
         if(err) throw err;
         
         let sql1 = `SELECT * FROM roomuser WHERE user_no=?`;
@@ -86,7 +85,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                     })
                 }
             })
-            io.io.emit(roomno,{name:'System',message: username+'님이 방을 나갔습니다'});
+            io.io.emit(roomno,{name:'System',message: row[0].user_name+'님이 방을 나갔습니다.'});
             return res.json({ success: true });
         })
     })
