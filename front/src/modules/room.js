@@ -70,7 +70,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
 
         socket.emit("join", {
           roomno: roomid,
-          name: res.data.username,
+          name: JSON.parse(sessionStorage.userInfo).nickname,
         });
         return dispatch(
           roomin(
