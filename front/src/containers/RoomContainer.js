@@ -39,10 +39,9 @@ const ChatBodyContent = styled.div`
   max-width: 100%;
 `;
 
-const TopContent=styled.div`
-  height:5%;
+const TopContent = styled.div`
+  height: 5%;
 `;
-
 
 const BodyContent = styled.div`
   height: 60%;
@@ -79,17 +78,13 @@ const RoomContainer = () => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
-  const [isReady,setisReady] = useState(false);
+  const [isReady, setisReady] = useState(false);
   const user = useSelector((state) => state.auth.status);
   const room = useSelector((state) => state.room.room);
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
-
-  function winUnload() {
-    dispatch(roomOutRequest(user.currentUser));
-  }
 
   const handleReadyClick = (e) => {
     axios({
@@ -99,11 +94,13 @@ const RoomContainer = () => {
         nickname: user.currentNickname,
         roomid: room.roomid,
       },
-    }).then((res) => {
+    })
+      .then((res) => {
         setisReady(res.data.ready);
-    }).catch((e)=>{
-      console.log("서버와 통신에 실패했습니다");
-    });
+      })
+      .catch((e) => {
+        console.log("서버와 통신에 실패했습니다");
+      });
   };
 
   const [allmessage, setAllmessage] = useState("");
@@ -141,7 +138,7 @@ const RoomContainer = () => {
 
     //새로고침하면 방 나가게 됨
     //새로고침으로 리듀서 초기화되면 roomid 0되니까 그거이용
-    if(room.roomid==0){
+    if (room.roomid == 0) {
       history.push("/roomList");
     }
 
@@ -151,37 +148,34 @@ const RoomContainer = () => {
       history.go(1);
     };
 
+    //창 닫을때
+    window.onclose=(e)=>{
+      e.
+      roomOut();
+    }
+
     //창 닫거나 새로고침할때 이벤트
-    window.onbeforeunload = e => {
-      e.returnValue = '';
-      return '';
+    window.onbeforeunload = (e) => {
+      e.returnValue = "";
+      return "";
     };
 
-    // //ctrl+w했을때 이벤트
-    // window.onkeydown = logKey;
-    // function logKey(e){
-    //   if(e.ctrlKey && e.key === 'w'){
-    //     dispatch(roomOutRequest(user.currentUser));
-    //   }
-    // }
+    //ctrl+w했을때 이벤트
+    window.onkeydown = logKey;
+    function logKey(e){
+      if(e.ctrlKey && e.key === 'w'){
+        dispatch(roomOutRequest(user.currentUser));
+      }
+    }
   }, [logs]);
 
-
-
-  
   const roomOut = () => {
-    dispatch(roomOutRequest(user.currentUser)).then((res) => {
-      history.push("/roomList");
-    });
+    history.push("/roomList");
   };
-
-  
 
   return (
     <AllContent>
-      <TopContent>
-        
-      </TopContent>
+      <TopContent></TopContent>
       <BodyContent>
         {/* 게임화면이나 사용자넣는곳 */}
         게임화면
@@ -190,10 +184,7 @@ const RoomContainer = () => {
       <BottomContent>
         {/* 채팅, 나가기 */}
         <BotLeft>
-          <GameReady
-          isReady={isReady}
-          handleReadyClick={handleReadyClick}
-          />
+          <GameReady isReady={isReady} handleReadyClick={handleReadyClick} />
         </BotLeft>
         <BotMid>
           <RoomChat
