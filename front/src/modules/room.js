@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import socketio from "socket.io-client";
+import getSoket from "../soket/getSoket";
 
 // 액션타입
 const ROOM_IN = "ROOM_IN";
 const ROOM_OUT = "ROOM_OUT";
-const socket = socketio.connect("http://localhost:5000");
+const socket = getSoket();
 
 //초기값
 const initialState = {
