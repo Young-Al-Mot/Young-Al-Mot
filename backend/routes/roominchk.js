@@ -56,7 +56,7 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
                         if(err4) throw err4;
                     })
                 })
-                return res.json({ success: true });
+                return res.json({ success: true, roominfo:rows[0]  });
             }
         }
         else return res.status(400).json({

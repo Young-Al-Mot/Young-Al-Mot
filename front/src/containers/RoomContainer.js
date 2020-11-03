@@ -10,6 +10,7 @@ import RoomChat from "../components/RoomChat";
 import RoomOut from "../components/RoomOut";
 import { roomOutRequest } from "../modules/room";
 import GameReady from "../components/GameReady";
+import NowUser from "../components/NowUser";
 
 const AllContent = styled.div`
   height: 100vh;
@@ -76,11 +77,12 @@ const socket = socketio.connect("http://localhost:5000");
 const RoomContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.status);
+  const room = useSelector((state) => state.room.room);
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
   const [isReady, setisReady] = useState(false);
-  const user = useSelector((state) => state.auth.status);
-  const room = useSelector((state) => state.room.room);
+  const [roomPlayer,setroomPlayer]=useState([]);
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
@@ -136,6 +138,16 @@ const RoomContainer = () => {
       console.log("chat", tmp);
     });
 
+
+    //방 들어오면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
+    let tmp=new Array();
+    for(let i=0;i<room.peoplemaxnum;i++){
+      tmp.push({user:"",score:0,id:i});
+    }
+    tmp[0]={user:user.currentNickname,score:0,id:0}
+    console.log(tmp);
+    setroomPlayer(tmp);
+
     //새로고침하면 방 나가게 됨
     //새로고침으로 리듀서 초기화되면 roomid 0되니까 그거이용
     if (room.roomid == 0) {
@@ -175,7 +187,11 @@ const RoomContainer = () => {
 
   return (
     <AllContent>
-      <TopContent></TopContent>
+      <TopContent>
+        <NowUser
+        roomPlayer={roomPlayer}
+        />
+      </TopContent>
       <BodyContent>
         {/* 게임화면이나 사용자넣는곳 */}
         게임화면
