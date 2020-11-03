@@ -86,8 +86,8 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                     })
                 }
             })
+            io.io.emit(roomno,{name:'System',message: username+'님이 방을 나갔습니다'});
+            return res.json({ success: true });
         })
-        io.io.emit(1,{name:'System',message: username+'님이 방을 나갔습니다'});
-        return res.json({ success: true });
     })
 });
