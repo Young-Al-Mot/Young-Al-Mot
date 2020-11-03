@@ -55,13 +55,11 @@ io.on('connection', (socket) => {
             // db.query(sql, msg.roomno, (err, row, field) => {
             //     if(err) throw err;
 
-            //     //여기에 row를 io로 보낼수 있을까
+            //     //io.to.emit
+            //     //io.to(msg.roomno).emit('join', {names: row});
             // })
             
-            //io.to.emit
-            //io.to(msg.roomno).emit('join', {name: msg.name});
-            
-            //이건 그냥 메시지, 나중에 to.emit 되면 지움
+            //입장 시 메시지
             io.emit(msg.roomno,{name:'System',message: msg.name+'님이 방에 들어왔습니다.'});
         });
     });
