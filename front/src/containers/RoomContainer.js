@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import socketio from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -11,6 +10,7 @@ import RoomOut from "../components/RoomOut";
 import { roomOutRequest } from "../modules/room";
 import GameReady from "../components/GameReady";
 import NowUser from "../components/NowUser";
+import getSoket from "../soket/getSoket";
 
 const AllContent = styled.div`
   height: 100vh;
@@ -72,7 +72,8 @@ const BotRight = styled.div`
 `;
 
 //서버 주소
-const socket = socketio.connect("http://localhost:5000");
+const socket = getSoket();
+const soc=getSoket();
 
 const RoomContainer = () => {
   const history = useHistory();
@@ -121,7 +122,8 @@ const RoomContainer = () => {
 
   //마운트 되었을때
   useEffect(() => {
-    console.log(room.roomid);
+    console.log("rc",socket);
+    console.log("rc",soc);
     //msg소켓 받는거
     socket.on(room.roomid /*room.roomid*/, (obj) => {
       const logs2 = logs;
