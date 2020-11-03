@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 // 액션타입
 const ROOM_IN = "ROOM_IN";
 const ROOM_OUT = "ROOM_OUT";
-const ROOM_INFO_UPDATE = "ROOM_INFO_UPDATE";
+
 
 //초기값
 const initialState = {
@@ -30,12 +30,6 @@ export const roomout = () => {
   };
 };
 
-export const roomInfoUpdate = (roomid) => {
-  return {
-    type: ROOM_INFO_UPDATE,
-    roomid,
-  };
-};
 
 //thunk (middleware)
 export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
@@ -81,28 +75,23 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
     });
 };
 
-export const roomOutRequest = (roomid) => (dispatch) => {
+export const roomOutRequest = (userid) => (dispatch) => {
   return axios({
     method: "POST",
     url: "http://localhost:5000/roomout",
     data: {
-      roomid,
-      userid: JSON.parse(sessionStorage.userInfo).username,
+      userid: userid,
     },
   }).then((res) => {
     if (res.data.success) return dispatch(roomout());
   });
 };
 
-export const roomInfoRequest = (roomid) => (dispatch) => {
-  return dispatch(roomInfoUpdate(roomid));
-};
 
 //리듀서
 const room = (state = initialState, action) => {
   switch (action.type) {
     case ROOM_IN:
-      sessionStorage.setRoomId = action.roomid;
       return {
         ...state,
         room: {
@@ -110,7 +99,6 @@ const room = (state = initialState, action) => {
         },
       };
     case ROOM_OUT:
-      sessionStorage.removeItem("setRoomId");
       return {
         ...state,
         room: {
@@ -118,13 +106,6 @@ const room = (state = initialState, action) => {
           gametype: "",
           peoplemaxnum: -1,
           roomid: 0,
-        },
-      };
-    case ROOM_INFO_UPDATE:
-      return {
-        ...state,
-        room: {
-          roomid: action.roomid,
         },
       };
     default:
