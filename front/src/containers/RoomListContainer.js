@@ -4,8 +4,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 import RoomList from "../components/RoomList";
-import { roomInRequest } from "../modules/room";
-import RoomContainer from "./RoomContainer";
+import { roomInRequest, roomOutRequest } from "../modules/room";
 
 const RoomListContainer = () => {
   const history = useHistory();
@@ -15,7 +14,7 @@ const RoomListContainer = () => {
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [roomid, setroomid] = useState(0);
   const [password, setpassword] = useState("");
-  
+  const user = useSelector(state => state.auth.status)
 
   const handleChangeIsRoomCreate = () => {
     setIsRoomCreate(true);
@@ -76,7 +75,11 @@ const RoomListContainer = () => {
     }
   };
 
+
   useEffect(() => {
+    //방리스트로 나오면 방 나간거 처리해줌
+    dispatch(roomOutRequest(user.currentUser));
+    console.log("roomlist mount");
     getInfo();
   }, []);
 

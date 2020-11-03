@@ -39,12 +39,17 @@ const ChatBodyContent = styled.div`
   max-width: 100%;
 `;
 
+const TopContent=styled.div`
+  height:5%;
+`;
+
+
 const BodyContent = styled.div`
   height: 60%;
 `;
 
 const BottomContent = styled.div`
-  height: 40%;
+  height: 35%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -83,7 +88,7 @@ const RoomContainer = () => {
   };
 
   function winUnload() {
-    dispatch(roomOutRequest(room.roomid));
+    dispatch(roomOutRequest(user.currentUser));
   }
 
   const handleReadyClick = (e) => {
@@ -103,25 +108,23 @@ const RoomContainer = () => {
 
   const [allmessage, setAllmessage] = useState("");
 
+  //msg소켓 보내는거
   const send = (e) => {
     if (message != "") {
       socket.emit("msg", {
-        //roomno: room.roomid,
-        roomno: Number(sessionStorage.setRoomId),
+        roomno: room.roomid,
         name: user.currentNickname,
         message: message,
       });
       setMessage("");
     }
   };
+
   //마운트 되었을때
   useEffect(() => {
-    if (sessionStorage.setRoomId === undefined) {
-      history.push("/roomList");
-    }
-    // 실시간으로 로그를 받게 설정
-    //백엔드 완성되면 수정해야됨
-    socket.on(Number(sessionStorage.setRoomId) /*room.roomid*/, (obj) => {
+    console.log(room.roomid);
+    //msg소켓 받는거
+    socket.on(room.roomid /*room.roomid*/, (obj) => {
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
@@ -136,35 +139,49 @@ const RoomContainer = () => {
       console.log("chat", tmp);
     });
 
+    //새로고침하면 방 나가게 됨
+    //새로고침으로 리듀서 초기화되면 roomid 0되니까 그거이용
+    if(room.roomid==0){
+      history.push("/roomList");
+    }
+
+    //뒤로가기 막는거
     window.history.pushState(null, null, window.location.href);
     window.onpopstate = function () {
       history.go(1);
     };
-    window.onbeforeunload = function () {
-      winUnload();
+
+    //창 닫거나 새로고침할때 이벤트
+    window.onbeforeunload = e => {
+      e.returnValue = '';
+      return '';
     };
-    window.onkeydown = logKey;
-    function logKey(e){
-      if(e.ctrlKey && e.key === 'w'){
-        dispatch(roomOutRequest(room.roomid));
-      }
-    }
+
+    // //ctrl+w했을때 이벤트
+    // window.onkeydown = logKey;
+    // function logKey(e){
+    //   if(e.ctrlKey && e.key === 'w'){
+    //     dispatch(roomOutRequest(user.currentUser));
+    //   }
+    // }
   }, [logs]);
 
 
 
   
   const roomOut = () => {
-    
-    dispatch(roomOutRequest(room.roomid)).then((res) => {
+    dispatch(roomOutRequest(user.currentUser)).then((res) => {
       history.push("/roomList");
     });
   };
 
-  console.log(sessionStorage.setRoomId);
+  
 
   return (
     <AllContent>
+      <TopContent>
+        
+      </TopContent>
       <BodyContent>
         {/* 게임화면이나 사용자넣는곳 */}
         게임화면
