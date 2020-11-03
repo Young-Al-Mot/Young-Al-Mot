@@ -55,8 +55,8 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
                     db.query(sql4, [row[0].user_no, row[0].user_name, rows[0].room_no, 0, 0, 0], (err4, r, f) => {
                         if(err4) throw err4;
                     })
+                    return res.json({ success: true, roominfo:rows[0], username:row[0].user_name  });
                 })
-                return res.json({ success: true, roominfo:rows[0]  });
             }
         }
         else return res.status(400).json({
