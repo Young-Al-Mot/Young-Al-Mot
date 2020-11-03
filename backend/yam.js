@@ -36,6 +36,15 @@ app.post('/ready', ready.ready)
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
     // 메시지를 받으면
+
+    socket.on('join', (msg) => {
+        console.log('join success');
+        socket.join(msg.roomno, () => {
+            console.log(msg.name+' join a '+msg.roomno);
+            io.to(msg.roomno).emit('join', {name: msg.name});
+        });
+    });
+
     socket.on('msg', (msg) => {
         var chk = false;
         console.log(msg);
