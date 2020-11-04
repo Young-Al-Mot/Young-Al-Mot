@@ -60,7 +60,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                     if(!row3[0])//아무것도 안들어잇으면 리턴해
                         return res.status(400).json();
 
-                    if(row3[0].nowplayer > 1){//다음방장 할당해주는 소스
+                    if(row3[0].nowplayer > 1){//사람 한명 나갔으니 nowplayer-1
                         let sql4 = `UPDATE roomlist SET nowplayer=nowplayer-1 WHERE room_no=?`;
                         db.query(sql4, roomno, (err3, upd, field3) => {
                             if(err3) throw err3;
@@ -70,10 +70,13 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                         db.query(sql5, roomno, (err4, row4, field4) => {
                             if(err4) throw err4;
 
-                            let sql6 = `UPDATE roomuser SET master=1 WHERE user_no=?`;
-                            db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
-                                if(err5) throw err5;
-                            })
+                            if(row2[0].master){//만약 나간사람이 방장이라면
+                                let sql6 = `UPDATE roomuser SET master=1 WHERE user_no=?`;
+                                db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
+                                    if(err5) throw err5;
+                                })
+                            }
+                            //방 나갓으니까 다시 갱신하기위해 유저정보 던져줌
                             io.io.to(roomno).emit('join', row4);
                         })
                         
