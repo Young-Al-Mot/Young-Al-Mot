@@ -10,7 +10,7 @@ import RoomOut from "../components/RoomOut";
 import { roomOutRequest } from "../modules/room";
 import GameReady from "../components/GameReady";
 import NowUser from "../components/NowUser";
-import getSoket from "../soket/getSoket";
+import getSoket from "../soket/SocketFunc";
 
 const AllContent = styled.div`
   height: 100vh;
