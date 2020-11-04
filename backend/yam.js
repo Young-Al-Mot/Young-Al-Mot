@@ -47,18 +47,20 @@ app.post('/ready', ready.ready)
 io.on('connection', (socket) => {
     // 메시지를 받으면
     console.log("connect",socket.id);
+    socket.on("disconnect",(reason)=>{
+        console.log("disconnect",socket.id);
+    })
     
     socket.on('join', (data) => {
         console.log('join success');
         socket.join(data.roomno, () => {
             console.log(data.name+' join a '+data.roomno);
+            console.log("");
             let sql = `SELECT * FROM roomuser WHERE room_no=?`
             db.query(sql, data.roomno, (err, row, field) => {
                 if(err) throw err;
-
-                console.log("join",row);
                 //io.to.emit
-                io.to(data.roomno).emit('join', {names: row});
+                io.to(data.roomno).emit('join', row);
             })
             
             //입장 시 메시지 (일단 to잘되는거 보여줄려고 'msg'로 해둠)
@@ -68,7 +70,7 @@ io.on('connection', (socket) => {
 
     socket.on('msg', (msg) => {
         var chk = false;
-        console.log(msg);
+        console.log("yam msg",msg);
         for(var i = 0; i < msg.message.length; i++){
             if(msg.message[i]!=' '){
                 chk=true;

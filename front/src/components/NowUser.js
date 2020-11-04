@@ -12,15 +12,32 @@ const Child = styled.div`
   justify-content: center;
   align-items: center;
   flex: 1;
-  border:solid thin;
+  border: solid thin;
 `;
 
-const NowUser = ({ roomPlayer }) => {
-  const userlist = roomPlayer.map((val) => (
-    <Child key={val.key} >  
-      {val.user}:{val.score}
-    </Child>
-  ));
+const NowUser = ({ roomUser }) => {
+  const readystyle = {
+    backgroundColor: "#9B98B9",
+  };
+  const notreadystyle = {
+    backgroundColor: "#ffffff",
+  };
+
+  const userlist = roomUser.map((val) => {
+    if (val.ready == 1) {
+      return (
+        <Child key={val.key} style={readystyle}>
+          {val.user}:{val.score}
+        </Child>
+      );
+    } else {
+      return (
+        <Child key={val.key} style={notreadystyle}>
+          {val.user}:{val.score}
+        </Child>
+      );
+    }
+  });
   return <Content>{userlist}</Content>;
 };
 

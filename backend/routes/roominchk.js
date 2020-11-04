@@ -29,7 +29,10 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
     let roomno = req.body.roomid;
     let password = req.body.password;
     let userid = req.body.userid;
-    console.log(userid);
+    console.log("roominchk userid",userid);
+    console.log("roominchk roomno",roomno);
+    console.log("");
+    
     
     db.query(sql, roomno, (err, rows, fields) => {
         if(err) throw err;

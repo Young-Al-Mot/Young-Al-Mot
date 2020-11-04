@@ -27,13 +27,13 @@ db.connect();
 const io= require('../yam');
 
 exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
-    let roomno = req.body.roomid;
+    let roomno;
     let userid = req.body.userid;
     let sql = `SELECT * FROM user WHERE user_id=?`;
     
-    console.log("roomno",roomno);
-    console.log("userid",userid);
-    
+    console.log("roomout userid",userid);
+    console.log ("")
+
     if(userid==""){
         return res.status(400).json();
     }
@@ -46,7 +46,6 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
             if(err2) throw err2;
             if(!row2[0])//아무것도안들엇으면 그냥 리턴해
                 return res.status(400).json();
-            console.log("row2",row2[0].room_no);
             //이제 클라이언트에서 방번호 안주니까 여기서 꺼내옴
             roomno=row2[0].room_no;
 
@@ -54,7 +53,6 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
             db.query(sql2, row[0].user_no, (err2, del, field2) => {
                 if(err2) throw err2;
                 
-                console.log("roomno",roomno);
                 let sql3 = `SELECT * FROM roomlist WHERE room_no=?`;
                 db.query(sql3, roomno, (err2, row3, field2) => {
                     if(err2) throw err2;
@@ -76,8 +74,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                             db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
                                 if(err5) throw err5;
                             })
-                            console.log(row4);
-                            io.io.to(roomno).emit('join', {names: row4});
+                            io.io.to(roomno).emit('join', row4);
                         })
                         
                     }
