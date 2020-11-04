@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import getSoket from "../soket/getSoket";
+
 
 // 액션타입
 const ROOM_IN = "ROOM_IN";
 const ROOM_OUT = "ROOM_OUT";
-const socket = getSoket();
+
 
 //초기값
 const initialState = {
@@ -67,12 +67,6 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
     .then((res) => {
       if (res.data.success) {
         const roominfo = res.data.roominfo;
-
-        //방에 들어가게되면 소켓으로 방 접속한걸 알림
-        socket.emit("join", {
-          roomno: roomid,
-          name: JSON.parse(sessionStorage.userInfo).nickname,
-        });
 
         return dispatch(
           roomin(
