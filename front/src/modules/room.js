@@ -50,6 +50,10 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
       peoplemaxnum,
     },
   }).then((res) => {
+    socket.emit('join', {
+      roomno: res.data.roomnum,
+      name: JSON.parse(sessionStorage.userInfo).nickname,
+    });
     return dispatch(roomin(res.data.roomnum, title, gametype, peoplemaxnum));
   });
 };
@@ -69,7 +73,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
         const roominfo = res.data.roominfo;
 
         //방에 들어가게되면 소켓으로 방 접속한걸 알림
-        socket.emit("join", {
+        socket.emit('join', {
           roomno: roomid,
           name: JSON.parse(sessionStorage.userInfo).nickname,
         });
