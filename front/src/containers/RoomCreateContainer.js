@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import RoomCreate from "../components/RoomCreate";
 import RoomContainer from "./RoomContainer";
 import { roomCreateRequest, roomInRequest } from "../modules/room";
-
+import {socketIn} from "../soket/SocketFunc";
 
 const RoomCreateContainer = () => {
   // 방제목 비밀번호 게임 인원수
@@ -38,6 +38,7 @@ const RoomCreateContainer = () => {
       peopleMaxNum
     )).then((res) => {
         //방만들기 성공하면 방안으로 입장
+        socketIn();
         history.push("/room");
     });
   };

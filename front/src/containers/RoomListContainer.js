@@ -5,6 +5,7 @@ import axios from "axios";
 
 import RoomList from "../components/RoomList";
 import { roomInRequest, roomOutRequest } from "../modules/room";
+import {socketIn} from "../soket/SocketFunc";
 
 const RoomListContainer = () => {
   const history = useHistory();
@@ -14,7 +15,8 @@ const RoomListContainer = () => {
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [roomid, setroomid] = useState(0);
   const [password, setpassword] = useState("");
-  const user = useSelector(state => state.auth.status)
+  const user = useSelector((state) => state.auth.status);
+
 
   const handleChangeIsRoomCreate = () => {
     setIsRoomCreate(true);
@@ -56,25 +58,31 @@ const RoomListContainer = () => {
       //비번 있는방
       dispatch(roomInRequest(roomid, password)).then((res) => {
         //리듀서에 방정보 넣어둿으니 여기선 그냥 넘겨만줌
-        if(res.error==4){
+        if (res.error == 4) {
           alert("방이 가득찼습니다");
           getInfo();
-        }else if(res.error==5){
+        } else if (res.error == 5) {
           alert("비밀번호가 틀렸습니다");
-        }else if (res.roomid != 0) history.push("/room");
+        } else if (res.roomid != 0) {
+          socketIn();
+          history.push("/room");
+        }
       });
-    }else{//비번 없는방
+    } else {
+      //비번 없는방
       console.log("clickroom", val);
       dispatch(roomInRequest(val, password)).then((res) => {
         //리듀서에 방정보 넣어둿으니 여기선 그냥 넘겨만줌
-        if(res.error==4){
+        if (res.error == 4) {
           alert("방이 가득찼습니다");
           getInfo();
-        }else if (res.roomid != 0) history.push("/room");
+        } else if (res.roomid != 0) {
+          socketIn();
+          history.push("/room");
+        }
       });
     }
   };
-
 
   useEffect(() => {
     //방리스트로 나오면 방 나간거 처리해줌
