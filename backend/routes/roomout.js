@@ -30,7 +30,8 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
     let roomno;
     let userid = req.body.userid;
     let sql = `SELECT * FROM user WHERE user_id=?`;
-    
+    let ismaster=0;
+
     console.log("roomout userid",userid);
     console.log ("")
 
@@ -59,7 +60,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
 
                     if(!row3[0])//아무것도 안들어잇으면 리턴해
                         return res.status(400).json();
-
+                    console.log(row2[0].master);
                     if(row3[0].nowplayer > 1){//사람 한명 나갔으니 nowplayer-1
                         let sql4 = `UPDATE roomlist SET nowplayer=nowplayer-1 WHERE room_no=?`;
                         db.query(sql4, roomno, (err3, upd, field3) => {
@@ -74,10 +75,22 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                                 let sql6 = `UPDATE roomuser SET master=1 WHERE user_no=?`;
                                 db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
                                     if(err5) throw err5;
+                                    
+                                    let sql7=`SELECT * FROM roomuser WHERE room_no=?`;
+                                    db.query(sql7,roomno, (err6,row6,field6)=>{
+                                        if(err6) throw err6;
+                                        
+                                        io.io.to(roomno).emit('join', row6);
+                                        ismaster=1;
+                                    })
+                                   
                                 })
+                                
                             }
+
                             //방 나갓으니까 다시 갱신하기위해 유저정보 던져줌
-                            io.io.to(roomno).emit('join', row4);
+                            if(!ismaster)
+                                io.io.to(roomno).emit('join', row4);
                         })
                         
                     }
