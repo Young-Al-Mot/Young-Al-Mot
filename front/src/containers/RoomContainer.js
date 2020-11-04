@@ -10,7 +10,7 @@ import RoomOut from "../components/RoomOut";
 import { roomOutRequest } from "../modules/room";
 import GameReady from "../components/GameReady";
 import NowUser from "../components/NowUser";
-import getSoket from "../soket/SocketFunc";
+import {getSocket} from "../socket/SocketFunc";
 
 const AllContent = styled.div`
   height: 100vh;
@@ -72,8 +72,8 @@ const BotRight = styled.div`
 `;
 
 //서버 주소
-const socket = getSoket();
-const soc=getSoket();
+const socket = getSocket();
+
 
 const RoomContainer = () => {
   const history = useHistory();

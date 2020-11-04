@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 
 
 // 액션타입
@@ -50,10 +49,6 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
       peoplemaxnum,
     },
   }).then((res) => {
-    socket.emit('join', {
-      roomno: res.data.roomnum,
-      name: JSON.parse(sessionStorage.userInfo).nickname,
-    });
     return dispatch(roomin(res.data.roomnum, title, gametype, peoplemaxnum));
   });
 };

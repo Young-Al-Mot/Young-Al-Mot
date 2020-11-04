@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import RoomCreate from "../components/RoomCreate";
 import RoomContainer from "./RoomContainer";
 import { roomCreateRequest, roomInRequest } from "../modules/room";
-import {socketIn} from "../soket/SocketFunc";
+import {socketIn} from "../socket/SocketFunc";
 
 const RoomCreateContainer = () => {
   // 방제목 비밀번호 게임 인원수
@@ -13,6 +13,7 @@ const RoomCreateContainer = () => {
   const [password, setPassword] = useState("");
   const [gametype, setGametype] = useState("십자말풀이");
   const [peopleMaxNum, setPeopleMaxNum] = useState(2);
+  const user = useSelector(state => state.auth.status)
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -38,7 +39,7 @@ const RoomCreateContainer = () => {
       peopleMaxNum
     )).then((res) => {
         //방만들기 성공하면 방안으로 입장
-        socketIn();
+        socketIn(res.roomid,user.currentNickname);
         history.push("/room");
     });
   };

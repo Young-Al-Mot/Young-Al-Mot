@@ -5,7 +5,7 @@ import axios from "axios";
 
 import RoomList from "../components/RoomList";
 import { roomInRequest, roomOutRequest } from "../modules/room";
-import {socketIn} from "../soket/SocketFunc";
+import {socketIn} from "../socket/SocketFunc";
 
 const RoomListContainer = () => {
   const history = useHistory();
@@ -64,7 +64,7 @@ const RoomListContainer = () => {
         } else if (res.error == 5) {
           alert("비밀번호가 틀렸습니다");
         } else if (res.roomid != 0) {
-          socketIn();
+          socketIn(roomid,user.currentNickname);
           history.push("/room");
         }
       });
@@ -77,7 +77,7 @@ const RoomListContainer = () => {
           alert("방이 가득찼습니다");
           getInfo();
         } else if (res.roomid != 0) {
-          socketIn();
+          socketIn(val,user.currentNickname);
           history.push("/room");
         }
       });
