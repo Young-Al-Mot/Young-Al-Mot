@@ -10,7 +10,7 @@ import RoomOut from "../components/RoomOut";
 import { roomOutRequest } from "../modules/room";
 import GameReady from "../components/GameReady";
 import NowUser from "../components/NowUser";
-import {getSocket} from "../socket/SocketFunc";
+import { getSocket } from "../socket/SocketFunc";
 
 const AllContent = styled.div`
   height: 100vh;
@@ -74,7 +74,6 @@ const BotRight = styled.div`
 //서버 주소
 const socket = getSocket();
 
-
 const RoomContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -83,7 +82,8 @@ const RoomContainer = () => {
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
   const [isReady, setisReady] = useState(false);
-  const [roomPlayer,setroomPlayer]=useState([]);
+  const [roomPlayer, setroomPlayer] = useState([{user:user.currentNickname,score:"",key:0}]);
+  const [playerScore, setplayerScore] = useState({});//"유저이름":점수 이런식으로 관리
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
@@ -120,10 +120,21 @@ const RoomContainer = () => {
     }
   };
 
+  //join이벤트 받으면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
+  socket.on("join", (val) => {
+    let tmp = [];
+    for (let i = 0; i < val.names.length; i++) {
+      let nowname = val.names[i].user_name;
+      tmp.push({ user: nowname, score: playerScore[nowname], key: i });
+    }
+    if(tmp.length!=0)
+      setroomPlayer(tmp);
+  });
+
   //마운트 되었을때
   useEffect(() => {
     //msg소켓 받는거
-    socket.on('msg', (obj) => {
+    socket.on("msg", (obj) => {
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
@@ -135,20 +146,7 @@ const RoomContainer = () => {
         </ChatBodyContent>
       ));
       setAllmessage(tmp);
-      console.log("chat", tmp);
     });
-
-  
-
-
-    //방 들어오면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
-    let tmp=new Array();
-    for(let i=0;i<room.peoplemaxnum;i++){
-      tmp.push({user:"",score:0,id:i});
-    }
-    tmp[0]={user:user.currentNickname,score:0,id:0}
-    console.log(tmp);
-    setroomPlayer(tmp);
 
     //새로고침하면 방 나가게 됨
     //새로고침으로 리듀서 초기화되면 roomid 0되니까 그거이용
@@ -162,12 +160,6 @@ const RoomContainer = () => {
       history.go(1);
     };
 
-    //창 닫을때
-    window.onclose=(e)=>{
-      e.
-      roomOut();
-    }
-
     //창 닫거나 새로고침할때 이벤트
     window.onbeforeunload = (e) => {
       e.returnValue = "";
@@ -176,8 +168,8 @@ const RoomContainer = () => {
 
     //ctrl+w했을때 이벤트
     window.onkeydown = logKey;
-    function logKey(e){
-      if(e.ctrlKey && e.key === 'w'){
+    function logKey(e) {
+      if (e.ctrlKey && e.key === "w") {
         dispatch(roomOutRequest(user.currentUser));
       }
     }
@@ -190,9 +182,7 @@ const RoomContainer = () => {
   return (
     <AllContent>
       <TopContent>
-        <NowUser
-        roomPlayer={roomPlayer}
-        />
+        <NowUser roomPlayer={roomPlayer} />
       </TopContent>
       <BodyContent>
         {/* 게임화면이나 사용자넣는곳 */}

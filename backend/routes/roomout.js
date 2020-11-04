@@ -51,42 +51,46 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
             roomno=row2[0].room_no;
 
             let sql2 = `DELETE FROM roomuser WHERE user_no=?`;
-            db.query(sql2, row[0].user_no, (err2, row2, field2) => {
+            db.query(sql2, row[0].user_no, (err2, del, field2) => {
                 if(err2) throw err2;
-            })
-            console.log("roomno",roomno);
-            let sql3 = `SELECT * FROM roomlist WHERE room_no=?`;
-            db.query(sql3, roomno, (err2, row2, field2) => {
-                if(err2) throw err2;
+                
+                console.log("roomno",roomno);
+                let sql3 = `SELECT * FROM roomlist WHERE room_no=?`;
+                db.query(sql3, roomno, (err2, row3, field2) => {
+                    if(err2) throw err2;
 
-                if(!row2[0])//아무것도 안들어잇으면 리턴해
-                    return res.status(400).json();
+                    if(!row3[0])//아무것도 안들어잇으면 리턴해
+                        return res.status(400).json();
 
-                if(row2[0].nowplayer > 1){//다음방장 할당해주는 소스
-                    let sql4 = `UPDATE roomlist SET nowplayer=nowplayer-1 WHERE room_no=?`;
-                    db.query(sql4, roomno, (err3, row3, field3) => {
-                        if(err3) throw err3;
-                    })
-
-                    let sql5 = `SELECT * FROM roomuser WHERE room_no=?`;
-                    db.query(sql5, roomno, (err4, row4, field4) => {
-                        if(err4) throw err4;
-
-                        let sql6 = `UPDATE roomuser SET master=1 WHERE user_no=?`;
-                        db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
-                            if(err5) throw err5;
+                    if(row3[0].nowplayer > 1){//다음방장 할당해주는 소스
+                        let sql4 = `UPDATE roomlist SET nowplayer=nowplayer-1 WHERE room_no=?`;
+                        db.query(sql4, roomno, (err3, upd, field3) => {
+                            if(err3) throw err3;
                         })
-                    })
-                }
-                else{//사람 다나가면 다시 디폴트로 만듬
-                    let sql4 = `UPDATE roomlist SET room_name='default', password=null, game_name='default', nowplayer=0, maxplayer=0, state=1 WHERE room_no=?`;
-                    db.query(sql4, roomno, (err3, row3, field3) => {
-                        if(err3) throw err3;
-                    })
-                }
+
+                        let sql5 = `SELECT * FROM roomuser WHERE room_no=?`;
+                        db.query(sql5, roomno, (err4, row4, field4) => {
+                            if(err4) throw err4;
+
+                            let sql6 = `UPDATE roomuser SET master=1 WHERE user_no=?`;
+                            db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
+                                if(err5) throw err5;
+                            })
+                            console.log(row4);
+                            io.io.to(roomno).emit('join', {names: row4});
+                        })
+                        
+                    }
+                    else{//사람 다나가면 다시 디폴트로 만듬
+                        let sql4 = `UPDATE roomlist SET room_name='default', password=null, game_name='default', nowplayer=0, maxplayer=0, state=1 WHERE room_no=?`;
+                        db.query(sql4, roomno, (err3, row3, field3) => {
+                            if(err3) throw err3;
+                        })
+                    }
+                })
+                io.io.to(roomno).emit('msg',{name:'System',message: row[0].user_name+'님이 방을 나갔습니다.'});
+                return res.json({ success: true });
             })
-            io.io.to(roomno).emit('msg',{name:'System',message: row[0].user_name+'님이 방을 나갔습니다.'});
-            return res.json({ success: true });
         })
     })
 });
