@@ -27,13 +27,13 @@ const NowUser = ({ roomUser }) => {
     if (val.ready == 1) {
       return (
         <Child key={val.key} style={readystyle}>
-          {val.user}:{val.score}
+          {val.master?"(방장)":""}{val.user}:{val.score}
         </Child>
       );
     } else {
       return (
         <Child key={val.key} style={notreadystyle}>
-          {val.user}:{val.score}
+          {val.master?"(방장)":""}{val.user}:{val.score}
         </Child>
       );
     }

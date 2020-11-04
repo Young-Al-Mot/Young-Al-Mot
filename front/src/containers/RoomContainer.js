@@ -78,15 +78,23 @@ const RoomContainer = () => {
     { user: user.currentNickname, score: "", key: 0, ready: 0, master: 1 },
   ]);
   const [isMaster, setisMaster] = useState(0);
+  const [gameStart, setgameStart] = useState(0);
   const [playerScore, setplayerScore] = useState({}); //"유저이름":점수 이런식으로 관리
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
 
-  const handleReadyClick = useCallback(
-    (e) => {
-      console.log("click ready");
+  const handleReadyClick = (e) => {
+    console.log("click ready");
+    if (isMaster) {
+      if (gameStart) {
+        //게임시작 누르면 소켓에 알림
+        socket.emit("gamestart", room.roomid);
+      } else {
+        alert("플레이어가 모두 준비를 완료해야 합니다");
+      }
+    } else {
       axios({
         method: "POST",
         url: "http://localhost:5000/ready",
@@ -101,9 +109,8 @@ const RoomContainer = () => {
         .catch((e) => {
           console.log("서버와 통신에 실패했습니다");
         });
-    },
-    [user, room]
-  );
+    }
+  };
 
   //msg소켓 보내는거
   const send = (e) => {
@@ -172,6 +179,7 @@ const RoomContainer = () => {
     socket.on("join", (val) => {
       console.log("join", val);
       let tmp = [];
+      let readynum = 0;
       for (let i = 0; i < val.length; i++) {
         let nowname = val[i].user_name;
         tmp.push({
@@ -181,9 +189,14 @@ const RoomContainer = () => {
           ready: val[i].ready,
           master: val[i].master,
         });
-        if (val[i].master == 1 && user.currentNickname == val[i].user_name)
+        if (val[i].ready) readynum += 1;
+        if (val[i].master == 1 && user.currentNickname == val[i].user_name) {
+          console.log("getmaster");
           setisMaster(1);
+        }
       }
+      //일단 혼자있을때는 시작안되게했음
+      if (readynum == val.length - 1&&(readynum!=0)) setgameStart(1);
 
       if (tmp.length != 0) setroomUser(tmp);
     });

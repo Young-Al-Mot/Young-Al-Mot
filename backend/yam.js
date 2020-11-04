@@ -26,6 +26,7 @@ const data = fs.readFileSync('./database.json');
 const conf = JSON.parse(data);
 
 const mysql = require('mysql');
+const { deepEqual } = require('assert');
 const _secret = fs.readFileSync('./secret.txt','utf8').split(" ");
 const db = mysql.createConnection({
     host:'localhost',
@@ -51,6 +52,20 @@ io.on('connection', (socket) => {
         console.log("disconnect",socket.id);
     })
     
+    socket.on('gamestart',(val)=>{//방번호 던져줌
+        //게임시작하면 방인원들 레디 없애고 방에 업데이트된거 던져줌
+        db.query('UPDATE roomuser SET ready=0 WHERE room_no=?',val, (err)=>{
+            if(err) throw err;
+            let sql = `SELECT * FROM roomuser WHERE room_no=?`
+            db.query(sql, val, (err, row, field) => {
+                if(err) throw err;
+                //io.to.emit
+                io.to(val).emit('join', row);
+            })            
+        })        
+        
+    })
+
     socket.on('join', (data) => {
         console.log('join success');
         socket.join(data.roomno, () => {
