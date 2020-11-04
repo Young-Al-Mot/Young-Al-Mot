@@ -5,7 +5,7 @@ import axios from "axios";
 
 import RoomList from "../components/RoomList";
 import { roomInRequest, roomOutRequest } from "../modules/room";
-import {socketIn} from "../socket/SocketFunc";
+import {socketIn,getSocket} from "../socket/SocketFunc";
 
 const RoomListContainer = () => {
   const history = useHistory();
@@ -37,6 +37,8 @@ const RoomListContainer = () => {
   const handleChangePassword = (e) => {
     setpassword(e.target.value);
   };
+
+  const socket=getSocket();
 
   //방정보 받아오는거
   const getInfo = () => {
@@ -87,6 +89,7 @@ const RoomListContainer = () => {
   useEffect(() => {
     //방리스트로 나오면 방 나간거 처리해줌
     dispatch(roomOutRequest(user.currentUser));
+    socket.disconnect();
     console.log("roomlist mount");
     getInfo();
   }, []);

@@ -1,10 +1,9 @@
 import axios from "axios";
-
+import { socketConnect } from "../socket/SocketFunc";
 
 // 액션타입
 const ROOM_IN = "ROOM_IN";
 const ROOM_OUT = "ROOM_OUT";
-
 
 //초기값
 const initialState = {
@@ -49,6 +48,7 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
       peoplemaxnum,
     },
   }).then((res) => {
+    socketConnect();
     return dispatch(roomin(res.data.roomnum, title, gametype, peoplemaxnum));
   });
 };
@@ -66,7 +66,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
     .then((res) => {
       if (res.data.success) {
         const roominfo = res.data.roominfo;
-
+        socketConnect();
 
         return dispatch(
           roomin(
