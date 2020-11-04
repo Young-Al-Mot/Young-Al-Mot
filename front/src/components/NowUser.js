@@ -17,8 +17,8 @@ const Child = styled.div`
 
 const NowUser = ({ roomPlayer }) => {
   const userlist = roomPlayer.map((val) => (
-    <Child key={val.id} >  
-      {val.user}:{val.user?val.score:""}
+    <Child key={val.key} >  
+      {val.user}:{val.score}
     </Child>
   ));
   return <Content>{userlist}</Content>;

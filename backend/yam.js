@@ -52,13 +52,14 @@ io.on('connection', (socket) => {
         console.log('join success');
         socket.join(data.roomno, () => {
             console.log(data.name+' join a '+data.roomno);
-            // let sql = `SELECT * FROM roomuser WHERE room_no=?`
-            // db.query(sql, data.roomno, (err, row, field) => {
-            //     if(err) throw err;
+            let sql = `SELECT * FROM roomuser WHERE room_no=?`
+            db.query(sql, data.roomno, (err, row, field) => {
+                if(err) throw err;
 
-            //     //io.to.emit
-            //     //io.to(data.roomno).emit('join', {names: row});
-            // })
+                console.log("join",row);
+                //io.to.emit
+                io.to(data.roomno).emit('join', {names: row});
+            })
             
             //입장 시 메시지 (일단 to잘되는거 보여줄려고 'msg'로 해둠)
             io.to(data.roomno).emit('msg',{name:'System',message: data.name+'님이 방에 들어왔습니다.'});
