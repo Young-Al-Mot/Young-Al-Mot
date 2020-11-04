@@ -50,6 +50,10 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
       peoplemaxnum,
     },
   }).then((res) => {
+    socket.emit('join', {
+      roomno: res.data.roomnum,
+      name: JSON.parse(sessionStorage.userInfo).nickname,
+    });
     return dispatch(roomin(res.data.roomnum, title, gametype, peoplemaxnum));
   });
 };
@@ -67,6 +71,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
     .then((res) => {
       if (res.data.success) {
         const roominfo = res.data.roominfo;
+
 
         return dispatch(
           roomin(

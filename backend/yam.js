@@ -48,20 +48,20 @@ io.on('connection', (socket) => {
     // 메시지를 받으면
     console.log("connect",socket.id);
     
-    socket.on('join', (msg) => {
+    socket.on('join', (data) => {
         console.log('join success');
-        socket.join(msg.roomno, () => {
-            console.log(msg.name+' join a '+msg.roomno);
+        socket.join(data.roomno, () => {
+            console.log(data.name+' join a '+data.roomno);
             // let sql = `SELECT * FROM roomuser WHERE room_no=?`
-            // db.query(sql, msg.roomno, (err, row, field) => {
+            // db.query(sql, data.roomno, (err, row, field) => {
             //     if(err) throw err;
 
             //     //io.to.emit
-            //     //io.to(msg.roomno).emit('join', {names: row});
+            //     //io.to(data.roomno).emit('join', {names: row});
             // })
             
             //입장 시 메시지 (일단 to잘되는거 보여줄려고 'msg'로 해둠)
-            io.to(msg.roomno).emit('msg',{name:'System',message: msg.name+'님이 방에 들어왔습니다.'});
+            io.to(data.roomno).emit('msg',{name:'System',message: data.name+'님이 방에 들어왔습니다.'});
         });
     });
 
@@ -75,7 +75,7 @@ io.on('connection', (socket) => {
             }
         }
         // 모든 클라이언트에게 전송
-        if(chk) io.to(msg.roomno).emit("msg", msg);
+        if(chk) io.to(msg.roomno).emit('msg', msg);
     });
 });
 
