@@ -82,8 +82,8 @@ const RoomContainer = () => {
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
   const [isReady, setisReady] = useState(false);
-  const [roomPlayer, setroomPlayer] = useState([]);
-  const [playerScore, setplayerScore] = useState([]);
+  const [roomPlayer, setroomPlayer] = useState([{user:user.currentNickname,score:"",key:0}]);
+  const [playerScore, setplayerScore] = useState({});//"유저이름":점수 이런식으로 관리
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
@@ -127,8 +127,8 @@ const RoomContainer = () => {
       let nowname = val.names[i].user_name;
       tmp.push({ user: nowname, score: playerScore[nowname], key: i });
     }
-
-    setroomPlayer(tmp);
+    if(tmp.length!=0)
+      setroomPlayer(tmp);
   });
 
   //마운트 되었을때
