@@ -11,6 +11,7 @@ var roomlist = require('./routes/roomlist');
 var roominchk = require('./routes/roominchk');
 var roomout = require('./routes/roomout');
 var ready = require('./routes/ready');
+var dictionary = require('./routes/dictionary');
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR, SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require('constants');
 const server = require('http').createServer(app);
@@ -44,6 +45,7 @@ app.post('/roomlist', roomlist.roomlist);
 app.post('/roominchk', roominchk.roominchk);
 app.post('/roomout', roomout.roomout);
 app.post('/ready', ready.ready)
+app.post('/dictionary', dictionary.dictionary)
 
 var list = new Array();
 // 클라이언트가 접속했을 때의 이벤트 설정
