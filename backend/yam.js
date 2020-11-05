@@ -27,6 +27,7 @@ const conf = JSON.parse(data);
 
 const mysql = require('mysql');
 const { deepEqual } = require('assert');
+const { start } = require('repl');
 const _secret = fs.readFileSync('./secret.txt','utf8').split(" ");
 const db = mysql.createConnection({
     host:'localhost',
@@ -44,6 +45,7 @@ app.post('/roominchk', roominchk.roominchk);
 app.post('/roomout', roomout.roomout);
 app.post('/ready', ready.ready)
 
+var list = new Array();
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
     // 메시지를 받으면
@@ -61,8 +63,8 @@ io.on('connection', (socket) => {
                 if(err) throw err;
                 //io.to.emit
                 io.to(val).emit('join', row);
-            })            
-        })        
+            })
+        })
         
     })
 
@@ -71,7 +73,7 @@ io.on('connection', (socket) => {
         socket.join(data.roomno, () => {
             console.log(data.name+' join a '+data.roomno);
             console.log("");
-            let sql = `SELECT * FROM roomuser WHERE room_no=?`
+            let sql = `SELECT * FROM roomuser WHERE room_no=?`;
             db.query(sql, data.roomno, (err, row, field) => {
                 if(err) throw err;
                 //io.to.emit
@@ -94,6 +96,30 @@ io.on('connection', (socket) => {
         }
         // 모든 클라이언트에게 전송
         if(chk) io.to(msg.roomno).emit('msg', msg);
+        
+        //일단 msg이벤트에 작성했는데 다른 이벤트로 옮길 예정
+        //메시지 전송 시 돌아가는 시간 있으면 중단
+        if(list.length != 0){
+            clearInterval(list[0]);
+            list.shift();
+        }
+        var t = 0;
+
+        //경과시간 메시지 (나중에 emit는 지울거)
+        var ontime = setInterval(() => {t++; io.to(msg.roomno).emit('msg', {name:'System', message: t+'초가 경과하였습니다.'});}, 1000);
+        list.push(ontime);
+
+        setTimeout(() => {
+            //시간초과 이벤트 발생
+            if(list[0] == ontime) { //시간발생 변수가 같으면 시간초과
+                io.to(msg.roomno).emit('msg', {name:'System', message: '시간초과'});
+                /*
+                    io.to(msg.roomno).emit('timeout', {t: 1});
+                */
+                clearInterval(ontime);
+            }
+        }, 5010);
+
     });
 });
 

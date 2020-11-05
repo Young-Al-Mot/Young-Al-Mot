@@ -61,6 +61,20 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                     if(!row3[0])//아무것도 안들어잇으면 리턴해
                         return res.status(400).json();
                     console.log(row2[0].master);
+
+                    if(row3[0].game_name == '십자말풀이'){
+
+                    }
+                    else if(row3[0].game_name == '끝말잇기'){
+                        let sql8 = `DELETE FROM endword WHERE user_name=?`;
+                        db.query(sql8, row[0].user_name, (err8, r, f) => {
+                            if(err8) throw err8;
+                        })
+                    }
+                    else{
+
+                    }
+
                     if(row3[0].nowplayer > 1){//사람 한명 나갔으니 nowplayer-1
                         let sql4 = `UPDATE roomlist SET nowplayer=nowplayer-1 WHERE room_no=?`;
                         db.query(sql4, roomno, (err3, upd, field3) => {
