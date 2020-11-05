@@ -197,6 +197,7 @@ const RoomContainer = () => {
       }
       //일단 혼자있을때는 시작안되게했음
       if (readynum == val.length - 1&&(readynum!=0)) setgameStart(1);
+      else setgameStart(0);
 
       if (tmp.length != 0) setroomUser(tmp);
     });
