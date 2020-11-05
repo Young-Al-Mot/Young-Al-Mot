@@ -50,6 +50,20 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
                     db.query(sql4, [row[0].user_no, row[0].user_name, rows[0].room_no, 1, 0, 0], (err4, r, f) => {
                         if(err4) throw err4;
                     })
+
+                    if(gamename == '십자말풀이'){
+                        
+                    }
+                    else if(gamename == '끝말잇기'){
+                        let sql5 = `INSERT INTO endword VALUES (?,?,0)`;
+                        let list = [row[0].user_name, rows[0].room_no];
+                        db.query(sql5, list, (err5, r, f) => {
+                            if(err5) throw err5;
+                        })
+                    }
+                    else{
+
+                    }
                 })
 
                 return res.json({
