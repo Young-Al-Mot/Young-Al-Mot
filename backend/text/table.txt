@@ -61,3 +61,11 @@ create table chatting(
    `chat` varchar(50) NOT NULL,
    primary key(`room_no`)
 );
+
+#endword 테이블
+create table endword(
+   `user_name` varchar(12) NOT NULL,
+   `room_no` int,
+   `score` int,
+   primary key(`user_name`)
+);
