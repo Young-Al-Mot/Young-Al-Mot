@@ -9,29 +9,24 @@ const LoginLabel = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const StateLabel =styled.div`
   text-align: left;
   width:330px;
   font-size: 18px;
   font-weight: 900;
 `;
-
 const UsernameInput = styled.input`
   width:320px;
   height: 50px;
   margin:4px;
   font-size:15px;
 `;
-
 const PasswordInput = styled.input`
   width:320px;
   height: 50px;
   margin:4px;
   font-size:15px;
-  
-`
-
+`;
 const LoginButton =styled.a`
   display: flex;
   width:200px;

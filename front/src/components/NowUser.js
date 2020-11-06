@@ -6,7 +6,6 @@ const Content = styled.div`
   height: 100%;
   border: solid thin;
 `;
-
 const Child = styled.div`
   display: flex;
   justify-content: center;
@@ -14,6 +13,7 @@ const Child = styled.div`
   flex: 1;
   border: solid thin;
 `;
+
 
 const NowUser = ({ roomUser }) => {
   const readystyle = {

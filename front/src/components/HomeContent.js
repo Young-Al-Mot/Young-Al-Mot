@@ -8,22 +8,18 @@ import { Link } from "react-router-dom";
 const AllContent =styled.div`
 margin-left:20%;
 margin-right:20%;
-`
-
+`;
 const Gameguide = styled.div`
   height: 300px;
   width: 100%;
   border: solid thin;
   border-top: none;
-
 `;
-
 const BottomContent = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
-
 const LeftContent = styled.div`
   display: flex;
   height: 100px;
@@ -33,20 +29,19 @@ const LeftContent = styled.div`
   align-items: center;
   margin: 10px;
 `;
-
 const MiddleContent = styled.div`
   height: 300px;
   width: 75%;
   border: solid thin;
   margin: 10px;
 `;
-
 const RightContent = styled.div`
   height: 300px;
   width: 200px;
   border: solid thin;
   margin: 10px;
 `;
+
 
 const HomeContent = () => {
   const { status } = useSelector((state) => state.auth);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -11,6 +11,8 @@ import { roomOutRequest } from "../modules/room";
 import GameReady from "../components/GameReady";
 import NowUser from "../components/NowUser";
 import { getSocket } from "../socket/SocketFunc";
+
+import Endword from "../components/Endword";
 
 const AllContent = styled.div`
   height: 100vh;
@@ -40,6 +42,7 @@ const TopContent = styled.div`
   height: 5%;
 `;
 const BodyContent = styled.div`
+  margin: 15px;
   height: 60%;
 `;
 const BottomContent = styled.div`
@@ -78,19 +81,21 @@ const RoomContainer = () => {
     { user: user.currentNickname, score: "", key: 0, ready: 0, master: 1 },
   ]);
   const [isMaster, setisMaster] = useState(0);
-  const [gameStart, setgameStart] = useState(0);
+  const [gameStart, setgameStart] = useState(0); //이게 1일때 방장이 시작누르면 게임시작할수있음
   const [playerScore, setplayerScore] = useState({}); //"유저이름":점수 이런식으로 관리
+  const [isStart, setisStart] = useState(0); //게임중인지 아닌지 나타냄
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
 
+  //게임준비, 게임시작
   const handleReadyClick = (e) => {
     console.log("click ready");
     if (isMaster) {
       if (gameStart) {
-        //게임시작 누르면 소켓에 알림
-        socket.emit("gamestart", room.roomid);
+        //게임시작 누르면 소켓에 알림(방번호, 게임타입)
+        socket.emit("gamestart", room.roomid,room.gametype);
       } else {
         alert("플레이어가 모두 준비를 완료해야 합니다");
       }
@@ -125,6 +130,10 @@ const RoomContainer = () => {
   };
 
   useEffect(() => {
+    socket.on("gamestart", () => {
+      setisStart(1);
+    });
+
     //새로고침하면 방 나가게 됨
     //새로고침으로 리듀서 초기화되면 roomid 0되니까 그거이용
     if (room.roomid == 0) {
@@ -172,6 +181,8 @@ const RoomContainer = () => {
     });
   }, [logs]);
 
+  //join 소켓
+  //roomUser관리(레디,점수,방장.입장,퇴장 이 바뀔때 업데이트됨)
   useEffect(() => {
     //join이벤트 받으면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
     //ready해도 여기서 처리함 (ready 0은 레디 안한거 1은 레디한거)
@@ -182,6 +193,12 @@ const RoomContainer = () => {
       let readynum = 0;
       for (let i = 0; i < val.length; i++) {
         let nowname = val[i].user_name;
+
+        if (val[i].ready) readynum += 1;
+        if (val[i].master == 1 && user.currentNickname == val[i].user_name) {
+          console.log("getmaster");
+          setisMaster(1);
+        }
         tmp.push({
           user: nowname,
           score: playerScore[nowname],
@@ -189,23 +206,40 @@ const RoomContainer = () => {
           ready: val[i].ready,
           master: val[i].master,
         });
-        if (val[i].ready) readynum += 1;
-        if (val[i].master == 1 && user.currentNickname == val[i].user_name) {
-          console.log("getmaster");
-          setisMaster(1);
-        }
       }
       //일단 혼자있을때는 시작안되게했음
-      if (readynum == val.length - 1&&(readynum!=0)) setgameStart(1);
+      if (readynum == val.length - 1 && readynum != 0) setgameStart(1);
       else setgameStart(0);
 
       if (tmp.length != 0) setroomUser(tmp);
     });
   }, [roomUser]);
 
+
   const roomOut = () => {
     socket.disconnect();
     history.push("/roomList");
+  };
+
+  const game = () => {
+    if (room.gametype == "끝말잇기") {
+      return <Endword message={message}/>;
+    }
+    
+  };
+
+  const readybutton = () => {
+    if (isStart) {
+      return;
+    } else {
+      return (
+        <GameReady
+          isMaster={isMaster}
+          isReady={isReady}
+          handleReadyClick={handleReadyClick}
+        />
+      );
+    }
   };
 
   return (
@@ -213,20 +247,11 @@ const RoomContainer = () => {
       <TopContent>
         <NowUser roomUser={roomUser} />
       </TopContent>
-      <BodyContent>
-        {/* 게임화면이나 사용자넣는곳 */}
-        게임화면
-      </BodyContent>
+      <BodyContent>{game()}</BodyContent>
 
       <BottomContent>
         {/* 채팅, 나가기 */}
-        <BotLeft>
-          <GameReady
-            isMaster={isMaster}
-            isReady={isReady}
-            handleReadyClick={handleReadyClick}
-          />
-        </BotLeft>
+        <BotLeft>{readybutton()}</BotLeft>
         <BotMid>
           <RoomChat
             user={user}
