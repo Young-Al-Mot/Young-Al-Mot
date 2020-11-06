@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
+
+var yam = require('./yam');
 var create = require('./routes/user_create');
 var main = require('./routes/main');
 var roomnumber = require('./routes/roomnumber');
@@ -12,6 +14,7 @@ var roominchk = require('./routes/roominchk');
 var roomout = require('./routes/roomout');
 var ready = require('./routes/ready');
 var dictionary = require('./routes/dictionary');
+
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR, SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require('constants');
 const server = require('http').createServer(app);
@@ -49,7 +52,6 @@ app.post('/dictionary', dictionary.dictionary)
 
 var list = new Array();
 
-
 const timer=(roomno)=>{
 
     var t = 0;
@@ -59,15 +61,19 @@ const timer=(roomno)=>{
 
     setTimeout(() => {
         //시간초과 이벤트 발생
+        console.log('listsize: '+list.length);
         if(list[0] == ontime) { //시간발생 변수가 같으면 시간초과
             io.to(roomno).emit('msg', {name:'System', message: '시간초과'});
             /*
             io.to(msg.roomno).emit('timeout', {t: 1});
             */
             clearInterval(ontime);
+            list.shift();
         }
     }, 5010);
 }
+exports.T = timer;
+exports.L = list;
 
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
@@ -93,7 +99,7 @@ io.on('connection', (socket) => {
         //일단 끝말잇기의 경우 시작하는사람, 시작단어, 라운드
         io.to(roomno).emit('gamestart',1,"apple",0);
 
-        timer(roomno);
+        yam.T(roomno);
         
     })
 
@@ -102,7 +108,7 @@ io.on('connection', (socket) => {
         socket.join(data.roomno, () => {
             console.log(data.name+' join a '+data.roomno);
             console.log("");
-            let sql = `SELECT * FROM roomuser WHERE room_no=?`;
+            let sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
             db.query(sql, data.roomno, (err, row, field) => {
                 if(err) throw err;
                 //io.to.emit
@@ -127,7 +133,7 @@ io.on('connection', (socket) => {
         if(chk) io.to(msg.roomno).emit('msg', msg);
         
         //일단 msg이벤트에 작성했는데 다른 이벤트로 옮길 예정
-        //메시지 전송 시 돌아가는 시간 있으면 중단
+        //정답 시 돌아가는 시간 중단
         if(list.length != 0){
             clearInterval(list[0]);
             list.shift();
