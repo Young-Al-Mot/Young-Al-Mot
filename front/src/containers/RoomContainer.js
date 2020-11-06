@@ -84,7 +84,8 @@ const RoomContainer = () => {
   const [gameStart, setgameStart] = useState(0); //이게 1일때 방장이 시작누르면 게임시작할수있음
   const [playerScore, setplayerScore] = useState({}); //"유저이름":점수 이런식으로 관리
   const [isStart, setisStart] = useState(0); //게임중인지 아닌지 나타냄
-
+  const [order,setorder]=useState("");
+  
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
@@ -127,10 +128,18 @@ const RoomContainer = () => {
       });
       setMessage("");
     }
+    console.log("order",order);
+    
+    if(order==user.currentNickname){
+      console.log("send answer");
+      socket.emit('gameanswer',message, order);
+    }
   };
 
+  //gamestart소켓
   useEffect(() => {
-    socket.on("gamestart", () => {
+    socket.on("gamestart", (order,startword,round) => {
+      setorder(order);//순서인사람 닉네임
       setisStart(1);
     });
 
@@ -161,7 +170,7 @@ const RoomContainer = () => {
     }
   });
 
-  //마운트 되었을때
+  //msg소켓
   useEffect(() => {
     console.log("roomcontainer mount");
     //msg소켓 받는거
