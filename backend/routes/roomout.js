@@ -24,7 +24,7 @@ const db = mysql.createConnection({
 });
 db.connect();
 
-const io= require('../yam');
+const yam = require('../yam');
 
 exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
     let roomno;
@@ -76,6 +76,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                     }
 
                     if(row3[0].nowplayer > 1){//사람 한명 나갔으니 nowplayer-1
+                        //방이 시작중이고 본인 턴이라면 다음사람으로 턴 넘겨야함
                         let sql4 = `UPDATE roomlist SET nowplayer=nowplayer-1 WHERE room_no=?`;
                         db.query(sql4, roomno, (err3, upd, field3) => {
                             if(err3) throw err3;
@@ -94,7 +95,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                                     db.query(sql7,roomno, (err6,row6,field6)=>{
                                         if(err6) throw err6;
                                         
-                                        io.io.to(roomno).emit('join', row6);
+                                        yam.io.to(roomno).emit('join', row6);
                                         ismaster=1;
                                     })
                                    
@@ -104,7 +105,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
 
                             //방 나갓으니까 다시 갱신하기위해 유저정보 던져줌
                             if(!ismaster)
-                                io.io.to(roomno).emit('join', row4);
+                                yam.io.to(roomno).emit('join', row4);
                         })
                         
                     }
@@ -115,7 +116,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                         })
                     }
                 })
-                io.io.to(roomno).emit('msg',{name:'System',message: row[0].user_name+'님이 방을 나갔습니다.'});
+                yam.io.to(roomno).emit('msg',{name:'System',message: row[0].user_name+'님이 방을 나갔습니다.'});
                 return res.json({ success: true });
             })
         })

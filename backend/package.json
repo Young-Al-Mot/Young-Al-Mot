@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "async": "^3.2.0",
     "axios": "^0.20.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -23,7 +24,8 @@
     "request": "^2.88.2",
     "socket.io": "^2.3.0",
     "styled-components": "^5.2.0",
-    "styled-reset": "^4.2.3"
+    "styled-reset": "^4.2.3",
+    "sync-request": "^6.1.0"
   },
   "scripts": {
     "start": "cross-env NODE_PATH=src react-scripts start",
