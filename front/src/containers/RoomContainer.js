@@ -132,7 +132,7 @@ const RoomContainer = () => {
     
     if(order==user.currentNickname){
       console.log("send answer");
-      socket.emit('gameanswer',message, order);
+      socket.emit('gameanswer',room.roomid, message, order);
     }
   };
 
