@@ -56,7 +56,11 @@ const timer=(roomno)=>{
 
     var t = 0;
     //경과시간 메시지 (나중에 emit는 지울거)
-    var ontime = setInterval(() => {t++; io.to(roomno).emit('gametime', 5-t);}, 1000);
+    var ontime = setInterval(() => {
+        t++; 
+        io.to(roomno).emit('gametime', 5-t);
+        console.log("timer",5-t);
+    }, 1000);
     list.push(ontime);
 
     setTimeout(() => {
@@ -96,8 +100,8 @@ io.on('connection', (socket) => {
         })
 
         //게임 시작했을때 정보 던져주는거 없어서 일단 테스트용으로 만듬 알아서 수정해주세요(헌국)
-        //일단 끝말잇기의 경우 시작하는사람, 시작단어, 라운드
-        io.to(roomno).emit('gamestart',1,"apple",0);
+        //일단 끝말잇기의 경우 시작하는사람닉네임, 시작단어, 라운드
+        io.to(roomno).emit('gamestart','qwerqwer',"apple",0);
 
         yam.T(roomno);
         
