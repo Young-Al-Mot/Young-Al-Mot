@@ -81,7 +81,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                             if(err3) throw err3;
                         })
 
-                        let sql5 = `SELECT * FROM roomuser WHERE room_no=?`;
+                        let sql5 = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
                         db.query(sql5, roomno, (err4, row4, field4) => {
                             if(err4) throw err4;
 
@@ -90,7 +90,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                                 db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
                                     if(err5) throw err5;
                                     
-                                    let sql7=`SELECT * FROM roomuser WHERE room_no=?`;
+                                    let sql7=`SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
                                     db.query(sql7,roomno, (err6,row6,field6)=>{
                                         if(err6) throw err6;
                                         
@@ -110,8 +110,8 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                     }
                     else{//사람 다나가면 다시 디폴트로 만듬
                         let sql4 = `UPDATE roomlist SET room_name='default', password=null, game_name='default', nowplayer=0, maxplayer=0, state=1 WHERE room_no=?`;
-                        db.query(sql4, roomno, (err3, row3, field3) => {
-                            if(err3) throw err3;
+                        db.query(sql4, roomno, (err6, row6, field6) => {
+                            if(err6) throw err6;
                         })
                     }
                 })
