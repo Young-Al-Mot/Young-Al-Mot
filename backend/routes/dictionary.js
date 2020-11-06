@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-
+var yam = require('../yam');
 const multer = require('multer');
 const upload = multer({dest: './upload'});
 
@@ -15,9 +15,9 @@ const request = require('request');
 
 exports.dictionary = app.post('/dictionary', upload.single(), (req, res) => {
      //api 주소로 마지막 ko부분을 바꾸면 다른 언어로 호환 가능
-    let link = "https://api.dictionaryapi.dev/api/v2/entries/ko/";
+    let link = "https://api.dictionaryapi.dev/api/v2/entries/en/";
     let word = req.body.word;
-    let result = false;
+    let result = false; //정답여부
     
     //get방식으로 결과를 받고 2초이상 서버의 응답이 없을 경우 타임아웃 에러
     const options = {
