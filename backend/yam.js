@@ -48,6 +48,27 @@ app.post('/ready', ready.ready)
 app.post('/dictionary', dictionary.dictionary)
 
 var list = new Array();
+
+
+const timer=(roomno)=>{
+
+    var t = 0;
+    //경과시간 메시지 (나중에 emit는 지울거)
+    var ontime = setInterval(() => {t++; io.to(roomno).emit('gametime', 5-t);}, 1000);
+    list.push(ontime);
+
+    setTimeout(() => {
+        //시간초과 이벤트 발생
+        if(list[0] == ontime) { //시간발생 변수가 같으면 시간초과
+            io.to(roomno).emit('msg', {name:'System', message: '시간초과'});
+            /*
+            io.to(msg.roomno).emit('timeout', {t: 1});
+            */
+            clearInterval(ontime);
+        }
+    }, 5010);
+}
+
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
     // 메시지를 받으면
@@ -56,17 +77,23 @@ io.on('connection', (socket) => {
         console.log("disconnect",socket.id);
     })
     
-    socket.on('gamestart',(val)=>{//방번호 던져줌
+    socket.on('gamestart',(roomno,gametype)=>{//방번호, 무슨게임인지 받음
         //게임시작하면 방인원들 레디 없애고 방에 업데이트된거 던져줌
-        db.query('UPDATE roomuser SET ready=0 WHERE room_no=?',val, (err)=>{
+        db.query('UPDATE roomuser SET ready=0 WHERE room_no=?',roomno, (err)=>{
             if(err) throw err;
             let sql = `SELECT * FROM roomuser WHERE room_no=?`
-            db.query(sql, val, (err, row, field) => {
+            db.query(sql, roomno, (err, row, field) => {
                 if(err) throw err;
                 //io.to.emit
-                io.to(val).emit('join', row);
+                io.to(roomno).emit('join', row);
             })
         })
+
+        //게임 시작했을때 정보 던져주는거 없어서 일단 테스트용으로 만듬 알아서 수정해주세요(헌국)
+        //일단 끝말잇기의 경우 시작하는사람, 시작단어, 라운드
+        io.to(roomno).emit('gamestart',1,"apple",0);
+
+        timer(roomno);
         
     })
 
@@ -105,22 +132,7 @@ io.on('connection', (socket) => {
             clearInterval(list[0]);
             list.shift();
         }
-        var t = 0;
-
-        //경과시간 메시지 (나중에 emit는 지울거)
-        var ontime = setInterval(() => {t++; io.to(msg.roomno).emit('msg', {name:'System', message: t+'초가 경과하였습니다.'});}, 1000);
-        list.push(ontime);
-
-        setTimeout(() => {
-            //시간초과 이벤트 발생
-            if(list[0] == ontime) { //시간발생 변수가 같으면 시간초과
-                io.to(msg.roomno).emit('msg', {name:'System', message: '시간초과'});
-                /*
-                    io.to(msg.roomno).emit('timeout', {t: 1});
-                */
-                clearInterval(ontime);
-            }
-        }, 5010);
+        
 
     });
 });

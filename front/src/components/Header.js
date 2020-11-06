@@ -9,7 +9,6 @@ const flexCenterAlign = css`
   display: flex;
   align-items: center;
 `;
-
 const HeaderLabel = styled.div`
   border-bottom: solid;
   height: 40px;
@@ -18,7 +17,6 @@ const HeaderLabel = styled.div`
   margin-right: 2%;
   ${flexCenterAlign}
 `;
-
 const LogoLabel = styled.span`
   margin-left: 10px;
   font-size: 20px;
@@ -30,15 +28,14 @@ const AuthLabel = styled.span`
   justify-self: flex-end;
   margin-right: 10px;
 `;
-
 const EmptyLabel = styled.span`
   flex: 1;
   height: 1px;
 `;
-
 const InAuthLabel = styled.span`
   margin-right: 10px;
 `;
+
 
 const Header = () => {
   const { status } = useSelector((state) => state.auth);
