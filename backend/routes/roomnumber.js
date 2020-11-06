@@ -55,7 +55,7 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
                         
                     }
                     else if(gamename == '끝말잇기'){
-                        let sql5 = `INSERT INTO endword VALUES (?,?,0)`;
+                        let sql5 = `INSERT INTO endword VALUES (?,?,0,now())`;
                         let list = [row[0].user_name, rows[0].room_no];
                         db.query(sql5, list, (err5, r, f) => {
                             if(err5) throw err5;
