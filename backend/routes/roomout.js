@@ -86,7 +86,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                             if(err4) throw err4;
 
                             if(row2[0].master){//만약 나간사람이 방장이라면
-                                let sql6 = `UPDATE roomuser SET master=1 WHERE user_no=?`;
+                                let sql6 = `UPDATE roomuser SET master=1, ready=0 WHERE user_no=?`;
                                 db.query(sql6, row4[0].user_no, (err5, row5, field5) => {
                                     if(err5) throw err5;
                                     
