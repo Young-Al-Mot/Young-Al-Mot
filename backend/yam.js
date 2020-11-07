@@ -49,11 +49,11 @@ app.post('/roominchk', roominchk.roominchk);
 app.post('/roomout', roomout.roomout);
 app.post('/ready', ready.ready);
 
-var list = new Array(100); //시간발생 저장
+var timelist = new Array(100); //시간발생 저장
 var roomuserlist = new Array(100); //방에 있는 유저닉네임
 var roomuseridx = new Array(100); //방에 있는 유저닉네임 인덱스
-for(var i=0; i<list.length; i++) {
-    list[i] = new Array();
+for(var i=0; i<timelist.length; i++) {
+    timelist[i] = new Array();
     roomuserlist[i] = new Array();
     roomuseridx[i] = 0;
 }
@@ -69,23 +69,23 @@ const timer=(roomno)=>{
         io.to(roomno).emit('gametime', 5-t);
         console.log("timer",5-t);
     }, 1000);
-    list[roomno].push(ontime);
+    timelist[roomno].push(ontime);
 
     setTimeout(() => {
         //시간초과 이벤트 발생
-        console.log('listsize: '+list[roomno].length);
-        if(list[roomno][0] == ontime) { //시간발생 변수가 같으면 시간초과
+        console.log('listsize: '+timelist[roomno].length);
+        if(timelist[roomno][0] == ontime) { //시간발생 변수가 같으면 시간초과
             io.to(roomno).emit('gametime', "시간초과");
             /*
             io.to(msg.roomno).emit('timeout', {t: 1});
             */
             clearInterval(ontime);
-            list[roomno].shift();
+            timelist[roomno].shift();
         }
     }, 5010);
 }
 exports.T = timer;
-exports.L = list;
+exports.L = timelist;
 exports.startword = startword;
 exports.nowword = nowword;
 exports.roomuserlist = roomuserlist;
@@ -140,7 +140,7 @@ io.on('connection', (socket) => {
                 db.query(sql3, num, (err2, row2, f2) => {
                     if(err2) throw err2;
                     startword[roomno] = row2[0].word;
-                    nowword[roomno] = row2[0].word;
+                    nowword[roomno] = row2[0].word[0];
                     //시작하는사람닉네임, 시작단어(전체라운드 단어), 시작단어 인덱스(라운드)
                     io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, startwordidx);
                     yam.T(roomno);
@@ -153,9 +153,33 @@ io.on('connection', (socket) => {
     })//'gamestart' event end
 
     socket.on('gameanswer', (roomno, message, order) => {
-        dictionary.dictionary(roomno, message, order);
-        console.log("gameanswer");
+        let sql = `SELECT * FROM chatting WHERE room_no=? and chat=?`;
+        let list = [roomno, message];
+        db.query(sql, list, (err, row, f) => {
+            if(err) throw err;
+
+            if(!row[0]){
+                //중복아님, 성공
+                console.log(nowword[roomno][nowword[roomno].length - 1]);
+                console.log(message[0]);
+                if(nowword[roomno][nowword[roomno].length - 1] == message[0]){ //끝말 일치
+                    //끝말 일치, 설공
+                    dictionary.dictionary(roomno, message, order);
+                }
+                else{
+                    //끝말 불일치, 실패
+                    yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0);
+                    yam.io.to(roomno).emit('msg',{name:'System',message: '끝말 불일치'});
+                }
+            }
+            else{
+                //중복, 실패
+                yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0);
+                yam.io.to(roomno).emit('msg',{name:'System',message: '중복단어'});
+            }
+        })
         
+        console.log("gameanswer");
     })
 
     socket.on('join', (data) => {
@@ -188,9 +212,9 @@ io.on('connection', (socket) => {
         if(chk) io.to(msg.roomno).emit('msg', msg);
         //일단 msg이벤트에 작성했는데 다른 이벤트로 옮길 예정
         //정답 시 돌아가는 시간 중단
-        if(list[msg.roomno].length != 0){
-            clearInterval(list[msg.roomno][0]);
-            list[msg.roomno].shift();
+        if(timelist[msg.roomno].length != 0){
+            clearInterval(timelist[msg.roomno][0]);
+            timelist[msg.roomno].shift();
         }
     });
 });

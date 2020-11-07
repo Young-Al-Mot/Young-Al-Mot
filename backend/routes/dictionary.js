@@ -87,12 +87,12 @@ var dictionary = function(roomno, word, order) {//방 번호, 단어, 차례
                 yam.L[roomno].shift();
             }
             //맞춘 단어, 다음순서
-            yam.io.to(roomno).emit('gameanswer',word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
-            
+            yam.io.to(roomno).emit('gameanswer',word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
             yam.io.to(roomno).emit('msg',{name:'System',message: '있음'});
             yam.T(roomno);
         }
         else{
+            yam.io.to(roomno).emit('gameanswer',yam.nowword[roomno], order, 0);
             yam.io.to(roomno).emit('msg',{name:'System',message: '없음'});
         }
     });
