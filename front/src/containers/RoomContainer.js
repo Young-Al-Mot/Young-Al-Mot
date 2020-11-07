@@ -84,8 +84,13 @@ const RoomContainer = () => {
   const [gameStart, setgameStart] = useState(0); //이게 1일때 방장이 시작누르면 게임시작할수있음
   const [playerScore, setplayerScore] = useState({}); //"유저이름":점수 이런식으로 관리
   const [isStart, setisStart] = useState(0); //게임중인지 아닌지 나타냄
-  const [order,setorder]=useState("");
-  
+
+  //endword
+  const [order, setorder] = useState("");
+  const [word, setword] = useState("");
+  const [round, setround] = useState(0);
+  const [startWord, setstartWord] = useState("");
+
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
@@ -96,7 +101,7 @@ const RoomContainer = () => {
     if (isMaster) {
       if (gameStart) {
         //게임시작 누르면 소켓에 알림(방번호, 게임타입)
-        socket.emit("gamestart", room.roomid,room.gametype);
+        socket.emit("gamestart", room.roomid, room.gametype);
       } else {
         alert("플레이어가 모두 준비를 완료해야 합니다");
       }
@@ -128,19 +133,29 @@ const RoomContainer = () => {
       });
       setMessage("");
     }
-    console.log("order",order);
-    
-    if(order==user.currentNickname){
+    console.log("order", order);
+
+    if (order == user.currentNickname) {
       console.log("send answer");
-      socket.emit('gameanswer',room.roomid, message, order);
+      socket.emit("gameanswer", room.roomid, message, order);
     }
   };
 
   //gamestart소켓
   useEffect(() => {
-    socket.on("gamestart", (order,startword,round) => {
-      setorder(order);//순서인사람 닉네임
+    socket.on("gamestart", (order, startword, round) => {
+      setorder(order); //순서인사람 닉네임
       setisStart(1);
+      setstartWord(startword);
+      setword(startword[round]);
+      setround(round);
+    });
+
+    socket.off("gameanswer");
+    socket.on("gameanswer", (word, order) => {
+      setorder(order); //순서인사람 닉네임
+      setword(word);
+      console.log("다음순서", order);
     });
 
     //새로고침하면 방 나가게 됨
@@ -224,7 +239,6 @@ const RoomContainer = () => {
     });
   }, [roomUser]);
 
-
   const roomOut = () => {
     socket.disconnect();
     history.push("/roomList");
@@ -232,9 +246,15 @@ const RoomContainer = () => {
 
   const game = () => {
     if (room.gametype == "끝말잇기") {
-      return <Endword message={message}/>;
+      return (
+        <Endword
+          message={message}
+          word={word}
+          startWord={startWord}
+          round={round}
+        />
+      );
     }
-    
   };
 
   const readybutton = () => {
@@ -254,7 +274,7 @@ const RoomContainer = () => {
   return (
     <AllContent>
       <TopContent>
-        <NowUser roomUser={roomUser} />
+        <NowUser roomUser={roomUser} order={order} />
       </TopContent>
       <BodyContent>{game()}</BodyContent>
 

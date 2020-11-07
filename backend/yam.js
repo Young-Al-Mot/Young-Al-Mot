@@ -75,7 +75,7 @@ const timer=(roomno)=>{
         //시간초과 이벤트 발생
         console.log('listsize: '+list[roomno].length);
         if(list[roomno][0] == ontime) { //시간발생 변수가 같으면 시간초과
-            io.to(roomno).emit('msg', {name:'System', message: '시간초과'});
+            io.to(roomno).emit('gametime', "시간초과");
             /*
             io.to(msg.roomno).emit('timeout', {t: 1});
             */
@@ -117,7 +117,7 @@ io.on('connection', (socket) => {
                     roomuserlist[roomno].push(row[i].user_name);
                     console.log(roomuserlist[roomno][i]);
                 }
-
+                //처음엔 방장을 첫번째 턴을 할당
                 let sql3 = `UPDATE roomuser SET turn=1 WHERE master=1`;
                 db.query(sql3, [], (err2) => {
                     if(err2) throw err2;
@@ -131,8 +131,6 @@ io.on('connection', (socket) => {
 
         }
         else if(gametype == '끝말잇기'){
-            //게임 시작했을때 정보 던져주는거 없어서 일단 테스트용으로 만듬 알아서 수정해주세요(헌국)
-            //일단 끝말잇기의 경우 시작하는사람닉네임, 시작단어, 라운드
             let sql2 = `SELECT * FROM roomuser WHERE room_no=? and master=1`;
             db.query(sql2, roomno, (err, row, f) => {
                 if(err) throw err;
@@ -143,7 +141,7 @@ io.on('connection', (socket) => {
                     if(err2) throw err2;
                     startword[roomno] = row2[0].word;
                     nowword[roomno] = row2[0].word;
-
+                    //시작하는사람닉네임, 시작단어(전체라운드 단어), 시작단어 인덱스(라운드)
                     io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, startwordidx);
                     yam.T(roomno);
                 })
@@ -156,7 +154,7 @@ io.on('connection', (socket) => {
 
     socket.on('gameanswer', (roomno, message, order) => {
         dictionary.dictionary(roomno, message, order);
-
+        console.log("gameanswer");
         
     })
 
