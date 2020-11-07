@@ -15,13 +15,16 @@ const Child = styled.div`
 `;
 
 
-const NowUser = ({ roomUser }) => {
+const NowUser = ({ roomUser, order }) => {
   const readystyle = {
     backgroundColor: "#9B98B9",
   };
-  const notreadystyle = {
+  const notstyle = {
     backgroundColor: "#ffffff",
   };
+  const orderstyle = {
+    backgroundColor:"#D5D5D5",
+  }
 
   const userlist = roomUser.map((val) => {
     if (val.ready == 1) {
@@ -30,13 +33,20 @@ const NowUser = ({ roomUser }) => {
           {val.master?"(방장)":""}{val.user}:{val.score}
         </Child>
       );
+    }else if(val.user==order){
+      return (
+        <Child key={val.key} style={orderstyle}>
+          {val.master?"(방장)":""}{val.user}:{val.score}
+        </Child>
+      );
     } else {
       return (
-        <Child key={val.key} style={notreadystyle}>
+        <Child key={val.key} style={notstyle}>
           {val.master?"(방장)":""}{val.user}:{val.score}
         </Child>
       );
     }
+
   });
   return <Content>{userlist}</Content>;
 };

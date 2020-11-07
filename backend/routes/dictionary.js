@@ -86,9 +86,9 @@ var dictionary = function(roomno, word, order) {//방 번호, 단어, 차례
                 clearInterval(yam.L[roomno][0]);
                 yam.L[roomno].shift();
             }
-            /*
-            yam.io.to(roomno).emit('gameanswer',{next: word, order: yam.roomuserlist[roomno][yam.roomuseridx]});
-            */
+            //맞춘 단어, 다음순서
+            yam.io.to(roomno).emit('gameanswer',word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
+            
             yam.io.to(roomno).emit('msg',{name:'System',message: '있음'});
             yam.T(roomno);
         }
