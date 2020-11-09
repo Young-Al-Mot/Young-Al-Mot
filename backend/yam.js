@@ -95,6 +95,7 @@ const timer=(roomno)=>{
                 nowword[roomno] = startword[roomno][startwordidx[roomno]];
                 //gamestart이벤트 -> 시작하는 사람 닉네임, 시작 단어, 라운드
                 io.to(roomno).emit('gamestart', roomuserlist[roomno][roomuseridx[roomno]], startword[roomno], startwordidx[roomno]);
+                yam.T(roomno);
             }
 
             clearInterval(ontime);
@@ -123,6 +124,11 @@ io.on('connection', (socket) => {
         roomuseridx[roomno] = 0;
         startwordidx[roomno] = 0;
         let sql = `UPDATE roomlist SET state=1 WHERE room_no=?`;
+        db.query(sql, roomno, (err) => {
+            if(err) throw err;
+        })
+
+        sql = `DELETE FROM chatting WHERE room_no=?`;
         db.query(sql, roomno, (err) => {
             if(err) throw err;
         })
