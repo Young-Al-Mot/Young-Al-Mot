@@ -90,6 +90,7 @@ const RoomContainer = () => {
   const [word, setword] = useState("");
   const [round, setround] = useState(0);
   const [startWord, setstartWord] = useState("");
+  const [timer, settimer] = useState(0);
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
@@ -152,9 +153,12 @@ const RoomContainer = () => {
     });
 
     socket.off("gameanswer");
-    socket.on("gameanswer", (word, order) => {
+    socket.on("gameanswer", (word, order,answer) => {
       setorder(order); //순서인사람 닉네임
       setword(word);
+      if(answer){
+        settimer(0);
+      }
       console.log("다음순서", order);
     });
 
@@ -252,6 +256,8 @@ const RoomContainer = () => {
           word={word}
           startWord={startWord}
           round={round}
+          timer={timer}
+          settimer={settimer}
         />
       );
     }

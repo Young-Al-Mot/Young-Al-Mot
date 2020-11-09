@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { getSocket } from "../socket/SocketFunc";
 
 const AllContent = styled.div`
@@ -30,7 +30,7 @@ const TopBotContent = styled.div`
   text-align: center;
 `;
 const MidContnet = styled.div`
-  height: 40%;
+  height: 20%;
   width: 85%;
   border: solid thin;
   font-size: 200%;
@@ -40,11 +40,29 @@ const BotContent = styled.div`
   border: solid thin;
 `;
 
+const ProgressBarWrapper = styled.div`
+  margin: 30px;
+  border: 2px solid lightblue;
+  height: 30vh;
+  width: 50vw;
+`;
+const fill = keyframes`
+  100% {width: 0%}
+  0% {width: 100%} 
+`;
+
+const ProgressBar = styled.div`
+  background: lightblue;
+  height: 100%;
+  animation: ${fill} 5s linear 20; //will animate 20 times
+  animation-play-state: ${props=>props.play};
+`;
+
 const socket = getSocket();
 
-const Endword = ({ message, word, startWord, round }) => {
-  const [timer, settimer] = useState(5);
+const Endword = ({ message, word, startWord, round,timer,settimer }) => {
 
+  
   useEffect(() => {
     socket.off("gametime");
     socket.on("gametime", (time) => {
@@ -53,6 +71,22 @@ const Endword = ({ message, word, startWord, round }) => {
     });
   });
 
+  const timerBar=()=>{
+
+    if(timer<=5&&timer>0){
+      console.log("time5");
+    return (<ProgressBarWrapper>
+      <ProgressBar />
+    </ProgressBarWrapper>)
+    }
+    else if(timer=="시간초과"){
+      console.log("time0");
+      return(<ProgressBarWrapper>
+        <ProgressBar play="Paused"/>
+      </ProgressBarWrapper>)
+    }
+  };
+
   return (
     <AllContent>
       <TopContent>
@@ -60,7 +94,9 @@ const Endword = ({ message, word, startWord, round }) => {
           {startWord}
           {/* 라운드에 해당하는 글짜를 크게표시하거나 색을 다르게 표시해야함 */}
         </TopTopContent>
-        <TopBotContent>{timer}</TopBotContent>
+        <TopBotContent>
+          {timerBar()}
+        </TopBotContent>
       </TopContent>
       <MidContnet>
         {word[word.length - 1]}
