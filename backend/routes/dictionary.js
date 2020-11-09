@@ -27,6 +27,9 @@ db.connect();
 
 var dictionary = function(roomno, word, order) {//방 번호, 단어, 차례
     //api 주소로 마지막 ko부분을 바꾸면 다른 언어로 호환 가능
+
+    
+
     let link = "https://api.dictionaryapi.dev/api/v2/entries/en/";
     let result = false; //정답여부
 
@@ -41,24 +44,45 @@ var dictionary = function(roomno, word, order) {//방 번호, 단어, 차례
     
     function f(){
         return new Promise(resolve => {
-            request(options,function(err,response,resultset){
-                //에러 발생시
-                if(err != null){
-
-                }
-
-                //meanings가 없으면 단어가 없는 것이므로 meanings를 찾는다
-                let wexist = resultset.indexOf('meanings');
-                if(wexist != -1) {
+            let sqlwordfind = `SELECT * FROM dict WHERE word=?`;//dict에 word가 있는지 우선 참조
+            
+            db.query(sqlwordfind, word, (errword,dict,fields) => {
+                if(errword) throw errword;
+        
+                if(dict[0]){//있을경우 바로 true를 리턴
+                    console.log("db reference")
                     console.log("word is exist");
                     result = true;
+                    resolve(result);
                 }
-                else {
-                    console.log("word is not exist");
-                    result = false;
+                else{//없을경우 인터넷 참조
+                    console.log("internet reference")
+                    request(options,function(err,response,resultset){
+                        //에러 발생시
+                        if(err != null){
+
+                        }
+
+                        //meanings가 없으면 단어가 없는 것이므로 meanings를 찾는다
+                        let wexist = resultset.indexOf('meanings');
+                        if(wexist != -1) {
+                            console.log("word is exist");
+                            result = true;
+                            //db에 없는 단어 추가
+                            let sqlwordinsert = 'INSERT INTO dict(word) VALUES(?)';
+                            db.query(sqlwordinsert,word,(errwin,wresult,fields) =>{
+                                if(errwin) throw errwin;
+                            })
+                        }
+                        else {//단어가없음
+                            console.log("word is not exist");
+                            result = false;
+                        }
+                        resolve(result);
+                    });
                 }
-                resolve(result);
-            });
+            })
+
         })
     }
 

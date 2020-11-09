@@ -59,7 +59,7 @@ create table roomuser(
 create table chatting(
    `room_no` int NOT NULL,
    `chat` varchar(50) NOT NULL,
-   primary key(`room_no`,`chat`)
+   primary key(`chat`)
 );
 
 #endword 테이블
@@ -88,3 +88,8 @@ insert into words(word) values ('korean');
 insert into words(word) values ('korea');
 insert into words(word) values ('program');
 insert into words(word) values ('function');
+
+create table dict(
+   `word` varchar(50),
+   primary key(`word`)
+);
