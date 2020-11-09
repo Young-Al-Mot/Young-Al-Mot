@@ -62,10 +62,13 @@ var startwordidx = 0; //시작단어 인덱스(라운드)
 var nowword = new Array(100); //현재단어
 console.log(startword);
 const timer=(roomno)=>{
-    var t = 0;
+    var t = -1;
     //경과시간 메시지 (나중에 emit는 지울거)
+    t++;
+    io.to(roomno).emit('gametime', 5-t);
+    console.log("timer",5-t);
     var ontime = setInterval(() => {
-        t++; 
+        t++;
         io.to(roomno).emit('gametime', 5-t);
         console.log("timer",5-t);
     }, 1000);
@@ -76,9 +79,7 @@ const timer=(roomno)=>{
         console.log('listsize: '+timelist[roomno].length);
         if(timelist[roomno][0] == ontime) { //시간발생 변수가 같으면 시간초과
             io.to(roomno).emit('gametime', "시간초과");
-            /*
-            io.to(msg.roomno).emit('timeout', {t: 1});
-            */
+
             clearInterval(ontime);
             timelist[roomno].shift();
         }
@@ -101,7 +102,14 @@ io.on('connection', (socket) => {
     
     socket.on('gamestart',(roomno,gametype)=>{//방번호, 무슨게임인지 받음
         //게임시작하면 roomlist에 안보이게
+        roomuserlist[roomno].splice(0, roomuserlist[roomno].length);
+        roomuseridx[roomno] = 0;
         let sql = `UPDATE roomlist SET state=1 WHERE room_no=?`;
+        db.query(sql, roomno, (err) => {
+            if(err) throw err;
+        })
+
+        sql = `DELETE FROM chatting WHERE room_no=?`;
         db.query(sql, roomno, (err) => {
             if(err) throw err;
         })
