@@ -77,6 +77,20 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
 
                     if(row3[0].nowplayer > 1){//사람 한명 나갔으니 nowplayer-1
                         //방이 시작중이고 본인 턴이라면 다음사람으로 턴 넘겨야함
+                        //나갔을때 혼자 있으면 게임 끝나야함
+                        yam.roomuserlist[roomno].splice(yam.roomuseridx[roomno], 1); //나간사람 삭제
+                        yam.roomuseridx[roomno] = yam.roomuseridx[roomno] % yam.roomuserlist[roomno].length; //다음사람으로 인덱스 조정
+                        
+                        //시간 다시
+                        if(yam.L[roomno].length != 0){
+                            clearInterval(yam.L[roomno][0]);
+                            yam.L[roomno].shift();
+                        }
+                        console.log(yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
+                        //gameanswer -> 현재 단어, 다음 사람
+                        yam.io.to(roomno).emit('gameanswer',yam.nowword[roomno], yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
+                        yam.T(roomno);
+
                         let sql4 = `UPDATE roomlist SET nowplayer=nowplayer-1 WHERE room_no=?`;
                         db.query(sql4, roomno, (err3, upd, field3) => {
                             if(err3) throw err3;
