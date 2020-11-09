@@ -78,6 +78,8 @@ const Endword = ({
   setorder,
   setisStart,
 }) => {
+  const [answerSuccess, setanswerSuccess] = useState(0);
+
   useEffect(() => {
     socket.on("gamestart", (order, startword, round) => {
       setorder(order); //순서인사람 닉네임
@@ -88,13 +90,22 @@ const Endword = ({
     });
 
     socket.off("gameanswer");
-    socket.on("gameanswer", (word, order, answer) => {
+    socket.on("gameanswer", (word, order, answer, failword) => {
       setorder(order); //순서인사람 닉네임
-      setword(word);
       if (answer) {
         //정답일경우
-        // setword(word);
+        setword(word);
         settimer(0);
+        setanswerSuccess(1);
+      } else {//틀리면 빨간글씨로 틀린거 보여줌
+        console.log(failword);
+        setword(failword);
+        setanswerSuccess(0);
+        setTimeout(()=>{//틀린거 보여주고 0.5초뒤에 원래대로 복구
+          setword(word[word.length-1]);
+          setanswerSuccess(1);
+        },500)
+
       }
       console.log("다음순서", order);
     });
@@ -122,7 +133,10 @@ const Endword = ({
 
   const wordColor = () => {
     if (word.length > 1) {
-      return <div style={{ color: "green" }}>{word}</div>;
+      if (answerSuccess) return <div style={{ color: "green" }}>{word}</div>;
+      else {
+        return <div style={{ color: "red" }}>{word}</div>;
+      }
     } else if (word.length == 1) {
       return <div>{word}</div>;
     }
