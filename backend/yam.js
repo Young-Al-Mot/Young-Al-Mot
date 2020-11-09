@@ -58,7 +58,7 @@ for(var i=0; i<timelist.length; i++) {
     roomuseridx[i] = 0;
 }
 var startword = new Array(100); //시작단어
-var startwordidx = 0; //시작단어 인덱스(라운드)
+var startwordidx = new Array(100); //시작단어 인덱스(라운드)
 var nowword = new Array(100); //현재단어
 console.log(startword);
 const timer=(roomno)=>{
@@ -75,10 +75,27 @@ const timer=(roomno)=>{
     timelist[roomno].push(ontime);
 
     setTimeout(() => {
-        //시간초과 이벤트 발생
+        //시간초과 이벤트 발생, 발생 할때마다 chatting 테이블 초기화
+        let sql = `DELETE FROM chatting WHERE room_no=?`;
+        db.query(sql, roomno, (err) => {
+            if(err) throw err;
+        })
+
         console.log('listsize: '+timelist[roomno].length);
         if(timelist[roomno][0] == ontime) { //시간발생 변수가 같으면 시간초과
             io.to(roomno).emit('gametime', 0);
+            //startwordidx[roomno] == startword[roomno].length - 1이면 게임 끝, 아니면 다음 라운드
+            if(startwordidx[roomno] == startword[roomno].length - 1){
+                //게임 끝, 점수 줘야함
+                //io.io(roomno).emit('gameend');
+            }
+            else{
+                //라운드 끝, 차례는 그대로, 다음 인덱스
+                startwordidx[roomno]++;
+                nowword[roomno] = startword[roomno][startwordidx[roomno]];
+                //gamestart이벤트 -> 시작하는 사람 닉네임, 시작 단어, 라운드
+                io.to(roomno).emit('gamestart', roomuserlist[roomno][roomuseridx[roomno]], startword[roomno], startwordidx[roomno]);
+            }
 
             clearInterval(ontime);
             timelist[roomno].shift();
@@ -104,12 +121,8 @@ io.on('connection', (socket) => {
         //게임시작하면 roomlist에 안보이게
         roomuserlist[roomno].splice(0, roomuserlist[roomno].length);
         roomuseridx[roomno] = 0;
+        startwordidx[roomno] = 0;
         let sql = `UPDATE roomlist SET state=1 WHERE room_no=?`;
-        db.query(sql, roomno, (err) => {
-            if(err) throw err;
-        })
-
-        sql = `DELETE FROM chatting WHERE room_no=?`;
         db.query(sql, roomno, (err) => {
             if(err) throw err;
         })
@@ -143,14 +156,15 @@ io.on('connection', (socket) => {
             db.query(sql2, roomno, (err, row, f) => {
                 if(err) throw err;
                 
+                //시작단어 랜덤, 현재 10개
                 var num = Math.floor(Math.random()*10) + 1;
                 let sql3 = `SELECT * FROM words WHERE no=?`;
                 db.query(sql3, num, (err2, row2, f2) => {
                     if(err2) throw err2;
                     startword[roomno] = row2[0].word;
-                    nowword[roomno] = row2[0].word[0];
+                    nowword[roomno] = row2[0].word[startwordidx[roomno]];
                     //시작하는사람닉네임, 시작단어(전체라운드 단어), 시작단어 인덱스(라운드)
-                    io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, startwordidx);
+                    io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, startwordidx[roomno]);
                     yam.T(roomno);
                 })
             })
@@ -175,14 +189,14 @@ io.on('connection', (socket) => {
                     dictionary.dictionary(roomno, message, order);
                 }
                 else{
-                    //끝말 불일치, 실패
-                    yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0,message);
+                    //끝말 불일치, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
+                    yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0, message);
                     yam.io.to(roomno).emit('msg',{name:'System',message: '끝말 불일치'});
                 }
             }
             else{
-                //중복, 실패
-                yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0,message);
+                //중복, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
+                yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0, message);
                 yam.io.to(roomno).emit('msg',{name:'System',message: '중복단어'});
             }
         })
@@ -219,11 +233,6 @@ io.on('connection', (socket) => {
         // 모든 클라이언트에게 전송
         if(chk) io.to(msg.roomno).emit('msg', msg);
         //일단 msg이벤트에 작성했는데 다른 이벤트로 옮길 예정
-        //정답 시 돌아가는 시간 중단
-        if(timelist[msg.roomno].length != 0){
-            clearInterval(timelist[msg.roomno][0]);
-            timelist[msg.roomno].shift();
-        }
     });
 });
 
