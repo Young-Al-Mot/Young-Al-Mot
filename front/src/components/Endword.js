@@ -18,14 +18,16 @@ const TopContent = styled.div`
   align-items: center;
   margin-top: 10px;
   height: 10%;
+  font-size: 45px;
+  font-family: sans-serif;
 `;
 const TopTopContent = styled.div`
-  border: solid thin;
+  margin-top: 20px;
+  padding-top: 20px;
 `;
 const TopBotContent = styled.div`
   height: 25px;
   font-size: 100%;
-  border: solid thin;
   margin-top: 10px;
   text-align: center;
 `;
@@ -34,6 +36,7 @@ const MidContnet = styled.div`
   width: 85%;
   border: solid thin;
   font-size: 200%;
+  text-align: center;
 `;
 const BotContent = styled.div`
   margin-bottom: 10px;
@@ -43,19 +46,21 @@ const BotContent = styled.div`
 const ProgressBarWrapper = styled.div`
   margin: 30px;
   border: 2px solid lightblue;
-  height: 30vh;
-  width: 50vw;
+  height: 5vh;
+  width: 60vw;
 `;
 const fill = keyframes`
-  100% {width: 0%}
-  0% {width: 100%} 
+  0% {width: 0%}
+  100% {width: 100%} 
 `;
 
 const ProgressBar = styled.div`
   background: lightblue;
   height: 100%;
-  animation: ${fill} 5s linear 20; //will animate 20 times
-  animation-play-state: ${(props) => props.play};
+  animation: ${fill} 5s linear;
+  animation-duration: 1;
+  animation-direction: reverse;
+  animation-fill-mode: forwards;
 `;
 
 const socket = getSocket();
@@ -96,7 +101,7 @@ const Endword = ({
     socket.off("gametime");
     socket.on("gametime", (time) => {
       settimer(time);
-      setword(word[word.length-1]);
+      setword(word[word.length - 1]);
       console.log("timer", time);
     });
   });
@@ -109,19 +114,15 @@ const Endword = ({
           <ProgressBar />
         </ProgressBarWrapper>
       );
-    } else if (timer == "시간초과") {
+    } else if (timer == 0) {
       console.log("time0");
-      return (
-        <ProgressBarWrapper>
-          <ProgressBar play="Paused" />
-        </ProgressBarWrapper>
-      );
+      return <ProgressBarWrapper></ProgressBarWrapper>;
     }
   };
 
   const wordColor = () => {
     if (word.length > 1) {
-      return <div style={{color:"green"}}>{word}</div>;
+      return <div style={{ color: "green" }}>{word}</div>;
     } else if (word.length == 1) {
       return <div>{word}</div>;
     }
