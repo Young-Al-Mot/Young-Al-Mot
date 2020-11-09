@@ -142,26 +142,8 @@ const RoomContainer = () => {
     }
   };
 
-  //gamestart소켓
+  
   useEffect(() => {
-    socket.on("gamestart", (order, startword, round) => {
-      setorder(order); //순서인사람 닉네임
-      setisStart(1);
-      setstartWord(startword);
-      setword(startword[round]);
-      setround(round);
-    });
-
-    socket.off("gameanswer");
-    socket.on("gameanswer", (word, order,answer) => {
-      setorder(order); //순서인사람 닉네임
-      setword(word);
-      if(answer){
-        settimer(0);
-      }
-      console.log("다음순서", order);
-    });
-
     //새로고침하면 방 나가게 됨
     //새로고침으로 리듀서 초기화되면 roomid 0되니까 그거이용
     if (room.roomid == 0) {
@@ -258,6 +240,11 @@ const RoomContainer = () => {
           round={round}
           timer={timer}
           settimer={settimer}
+          setround={setround}
+          setstartWord={setstartWord}
+          setword={setword}
+          setorder={setorder}
+          setisStart={setisStart}
         />
       );
     }

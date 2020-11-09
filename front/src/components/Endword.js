@@ -55,15 +55,43 @@ const ProgressBar = styled.div`
   background: lightblue;
   height: 100%;
   animation: ${fill} 5s linear 20; //will animate 20 times
-  animation-play-state: ${props=>props.play};
+  animation-play-state: ${(props) => props.play};
 `;
 
 const socket = getSocket();
 
-const Endword = ({ message, word, startWord, round,timer,settimer }) => {
-
-  
+const Endword = ({
+  message,
+  word,
+  startWord,
+  round,
+  timer,
+  settimer,
+  setround,
+  setstartWord,
+  setword,
+  setorder,
+  setisStart,
+}) => {
   useEffect(() => {
+    socket.on("gamestart", (order, startword, round) => {
+      setorder(order); //순서인사람 닉네임
+      setisStart(1);
+      setstartWord(startword);
+      setword(startword[round]);
+      setround(round);
+    });
+
+    socket.off("gameanswer");
+    socket.on("gameanswer", (word, order, answer) => {
+      setorder(order); //순서인사람 닉네임
+      setword(word);
+      if (answer) {
+        //정답일경우
+        settimer(0);
+      }
+      console.log("다음순서", order);
+    });
     socket.off("gametime");
     socket.on("gametime", (time) => {
       settimer(time);
@@ -71,19 +99,21 @@ const Endword = ({ message, word, startWord, round,timer,settimer }) => {
     });
   });
 
-  const timerBar=()=>{
-
-    if(timer<=5&&timer>0){
+  const timerBar = () => {
+    if (timer <= 5 && timer > 0) {
       console.log("time5");
-    return (<ProgressBarWrapper>
-      <ProgressBar />
-    </ProgressBarWrapper>)
-    }
-    else if(timer=="시간초과"){
+      return (
+        <ProgressBarWrapper>
+          <ProgressBar />
+        </ProgressBarWrapper>
+      );
+    } else if (timer == "시간초과") {
       console.log("time0");
-      return(<ProgressBarWrapper>
-        <ProgressBar play="Paused"/>
-      </ProgressBarWrapper>)
+      return (
+        <ProgressBarWrapper>
+          <ProgressBar play="Paused" />
+        </ProgressBarWrapper>
+      );
     }
   };
 
@@ -94,9 +124,7 @@ const Endword = ({ message, word, startWord, round,timer,settimer }) => {
           {startWord}
           {/* 라운드에 해당하는 글짜를 크게표시하거나 색을 다르게 표시해야함 */}
         </TopTopContent>
-        <TopBotContent>
-          {timerBar()}
-        </TopBotContent>
+        <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
       <MidContnet>
         {word[word.length - 1]}
