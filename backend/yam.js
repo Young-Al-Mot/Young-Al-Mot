@@ -78,7 +78,7 @@ const timer=(roomno)=>{
         //시간초과 이벤트 발생
         console.log('listsize: '+timelist[roomno].length);
         if(timelist[roomno][0] == ontime) { //시간발생 변수가 같으면 시간초과
-            io.to(roomno).emit('gametime', "시간초과");
+            io.to(roomno).emit('gametime', 0);
 
             clearInterval(ontime);
             timelist[roomno].shift();
