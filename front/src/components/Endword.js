@@ -88,6 +88,7 @@ const Endword = ({
       setword(word);
       if (answer) {
         //정답일경우
+        // setword(word);
         settimer(0);
       }
       console.log("다음순서", order);
@@ -95,6 +96,7 @@ const Endword = ({
     socket.off("gametime");
     socket.on("gametime", (time) => {
       settimer(time);
+      setword(word[word.length-1]);
       console.log("timer", time);
     });
   });
@@ -117,6 +119,14 @@ const Endword = ({
     }
   };
 
+  const wordColor = () => {
+    if (word.length > 1) {
+      return <div style={{color:"green"}}>{word}</div>;
+    } else if (word.length == 1) {
+      return <div>{word}</div>;
+    }
+  };
+
   return (
     <AllContent>
       <TopContent>
@@ -127,7 +137,7 @@ const Endword = ({
         <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
       <MidContnet>
-        {word[word.length - 1]}
+        {wordColor()}
         {/* 이전단어의 마지막 글자 보여줌 / 정답을 엔터or전송 하면 서버에서 확인후
         초록글씨or빨간글씨 로 입력한 단어 표시 */}
       </MidContnet>
