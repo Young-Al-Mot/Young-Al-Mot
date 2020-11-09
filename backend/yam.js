@@ -176,13 +176,13 @@ io.on('connection', (socket) => {
                 }
                 else{
                     //끝말 불일치, 실패
-                    yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0);
+                    yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0,message);
                     yam.io.to(roomno).emit('msg',{name:'System',message: '끝말 불일치'});
                 }
             }
             else{
                 //중복, 실패
-                yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0);
+                yam.io.to(roomno).emit('gameanswer', nowword[roomno], order, 0,message);
                 yam.io.to(roomno).emit('msg',{name:'System',message: '중복단어'});
             }
         })

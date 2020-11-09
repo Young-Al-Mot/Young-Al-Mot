@@ -96,7 +96,7 @@ var dictionary = function(roomno, word, order) {//방 번호, 단어, 차례
             }, 2010);
         }
         else{
-            yam.io.to(roomno).emit('gameanswer',yam.nowword[roomno], order, 0);
+            yam.io.to(roomno).emit('gameanswer',yam.nowword[roomno], order, 0,word);
             yam.io.to(roomno).emit('msg',{name:'System',message: '없음'});
         }
     });
