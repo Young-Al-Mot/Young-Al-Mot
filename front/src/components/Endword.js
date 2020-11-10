@@ -79,14 +79,26 @@ const Endword = ({
   setisStart,
 }) => {
   const [answerSuccess, setanswerSuccess] = useState(0);
+  const [waitTime, setwaitTime] = useState(-1);
 
   useEffect(() => {
-    socket.on("gamestart", (order, startword, round) => {
+    socket.on("gamestart", (order, startword, gameround) => {
       setorder(order); //순서인사람 닉네임
       setisStart(1);
       setstartWord(startword);
-      setword(startword[round]);
-      setround(round);
+      setword(startword[gameround]);
+      setround(gameround);
+      //게임 시작하기 전에 3 2 1 게임시작 표시해줌 
+      //(서버에서도 gamestart이벤트 보내고 4초뒤 게임 시작함)
+      let i = 3;
+      setwaitTime(i);
+      const tmp = setInterval(() => {
+        i -= 1;
+        setwaitTime(i);
+      }, 1000);
+      setTimeout(() => {
+        clearInterval(tmp);
+      }, 4000);
     });
 
     socket.off("gameanswer");
@@ -97,15 +109,16 @@ const Endword = ({
         setword(word);
         settimer(0);
         setanswerSuccess(1);
-      } else {//틀리면 빨간글씨로 틀린거 보여줌
+      } else {
+        //틀리면 빨간글씨로 틀린거 보여줌
         console.log(failword);
         setword(failword);
         setanswerSuccess(0);
-        setTimeout(()=>{//틀린거 보여주고 0.5초뒤에 원래대로 복구
-          setword(word[word.length-1]);
+        setTimeout(() => {
+          //틀린거 보여주고 0.5초뒤에 원래대로 복구
+          setword(word[word.length - 1]);
           setanswerSuccess(1);
-        },500)
-
+        }, 500);
       }
       console.log("다음순서", order);
     });
@@ -127,7 +140,12 @@ const Endword = ({
       );
     } else if (timer == 0) {
       console.log("time0");
-      return <ProgressBarWrapper></ProgressBarWrapper>;
+      return (
+        <ProgressBarWrapper>
+          {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}
+          {waitTime != 0 ? (waitTime == -1 ? true : waitTime) : "게임시작"}
+        </ProgressBarWrapper>
+      );
     }
   };
 
