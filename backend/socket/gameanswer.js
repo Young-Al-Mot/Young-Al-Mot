@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 db.connect();
 
 var yam = require('../yam');
-var dictionary = require('../routes/dictionary');
+var dictionary = require('./dictionary');
 
 var gameanswer = function (roomno, message, order) {
     let sql = `SELECT * FROM chatting WHERE room_no=? and chat=?`;

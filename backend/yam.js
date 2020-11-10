@@ -13,13 +13,14 @@ var roomlist = require('./routes/roomlist');
 var roominchk = require('./routes/roominchk');
 var roomout = require('./routes/roomout');
 var ready = require('./routes/ready');
-var dictionary = require('./routes/dictionary');
+
 
 var roommessage = require('./socket/message');
 var timer = require('./socket/gametimer');
 var roomjoin = require('./socket/roomjoin');
 var endwordstart = require('./socket/endwordstart');
 var gameanswer = require('./socket/gameanswer');
+var dictionary = require('./socket/dictionary');
 
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR, SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require('constants');
