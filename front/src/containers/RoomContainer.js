@@ -134,16 +134,15 @@ const RoomContainer = () => {
       });
       setMessage("");
 
-      if (order == user.currentNickname) {
-
-        socket.emit("gameanswer", room.roomid, message, order);
+      //타이머 존재할때방 정답 전송됨
+      if (timer > 0) {
+        if (order == user.currentNickname) {
+          socket.emit("gameanswer", room.roomid, message, order);
+        }
       }
     }
-
-
   };
 
-  
   useEffect(() => {
     //새로고침하면 방 나가게 됨
     //새로고침으로 리듀서 초기화되면 roomid 0되니까 그거이용
