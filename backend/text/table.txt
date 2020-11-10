@@ -50,7 +50,7 @@ create table roomuser(
    `room_no` int NOT NULL,
    `master` int,
    `ready` int,
-   `turn` int,
+   `score` int,
    `intime` datetime,
    primary key(`user_no`)
 );

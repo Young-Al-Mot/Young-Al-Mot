@@ -40,11 +40,7 @@ var endwordstart = function (roomno) {
                 yam.roomuserlist[roomno].push(row[i].user_name);
                 console.log(yam.roomuserlist[roomno][i]);
             }
-            //처음엔 방장을 첫번째 턴을 할당
-            let sql3 = `UPDATE roomuser SET turn=1 WHERE master=1`;
-            db.query(sql3, [], (err2) => {
-                if (err2) throw err2;
-            })
+
             //io.to.emit
             yam.io.to(roomno).emit('join', row);
         })
