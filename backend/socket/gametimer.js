@@ -38,8 +38,13 @@ const timer = (roomno) => {
             yam.io.to(roomno).emit('gametime', 0);
             //yam.startwordidx[roomno] == yam.startword[roomno].length - 1이면 게임 끝, 아니면 다음 라운드
             if (yam.startwordidx[roomno] == yam.startword[roomno].length - 1) {
-                //게임 끝, 점수 줘야함
-                //io.io(roomno).emit('gameend');
+                //게임 끝, roomuser 정보를 점수 순으로 gameend 이벤트 보냄
+                let sql2 = `SELECT * FROM roomuser WHERE room_no=? ORDER BY score DESC`;
+                db.query(sql2, roomno, (err2, row, f) => {
+                    if (err2) throw err2;
+
+                    yam.io.to(roomno).emit('gameend', row);
+                })
             }
             else {
                 //라운드 끝, 차례는 그대로, 다음 인덱스

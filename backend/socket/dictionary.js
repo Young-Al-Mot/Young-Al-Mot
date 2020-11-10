@@ -17,6 +17,7 @@ const { resolve } = require('path');
 const { compileFunction } = require('vm');
 
 const mysql = require('mysql');
+const { SSL_OP_EPHEMERAL_RSA } = require('constants');
 const _secret = fs.readFileSync('./secret.txt', 'utf8').split(" ");
 const db = mysql.createConnection({
     host: 'localhost',
@@ -81,18 +82,30 @@ var dictionary = function (roomno, word, order) {//방 번호, 단어, 차례
                     });
                 }
             })
-
         })
     }
 
     f().then(function (result) {
         console.log(result);
-        if (result) {
+        if (result) { //사전에 있는 단어, 성공
             //중복단어 테이블에 insert
             let sql = `INSERT INTO chatting VALUES(?,?)`;
             let li = [roomno, word];
             db.query(sql, li, (err) => {
                 if (err) throw err;
+            })
+
+            sql = `UPDATE roomuser SET score=score+? WHERE user_name=?`;
+            li = [word.length * 5, order];
+            db.query(sql, li, (err) => {
+                if (err) throw err;
+            })
+
+            sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
+            db.query(sql, roomno, (err, row, f) => {
+                if (err) throw err;
+
+                yam.io.to(roomno).emit('join', row);
             })
 
             //현재단어 바꾸기, 다음사람 턴 넘기기
@@ -109,7 +122,7 @@ var dictionary = function (roomno, word, order) {//방 번호, 단어, 차례
                 clearInterval(yam.L[roomno][0]);
                 yam.L[roomno].shift();
             }
-            //맞춘 단어, 다음순서
+            //맞춘 단어, 다음순서, 1(성공)
             yam.io.to(roomno).emit('gameanswer', word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
             yam.io.to(roomno).emit('msg', { name: 'System', message: '있음' });
 
@@ -118,7 +131,7 @@ var dictionary = function (roomno, word, order) {//방 번호, 단어, 차례
                 timer.T(roomno);
             }, 2010);
         }
-        else {
+        else { //사전에 없는 단어, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
             yam.io.to(roomno).emit('gameanswer', yam.nowword[roomno], order, 0, word);
             yam.io.to(roomno).emit('msg', { name: 'System', message: '없음' });
         }
