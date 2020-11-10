@@ -50,10 +50,12 @@ const db = mysql.createConnection({
 db.connect();
 
 var timelist = new Array(100); //시간발생 저장
+var waitlist = new Array(100); //대기시간 저장
 var roomuserlist = new Array(100); //방에 있는 유저닉네임
 var roomuseridx = new Array(100); //방에 있는 유저닉네임 인덱스
 for (var i = 0; i < timelist.length; i++) {
     timelist[i] = new Array();
+    waitlist[i] = new Array();
     roomuserlist[i] = new Array();
     roomuseridx[i] = 0;
 }
@@ -63,6 +65,7 @@ var nowword = new Array(100); //현재단어
 console.log(startword);
 
 exports.L = timelist;
+exports.W = waitlist;
 exports.startword = startword;
 exports.startwordidx = startwordidx;
 exports.nowword = nowword;

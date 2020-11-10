@@ -95,10 +95,10 @@ const Endword = ({
       const tmp = setInterval(() => {
         i -= 1;
         setwaitTime(i);
+        if (i == -1) {
+          clearInterval(tmp);
+        }
       }, 1000);
-      setTimeout(() => {
-        clearInterval(tmp);
-      }, 4000);
     });
 
     socket.off("gameanswer");
@@ -114,10 +114,11 @@ const Endword = ({
         console.log(failword);
         setword(failword);
         setanswerSuccess(0);
-        setTimeout(() => {
+        var wrongword = setInterval(() => {
           //틀린거 보여주고 0.5초뒤에 원래대로 복구
           setword(word[word.length - 1]);
           setanswerSuccess(1);
+          clearInterval(wrongword);
         }, 500);
       }
       console.log("다음순서", order);
