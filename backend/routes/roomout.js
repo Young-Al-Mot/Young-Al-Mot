@@ -88,6 +88,10 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                                 clearInterval(yam.L[roomno][0]);
                                 yam.L[roomno].shift();
                             }
+                            if(yam.W[roomno].length != 0){
+                                clearInterval(yam.W[roomno][0]);
+                                yam.W[roomno].shift();
+                            }
                             console.log(yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
                             //gameanswer -> 현재 단어, 다음 사람
                             yam.io.to(roomno).emit('gameanswer',yam.nowword[roomno], yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
@@ -136,6 +140,10 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                         if(yam.L[roomno].length != 0){
                             clearInterval(yam.L[roomno][0]);
                             yam.L[roomno].shift();
+                        }
+                        if(yam.W[roomno].length != 0){
+                            clearInterval(yam.W[roomno][0]);
+                            yam.W[roomno].shift();
                         }
                     }
                 })

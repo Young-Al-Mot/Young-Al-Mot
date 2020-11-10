@@ -126,10 +126,17 @@ var dictionary = function (roomno, word, order) {//방 번호, 단어, 차례
             yam.io.to(roomno).emit('gameanswer', word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
             yam.io.to(roomno).emit('msg', { name: 'System', message: '있음' });
 
-            setTimeout(() => {
+            var nexttime = 0;
+            var nextwait = setInterval(() => {
+                nexttime++;
                 //2초 쉬고 다시 시간
-                timer.T(roomno);
-            }, 2010);
+                if(nexttime == 2){
+                    clearInterval(nextwait);
+                    yam.W[roomno].shift();
+                    timer.T(roomno);
+                }
+            }, 1000);
+            yam.W[roomno].push(nextwait);
         }
         else { //사전에 없는 단어, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
             yam.io.to(roomno).emit('gameanswer', yam.nowword[roomno], order, 0, word);

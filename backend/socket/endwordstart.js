@@ -59,9 +59,19 @@ var endwordstart = function (roomno) {
             yam.nowword[roomno] = row2[0].word[yam.startwordidx[roomno]];
             //시작하는사람닉네임, 시작단어(전체라운드 단어), 시작단어 인덱스(라운드)
             yam.io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, yam.startwordidx[roomno]);
-            setTimeout(() => { //4초 후에 다음 라운드
-                timer.T(roomno);    
-            }, 4000);            
+            
+            //4초 후에 라운드 시작
+            var nexttime = 0;
+            var nextwait = setInterval(() => {
+                nexttime++;
+                console.log(nexttime);
+                if(nexttime == 4){
+                    clearInterval(nextwait);
+                    yam.W[roomno].shift();
+                    timer.T(roomno);
+                }
+            }, 1000);
+            yam.W[roomno].push(nextwait);       
         })
     })
 }
