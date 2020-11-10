@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { getSocket } from "../socket/SocketFunc";
+import ScoreBoarder from "./ScoreBoarder";
 
 const AllContent = styled.div`
   display: flex;
@@ -71,24 +72,33 @@ const Endword = ({
   startWord,
   round,
   timer,
+  roomUser,
+  isStart,
   settimer,
   setround,
   setstartWord,
   setword,
   setorder,
   setisStart,
+  setgameStart,
+  setroomUser,
 }) => {
   const [answerSuccess, setanswerSuccess] = useState(0);
   const [waitTime, setwaitTime] = useState(-1);
 
   useEffect(() => {
+    //게임 시작할때 순서인사람 닉네임, 전체라운드 단어, 라운드
     socket.on("gamestart", (order, startword, gameround) => {
       setorder(order); //순서인사람 닉네임
-      setisStart(1);
+      setisStart(1); //게임중인거 나타냄
+      setgameStart(0); //방장 게임 시작버튼 비활성화
       setstartWord(startword);
+
+      //라운드 시작할때 전체 라운드 단어중 라운드에 해당하는 인덱스 단어 세팅
       setword(startword[gameround]);
       setround(gameround);
-      //게임 시작하기 전에 3 2 1 게임시작 표시해줌 
+
+      //게임 시작하기 전에 3 2 1 게임시작 표시해줌
       //(서버에서도 gamestart이벤트 보내고 4초뒤 게임 시작함)
       let i = 3;
       setwaitTime(i);
@@ -129,6 +139,29 @@ const Endword = ({
       setword(word[word.length - 1]);
       console.log("timer", time);
     });
+
+    socket.on("gameend", (val) => {
+      let tmp = [];
+      let tmp2 = [];
+      for (let i = 0; i < val.length; i++) {
+        let nowname = val[i].user_name;
+        tmp.push({
+          user: nowname,
+          score: val[i].score,
+          key: i,
+          ready: val[i].ready,
+          master: val[i].master,
+        });
+      }
+
+      setisStart(-1); //스코어 화면표시는 -1
+      setword("");
+      setstartWord("");
+      setorder("");
+      setround(0);
+
+      setroomUser(tmp);
+    });
   });
 
   const timerBar = () => {
@@ -151,6 +184,8 @@ const Endword = ({
   };
 
   const wordColor = () => {
+    if(word==undefined)
+      return;
     if (word.length > 1) {
       if (answerSuccess) return <div style={{ color: "green" }}>{word}</div>;
       else {
@@ -159,6 +194,18 @@ const Endword = ({
     } else if (word.length == 1) {
       return <div>{word}</div>;
     }
+  };
+
+  const showScoreBoarder = () => {
+    if (isStart == -1)
+      return (
+        <ScoreBoarder
+          setisStart={setisStart}
+          roomUser={roomUser}
+          setroomUser={setroomUser}
+        />
+      );
+    else return;
   };
 
   return (
@@ -176,6 +223,7 @@ const Endword = ({
         초록글씨or빨간글씨 로 입력한 단어 표시 */}
       </MidContnet>
       <BotContent>{message}</BotContent>
+      {showScoreBoarder()}
     </AllContent>
   );
 };
