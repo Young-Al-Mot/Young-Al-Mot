@@ -46,9 +46,8 @@ const timer = (roomno) => {
                 yam.startwordidx[roomno]++;
                 yam.nowword[roomno] = yam.startword[roomno][yam.startwordidx[roomno]];
                 //gamestart이벤트 -> 시작하는 사람 닉네임, 시작 단어, 라운드
-
                 yam.io.to(roomno).emit('gamestart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], yam.startword[roomno], yam.startwordidx[roomno]);
-                setTimeout(() => { //3초 후에 다음 라운드
+                setTimeout(() => { //4초 후에 다음 라운드
                     timer(roomno);
                 }, 4000);
             }

@@ -88,7 +88,7 @@ const RoomContainer = () => {
   //endword
   const [order, setorder] = useState("");
   const [word, setword] = useState("");
-  const [round, setround] = useState(0);
+  const [round, setround] = useState(-1);
   const [startWord, setstartWord] = useState("");
   const [timer, settimer] = useState(0);
 
@@ -133,13 +133,14 @@ const RoomContainer = () => {
         message: message,
       });
       setMessage("");
-    }
-    console.log("order", order);
 
-    if (order == user.currentNickname) {
-      console.log("send answer");
-      socket.emit("gameanswer", room.roomid, message, order);
+      if (order == user.currentNickname) {
+
+        socket.emit("gameanswer", room.roomid, message, order);
+      }
     }
+
+
   };
 
   
