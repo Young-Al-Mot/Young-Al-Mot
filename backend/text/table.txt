@@ -22,6 +22,7 @@ create table roomlist(
    `game_name` varchar(40) NOT NULL,
    `nowplayer` int NOT NULL,
    `maxplayer` int NOT NULL,
+   `round` int,
    `createtime` datetime,
    `state` int,
    primary key(`room_no`)
@@ -34,7 +35,7 @@ CREATE PROCEDURE roomlistinit(a int)
 BEGIN
    DELETE FROM roomlist;
 	WHILE a < 100 DO
-		INSERT INTO roomlist VALUES (a, 'default', NULL, 'default', 0, 0, now(), 1);
+		INSERT INTO roomlist VALUES (a, 'default', NULL, 'default', 0, 0, 0, now(), 1);
 		SET a = a + 1;
 	END WHILE;
 END$$
@@ -60,15 +61,6 @@ create table chatting(
    `room_no` int NOT NULL,
    `chat` varchar(50) NOT NULL,
    primary key(`chat`)
-);
-
-#endword 테이블
-create table endword(
-   `user_name` varchar(12) NOT NULL,
-   `room_no` int,
-   `score` int,
-   `intime` datetime,
-   primary key(`user_name`)
 );
 
 #단어 테이블(나중에 추가할 예정)
@@ -99,4 +91,16 @@ create table userword(
    `chat` varchar(50) NOT NULL,
    `room_no` int,
    primary key(`user_name`, `chat`)
+);
+
+------------------------------------------------------------------------------
+#drop table
+
+#endword 테이블
+create table endword(
+   `user_name` varchar(12) NOT NULL,
+   `room_no` int,
+   `score` int,
+   `intime` datetime,
+   primary key(`user_name`)
 );
