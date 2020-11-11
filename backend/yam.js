@@ -104,6 +104,11 @@ io.on('connection', (socket) => {
         console.log("gameanswer");
     })
 
+    socket.on('standanswer', (roomno, message, username) => {
+        standanswer.standanswer(roomno, message, username);
+        console.log("standanswer");
+    })
+
     socket.on('join', (data) => {
         roomjoin.roomjoin(socket, data);
     });
