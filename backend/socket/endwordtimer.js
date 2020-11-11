@@ -48,8 +48,13 @@ const timer = (roomno) => {
                     //라운드 끝, 차례는 그대로, 다음 인덱스
                     yam.round[roomno]++;
                     yam.nowword[roomno] = yam.startword[roomno][yam.round[roomno]];
-                    //gamestart이벤트 -> 시작하는 사람 닉네임, 시작 단어, 라운드
-                    yam.io.to(roomno).emit('gamestart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], yam.startword[roomno], yam.round[roomno]);
+                    let sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
+                    db.query(sql, roomno, (err, row, f) => {
+                        if(err) throw err;
+
+                        //gamestart이벤트 -> 시작하는 사람 닉네임, 시작 단어, 라운드, 유저정보
+                        yam.io.to(roomno).emit('gamestart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], yam.startword[roomno], yam.round[roomno], row);
+                    })
                     
                     var nexttime = 0;
                     var nextwait = setInterval(() => {
