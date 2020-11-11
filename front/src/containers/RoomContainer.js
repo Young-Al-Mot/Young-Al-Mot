@@ -92,6 +92,8 @@ const RoomContainer = () => {
   const [startWord, setstartWord] = useState("");
   const [timer, settimer] = useState(0);
 
+
+
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
@@ -252,7 +254,7 @@ const RoomContainer = () => {
           setroomUser={setroomUser}
         />
       );
-    }else if(room.gametype=='A Stand For'){
+    }else if(room.gametype=='A Stands For'){
       return(<AStandFor/>);
 
     }
