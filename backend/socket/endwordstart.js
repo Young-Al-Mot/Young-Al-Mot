@@ -57,8 +57,14 @@ var endwordstart = function (roomno) {
             if (err2) throw err2;
             yam.startword[roomno] = row2[0].word;
             yam.nowword[roomno] = row2[0].word[yam.round[roomno]];
-            //시작하는사람닉네임, 시작단어(전체라운드 단어), 시작단어 인덱스(라운드)
-            yam.io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, yam.round[roomno]);
+            
+            let sql4 = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
+            db.query(sql4, roomno, (err4, row4, f4) => {
+                if(err4) throw err4;
+
+                //시작하는사람닉네임, 시작단어(전체라운드 단어), 시작단어 인덱스(라운드), 유저정보
+                yam.io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, yam.round[roomno], row4);
+            })
             
             //4초 후에 라운드 시작
             var nexttime = 0;

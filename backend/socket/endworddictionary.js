@@ -122,8 +122,14 @@ var endworddictionary = function (roomno, word, order) {//방 번호, 단어, �
                 clearInterval(yam.L[roomno][0]);
                 yam.L[roomno].shift();
             }
-            //맞춘 단어, 다음순서, 1(성공)
-            yam.io.to(roomno).emit('gameanswer', word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
+            
+            sql = `SELETE * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
+            db.query(sql, roomno, (err, row, f) => {
+                if(err) throw err;
+
+                //맞춘 단어, 다음순서, 1(성공), 유저정보
+                yam.io.to(roomno).emit('gameanswer', word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1, row);
+            })
             yam.io.to(roomno).emit('msg', { name: 'System', message: '있음' });
 
             var nexttime = 0;
