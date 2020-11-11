@@ -18,11 +18,11 @@ const timer = (roomno) => {
     var t = -1;
     //경과시간 메시지 (나중에 emit는 지울거)
     t++;
-    yam.io.to(roomno).emit('gametime', 7 - t);
+    yam.io.to(roomno).emit('standtime', 7 - t);
     console.log("timer", 7 - t);
     var ontime = setInterval(() => {
         t++;
-        yam.io.to(roomno).emit('gametime', 7 - t);
+        yam.io.to(roomno).emit('standtime', 7 - t);
         console.log("timer", 7 - t);
 
         if (t == 7) {
@@ -32,7 +32,7 @@ const timer = (roomno) => {
                 if (err) throw err;
             })
 
-            yam.io.to(roomno).emit('gametime', 0);
+            yam.io.to(roomno).emit('standtime', 0);
             //yam.round[roomno] == yam.maxround[roomno]이면 게임 끝, 아니면 다음 라운드
             if (yam.round[roomno] == yam.maxround[roomno]) {
                 //게임 끝, roomuser 정보를 점수 순으로 gameend 이벤트 보냄
@@ -45,7 +45,7 @@ const timer = (roomno) => {
                 db.query(sql2, roomno, (err2, row, f) => {
                     if (err2) throw err2;
 
-                    yam.io.to(roomno).emit('gameend', row);
+                    yam.io.to(roomno).emit('standend', row);
                     let sql3 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
                     db.query(sql3, roomno, (err3) => {
                         if (err3) throw err3;

@@ -277,8 +277,11 @@ const RoomContainer = () => {
           timer={timer}
           startAlp={startAlp}
           nickname={user.currentNickname}
+          isStart={isStart}
           settimer={settimer}
           setstartAlp={setstartAlp}
+          setisStart={setisStart}
+          setgameStart={setgameStart}
         />
       );
     }
