@@ -17,7 +17,8 @@ var roommessage = require('./socket/message');
 var roomjoin = require('./socket/roomjoin');
 var endwordstart = require('./socket/endwordstart');
 var endwordanswer = require('./socket/endwordanswer');
-var astandsforstart = require('./socket/astandsforstart');
+var standstart = require('./socket/astandsforstart');
+var standanswer = require('./socket/astandsforanswer');
 
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR, SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require('constants');
@@ -92,7 +93,7 @@ io.on('connection', (socket) => {
             endwordstart.endwordstart(roomno);
         }
         else if (gametype == 'A Stands For') {
-            astandsforstart.astandsforstart(roomno);
+            standstart.standstart(roomno);
         }
         else{
 
