@@ -59,20 +59,6 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
                         if(err4) throw err4;
                     })
 
-                    if(rows[0].game_name == '십자말풀이'){
-
-                    }
-                    else if(rows[0].game_name == '끝말잇기'){
-                        let sql5 = `INSERT INTO endword VALUES (?,?,0,now())`;
-                        let list = [row[0].user_name, roomno];
-                        db.query(sql5, list, (err5, r, f) => {
-                            if(err5) throw err5;
-                        })
-                    }
-                    else{
-
-                    }
-
                     return res.json({ success: true, roominfo:rows[0] });
                 })
             }
