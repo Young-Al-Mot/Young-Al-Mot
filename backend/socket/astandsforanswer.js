@@ -28,13 +28,13 @@ var standanswer = function (roomno, message, username) {
             }
             else {
                 //끝말 불일치, 실패 -> 틀린 단어, 0(실패), 닉네임
-                yam.io.to(roomno).emit('standanswer', word, 0, username);
+                yam.io.to(roomno).emit('standanswer', message, 0, username);
                 yam.io.to(roomno).emit('msg', { name: 'System', message: '끝말 불일치' });
             }
         }
         else {
             //중복, 실패 -> 틀린 단어, 0(실패), 닉네임
-            yam.io.to(roomno).emit('standanswer', word, 0, username);
+            yam.io.to(roomno).emit('standanswer', message, 0, username);
             yam.io.to(roomno).emit('msg', { name: 'System', message: '중복단어' });
         }
     })

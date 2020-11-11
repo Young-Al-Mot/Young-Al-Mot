@@ -94,6 +94,7 @@ const RoomContainer = () => {
 
   //A Stands For
   const [startAlp, setstartAlp] = useState("");
+  const [answerList, setanswerList] = useState([]);
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
@@ -279,11 +280,13 @@ const RoomContainer = () => {
           nickname={user.currentNickname}
           roomUser={roomUser}
           isStart={isStart}
+          answerList={answerList}
           settimer={settimer}
           setstartAlp={setstartAlp}
           setisStart={setisStart}
           setgameStart={setgameStart}
           setroomUser={setroomUser}
+          setanswerList={setanswerList}
         />
       );
     }
