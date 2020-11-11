@@ -16,7 +16,7 @@ var timer = require('./astandsfortimer');
 
 var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-var astandsforstart = function (roomno) {
+var standstart = function (roomno) {
     //게임시작하면 roomlist에 안보이게
     let sql = `UPDATE roomlist SET state=1 WHERE room_no=?`;
     db.query(sql, roomno, (err) => {
@@ -59,4 +59,4 @@ var astandsforstart = function (roomno) {
     }, 1000);
     yam.W[roomno].push(nextwait);
 }
-exports.astandsforstart = astandsforstart;
+exports.standstart = standstart;
