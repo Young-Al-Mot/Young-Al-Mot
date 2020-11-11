@@ -12,19 +12,21 @@ const conf = JSON.parse(data);
 const mysql = require('mysql');
 
 const multer = require('multer');
-const upload = multer({dest: './upload'});
+const upload = multer({ dest: './upload' });
 
-const _secret = fs.readFileSync('./secret.txt','utf8').split(" ");
+const _secret = fs.readFileSync('./secret.txt', 'utf8').split(" ");
 
 const db = mysql.createConnection({
-    host:'localhost',
-    user:_secret[0],
-    password:_secret[1],
-    database:'yam'
+    host: 'localhost',
+    user: _secret[0],
+    password: _secret[1],
+    database: 'yam'
 });
 db.connect();
 
-exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
+var yam = require('../yam');
+
+exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) => {
     let sql = `SELECT * FROM roomlist WHERE nowplayer=0`;
     let roomname = req.body.title;
     let password = req.body.password;
@@ -32,32 +34,33 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
     let maxplayer = req.body.peoplemaxnum;
     let round = req.body.maxround;
     let userid = req.body.userid;
-    if(password == "") password=null;
-    
+    if (password == "") password = null;
+
     db.query(sql, [], (err, rows, fields) => {
-        if(err) throw err;
-        
-        if(rows[0]){
+        if (err) throw err;
+
+        if (rows[0]) {
             let sql2 = `UPDATE roomlist SET room_name=?, password=?, game_name=?, nowplayer=1, maxplayer=?, round=?, createtime=now(), state=0 WHERE room_no=?`;
             let list = [roomname, password, gamename, maxplayer, round, rows[0].room_no];
             db.query(sql2, list, (err2, rows2, fields2) => {
-                if(err2) throw err2;
-                
+                if (err2) throw err2;
+
                 let sql3 = `SELECT * FROM user WHERE user_id=?`;
                 db.query(sql3, userid, (err3, row, field) => {
-                    if(err3) throw err3;
+                    if (err3) throw err3;
 
                     let sql4 = `INSERT INTO roomuser VALUES (?,?,?,?,?,?,now())`;
                     db.query(sql4, [row[0].user_no, row[0].user_name, rows[0].room_no, 1, 0, 0], (err4, r, f) => {
-                        if(err4) throw err4;
+                        if (err4) throw err4;
                     })
                 })
 
+                yam.maxround[rows[0].room_no] = round;
                 return res.json({
                     success: true,
                     roomnum: rows[0].room_no
                 });
             })
-        } 
+        }
     })
 });
