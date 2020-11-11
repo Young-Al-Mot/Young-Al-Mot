@@ -99,36 +99,38 @@ var endworddictionary = function (roomno, word, order) {//방 번호, 단어, �
             li = [word.length * 5, order];
             db.query(sql, li, (err) => {
                 if (err) throw err;
-            })
-
-            sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
-            db.query(sql, roomno, (err, row, f) => {
-                if (err) throw err;
-
-                yam.io.to(roomno).emit('join', row);
-            })
-
-            //현재단어 바꾸기, 다음사람 턴 넘기기
-            console.log('현재단어: ' + yam.nowword[roomno]);
-            yam.nowword[roomno] = word;
-            let len = yam.roomuserlist[roomno].length;
-            yam.roomuseridx[roomno] = (yam.roomuseridx[roomno] + 1) % len;
-            console.log('다음단어: ' + word);
-            console.log('현재 턴: ' + order);
-            console.log('다음 턴: ' + yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
-
-            //정답 시 돌아가는 시간 중단
-            if (yam.L[roomno].length != 0) {
-                clearInterval(yam.L[roomno][0]);
-                yam.L[roomno].shift();
-            }
             
-            sql = `SELETE * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
-            db.query(sql, roomno, (err, row, f) => {
-                if(err) throw err;
 
-                //맞춘 단어, 다음순서, 1(성공), 유저정보
-                yam.io.to(roomno).emit('gameanswer', word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1, row);
+                sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
+                db.query(sql, roomno, (err, row, f) => {
+                    if (err) throw err;
+
+                    yam.io.to(roomno).emit('join', row);
+                })
+
+                //현재단어 바꾸기, 다음사람 턴 넘기기
+                console.log('현재단어: ' + yam.nowword[roomno]);
+                yam.nowword[roomno] = word;
+                let len = yam.roomuserlist[roomno].length;
+                yam.roomuseridx[roomno] = (yam.roomuseridx[roomno] + 1) % len;
+                console.log('다음단어: ' + word);
+                console.log('현재 턴: ' + order);
+                console.log('다음 턴: ' + yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
+
+                //정답 시 돌아가는 시간 중단
+                if (yam.L[roomno].length != 0) {
+                    clearInterval(yam.L[roomno][0]);
+                    yam.L[roomno].shift();
+                }
+                
+                sql = `SELECT * FROM roomuser  WHERE room_no=? ORDER BY intime ASC`;
+                db.query(sql, roomno, (err, row, f) => {
+                    if(err) throw err;
+
+                    //맞춘 단어, 다음순서, 1(성공), 유저정보
+                    yam.io.to(roomno).emit('gameanswer', word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
+                    yam.io.to(roomno).emit('join',row);
+                })
             })
             yam.io.to(roomno).emit('msg', { name: 'System', message: '있음' });
 

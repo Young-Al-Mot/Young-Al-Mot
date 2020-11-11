@@ -18,9 +18,9 @@ const RoomCreate = ({
       <br />
       게임:
       <select onChange={handleChangeGametype}>
-        <option value="십자말풀이">십자말풀이</option>
-        <option value="끝말잇기">끝말잇기</option>
         <option value="A stands for">A stands for</option>
+        <option value="끝말잇기">끝말잇기</option>
+        <option value="행맨">행맨</option>
       </select>
       <br />
       인원수:
