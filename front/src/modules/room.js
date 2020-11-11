@@ -42,7 +42,6 @@ export const roomCreateRequest = (
   peoplemaxnum,
   maxround
 ) => (dispatch) => {
-  console.log("b");
   //방 만들면 방번호 서버에서 리턴해줘야됨
   return axios({
     method: "POST",
@@ -56,7 +55,6 @@ export const roomCreateRequest = (
       maxround,
     },
   }).then((res) => {
-    console.log("c");
     socketConnect();
     return dispatch(
       roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround)

@@ -92,8 +92,6 @@ const RoomContainer = () => {
   const [startWord, setstartWord] = useState("");
   const [timer, settimer] = useState(0);
 
-
-
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
@@ -137,10 +135,24 @@ const RoomContainer = () => {
       });
       setMessage("");
 
-      //타이머 존재할때방 정답 전송됨
-      if (timer > 0) {
-        if (order == user.currentNickname) {
-          socket.emit("gameanswer", room.roomid, message, order);
+      //게임중일때
+      if (isStart == 1) {
+        if (room.gametype == "끝말잇기") {
+          //타이머 존재할때방 정답 전송됨
+          if (timer > 0) {
+            if (order == user.currentNickname) {
+              socket.emit("gameanswer", room.roomid, message, order);
+            }
+          }
+        } else if (room.gametype == "A Stands For") {
+          if (timer > 0) {
+            socket.emit(
+              "standanswer",
+              room.roomid,
+              message,
+              user.currentNickname
+            );
+          }
         }
       }
     }
@@ -179,7 +191,7 @@ const RoomContainer = () => {
     console.log("roomcontainer mount");
     //msg소켓 받는거
     socket.on("msg", (obj) => {
-      console.log("msg");
+      console.log("msg", obj);
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
@@ -200,7 +212,8 @@ const RoomContainer = () => {
     //join이벤트 받으면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
     //ready해도 여기서 처리함 (ready 0은 레디 안한거 1은 레디한거)
     socket.off("join"); //왜인지 모르겟지만 2번 실행되길레 한번 꺼줌(어디서 실행되는지 모르겟음)
-    socket.on("join", (val) => {//val에 roomuser정보 받아옴
+    socket.on("join", (val) => {
+      //val에 roomuser정보 받아옴
       console.log("join", val);
       let tmp = [];
       let readynum = 0;
@@ -254,9 +267,8 @@ const RoomContainer = () => {
           setroomUser={setroomUser}
         />
       );
-    }else if(room.gametype=='A Stands For'){
-      return(<AStandFor/>);
-
+    } else if (room.gametype == "A Stands For") {
+      return <AStandFor message={message} />;
     }
   };
 
