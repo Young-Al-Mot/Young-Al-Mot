@@ -91,7 +91,7 @@ io.on('connection', (socket) => {
         if (gametype == '끝말잇기') {
             endwordstart.endwordstart(roomno);
         }
-        else if (gametype == 'A stands for') {
+        else if (gametype == 'A Stands For') {
             astandsforstart.astandsforstart(roomno);
         }
         else{
@@ -102,6 +102,11 @@ io.on('connection', (socket) => {
     socket.on('gameanswer', (roomno, message, order) => {
         endwordanswer.endwordanswer(roomno, message, order);
         console.log("gameanswer");
+    })
+
+    socket.on('standanswer', (roomno, message, username) => {
+        standanswer.standanswer(roomno, message, username);
+        console.log("standanswer");
     })
 
     socket.on('join', (data) => {
