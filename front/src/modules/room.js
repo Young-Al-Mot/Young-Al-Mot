@@ -12,17 +12,19 @@ const initialState = {
     gametype: "",
     peoplemaxnum: -1,
     roomid: 0,
+    maxround: -1,
   },
 };
 
 //액션 생성함수
-export const roomin = (roomid, title, gametype, peoplemaxnum) => {
+export const roomin = (roomid, title, gametype, peoplemaxnum,maxround) => {
   return {
     type: ROOM_IN,
     roomid,
     title,
     gametype,
     peoplemaxnum,
+    maxround,
   };
 };
 
@@ -33,9 +35,13 @@ export const roomout = () => {
 };
 
 //thunk (middleware)
-export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
-  dispatch
-) => {
+export const roomCreateRequest = (
+  title,
+  password,
+  gametype,
+  peoplemaxnum,
+  maxround = 0
+) => (dispatch) => {
   //방 만들면 방번호 서버에서 리턴해줘야됨
   return axios({
     method: "POST",
@@ -46,10 +52,13 @@ export const roomCreateRequest = (title, password, gametype, peoplemaxnum) => (
       password,
       gametype,
       peoplemaxnum,
+      maxround,
     },
   }).then((res) => {
     socketConnect();
-    return dispatch(roomin(res.data.roomnum, title, gametype, peoplemaxnum));
+    return dispatch(
+      roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround)
+    );
   });
 };
 
@@ -112,6 +121,7 @@ const room = (state = initialState, action) => {
           gametype: action.gametype,
           peoplemaxnum: action.peoplemaxnum,
           roomid: action.roomid,
+          maxround:action.maxround,
         },
       };
     case ROOM_OUT:
@@ -122,6 +132,7 @@ const room = (state = initialState, action) => {
           gametype: "",
           peoplemaxnum: -1,
           roomid: 0,
+          maxround:-1,
         },
       };
     default:

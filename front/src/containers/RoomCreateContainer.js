@@ -11,7 +11,8 @@ const RoomCreateContainer = () => {
   // 방제목 비밀번호 게임 인원수
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
-  const [gametype, setGametype] = useState("A Stand For");
+  const [gametype, setGametype] = useState("A Stands For");
+  const [round, setround] = useState(1);
   const [peopleMaxNum, setPeopleMaxNum] = useState(2);
   const user = useSelector(state => state.auth.status)
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ const RoomCreateContainer = () => {
   const handleChangeGametype = (e) => {
     setGametype(e.target.value);
   };
+  const handelChangeRound=(e)=>{
+    setround(e.target.value);
+  }
   const handleChangePeopleMaxNum = (e) => {
     setPeopleMaxNum(e.target.value);
   };
@@ -36,7 +40,8 @@ const RoomCreateContainer = () => {
       title,
       password,
       gametype,
-      peopleMaxNum
+      peopleMaxNum,
+      round
     )).then((res) => {
         //방만들기 성공하면 방안으로 입장
         socketIn(res.roomid,user.currentNickname);
@@ -49,10 +54,12 @@ const RoomCreateContainer = () => {
       title={title}
       password={password}
       gametype={gametype}
+      round={round}
       peopleMaxNum={peopleMaxNum}
       handleChangeTitle={handleChangeTitle}
       handleChangePassword={handleChangePassword}
       handleChangeGametype={handleChangeGametype}
+      handelChangeRound={handelChangeRound}
       handleChangePeopleNum={handleChangePeopleMaxNum}
       handleCreateroom={handleCreateroom}
     ></RoomCreate>
