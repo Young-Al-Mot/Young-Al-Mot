@@ -89,7 +89,7 @@ var standdictionary = function (roomno, word, username) {//방 번호, 단어, �
         console.log(result);
         if (result) { //사전에 있는 단어, 성공
             //중복단어 테이블에 insert
-            let sql = `INSERT INTO roomuser VALUES(?,?,?)`;
+            let sql = `INSERT INTO userword VALUES(?,?,?)`;
             let li = [username, word, roomno];
             db.query(sql, li, (err) => {
                 if (err) throw err;
