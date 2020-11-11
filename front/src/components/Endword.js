@@ -179,8 +179,7 @@ const Endword = ({
   };
 
   const wordColor = () => {
-    if(word==undefined)
-      return;
+    if (word == undefined) return;
     if (word.length > 1) {
       if (answerSuccess) return <div style={{ color: "green" }}>{word}</div>;
       else {
