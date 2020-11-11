@@ -63,19 +63,6 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                         return res.status(400).json();
                     console.log(row2[0].master);
 
-                    if(row3[0].game_name == '십자말풀이'){
-
-                    }
-                    else if(row3[0].game_name == '끝말잇기'){
-                        let sql8 = `DELETE FROM endword WHERE user_name=?`;
-                        db.query(sql8, row[0].user_name, (err8, r, f) => {
-                            if(err8) throw err8;
-                        })
-                    }
-                    else{
-
-                    }
-
                     if(row3[0].nowplayer > 1){//사람 한명 나갔으니 nowplayer-1
                         if(row3[0].state == 1){
                             //방이 시작중이고 본인 턴이라면 다음사람으로 턴 넘겨야함
@@ -93,8 +80,8 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
                                 yam.W[roomno].shift();
                             }
                             console.log(yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
-                            //gameanswer -> 현재 단어, 다음 사람
-                            yam.io.to(roomno).emit('gameanswer',yam.nowword[roomno], yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
+                            //endwordanswer -> 현재 단어, 다음 사람
+                            yam.io.to(roomno).emit('endwordanswer',yam.nowword[roomno], yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
                             timer.T(roomno);
                         }
 

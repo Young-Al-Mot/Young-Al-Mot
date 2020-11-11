@@ -30,6 +30,7 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
     let password = req.body.password;
     let gamename = req.body.gametype;
     let maxplayer = req.body.peoplemaxnum;
+    let round = req.body.maxround;
     let userid = req.body.userid;
     if(password == "") password=null;
     
@@ -37,8 +38,8 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
         if(err) throw err;
         
         if(rows[0]){
-            let sql2 = `UPDATE roomlist SET room_name=?, password=?, game_name=?, nowplayer=1, maxplayer=?, createtime=now(), state=0 WHERE room_no=?`;
-            let list = [roomname, password, gamename, maxplayer, rows[0].room_no];
+            let sql2 = `UPDATE roomlist SET room_name=?, password=?, game_name=?, nowplayer=1, maxplayer=?, round=?, createtime=now(), state=0 WHERE room_no=?`;
+            let list = [roomname, password, gamename, maxplayer, round, rows[0].room_no];
             db.query(sql2, list, (err2, rows2, fields2) => {
                 if(err2) throw err2;
                 
@@ -50,20 +51,6 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) =>{
                     db.query(sql4, [row[0].user_no, row[0].user_name, rows[0].room_no, 1, 0, 0], (err4, r, f) => {
                         if(err4) throw err4;
                     })
-
-                    if(gamename == '십자말풀이'){
-                        
-                    }
-                    else if(gamename == '끝말잇기'){
-                        let sql5 = `INSERT INTO endword VALUES (?,?,0,now())`;
-                        let list = [row[0].user_name, rows[0].room_no];
-                        db.query(sql5, list, (err5, r, f) => {
-                            if(err5) throw err5;
-                        })
-                    }
-                    else{
-
-                    }
                 })
 
                 return res.json({
