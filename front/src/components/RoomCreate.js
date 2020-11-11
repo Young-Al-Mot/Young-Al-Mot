@@ -27,6 +27,18 @@ const RoomCreate = ({
           <br />
         </div>
       );
+    } else if (gametype == "끝말잇기") {
+      return (
+        <div>
+          {"라운드:"}
+          <select onChange={handelChangeRound}>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+          <br />
+        </div>
+      );
     } else {
       return;
     }
