@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -36,6 +36,7 @@ const RoomCreateContainer = () => {
   };
 
   const handleCreateroom = (e) => {
+    console.log("a");
     dispatch(roomCreateRequest(
       title,
       password,
@@ -48,6 +49,12 @@ const RoomCreateContainer = () => {
         history.push("/room");
     });
   };
+
+  useEffect(() => {
+    if(gametype=='끝말잇기'){
+      setround(5);
+    }
+  }, [gametype])
 
   return (
     <RoomCreate
