@@ -43,7 +43,6 @@ const BotContent = styled.div`
   margin-bottom: 10px;
   border: solid thin;
 `;
-
 const ProgressBarWrapper = styled.div`
   margin: 30px;
   border: 2px solid lightblue;
@@ -54,7 +53,6 @@ const fill = keyframes`
   0% {width: 0%}
   100% {width: 100%} 
 `;
-
 const ProgressBar = styled.div`
   background: lightblue;
   height: 100%;
@@ -137,7 +135,6 @@ const Endword = ({
     socket.on("gametime", (time) => {
       settimer(time);
       setword(word[word.length - 1]);
-      console.log("timer", time);
     });
 
     socket.on("gameend", (val) => {
@@ -166,14 +163,12 @@ const Endword = ({
 
   const timerBar = () => {
     if (timer <= 5 && timer > 0) {
-      console.log("time5");
       return (
         <ProgressBarWrapper>
           <ProgressBar />
         </ProgressBarWrapper>
       );
     } else if (timer == 0) {
-      console.log("time0");
       return (
         <ProgressBarWrapper>
           {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}

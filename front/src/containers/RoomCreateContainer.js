@@ -11,7 +11,7 @@ const RoomCreateContainer = () => {
   // 방제목 비밀번호 게임 인원수
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
-  const [gametype, setGametype] = useState("십자말풀이");
+  const [gametype, setGametype] = useState("A Stand For");
   const [peopleMaxNum, setPeopleMaxNum] = useState(2);
   const user = useSelector(state => state.auth.status)
   const dispatch = useDispatch();

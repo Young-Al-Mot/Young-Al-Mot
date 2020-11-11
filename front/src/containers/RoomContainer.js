@@ -13,6 +13,7 @@ import NowUser from "../components/NowUser";
 import { getSocket } from "../socket/SocketFunc";
 
 import Endword from "../components/Endword";
+import AStandFor from "../components/AStandFor";
 
 const AllContent = styled.div`
   height: 100vh;
@@ -197,7 +198,7 @@ const RoomContainer = () => {
     //join이벤트 받으면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
     //ready해도 여기서 처리함 (ready 0은 레디 안한거 1은 레디한거)
     socket.off("join"); //왜인지 모르겟지만 2번 실행되길레 한번 꺼줌(어디서 실행되는지 모르겟음)
-    socket.on("join", (val) => {
+    socket.on("join", (val) => {//val에 roomuser정보 받아옴
       console.log("join", val);
       let tmp = [];
       let readynum = 0;
@@ -211,7 +212,7 @@ const RoomContainer = () => {
         }
         tmp.push({
           user: nowname,
-          score: 0,
+          score: val[i].score,
           key: i,
           ready: val[i].ready,
           master: val[i].master,
@@ -251,6 +252,9 @@ const RoomContainer = () => {
           setroomUser={setroomUser}
         />
       );
+    }else if(room.gametype=='A Stand For'){
+      return(<AStandFor/>);
+
     }
   };
 
