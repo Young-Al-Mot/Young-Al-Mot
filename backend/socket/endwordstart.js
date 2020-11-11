@@ -12,13 +12,13 @@ const db = mysql.createConnection({
 db.connect();
 
 var yam = require('../yam');
-var timer = require('./gametimer');
+var timer = require('./endwordtimer');
 
 var endwordstart = function (roomno) {
     //게임시작하면 roomlist에 안보이게
     yam.roomuserlist[roomno].splice(0, yam.roomuserlist[roomno].length);
     yam.roomuseridx[roomno] = 0;
-    yam.startwordidx[roomno] = 0;
+    yam.round[roomno] = 0;
     let sql = `UPDATE roomlist SET state=1 WHERE room_no=?`;
     db.query(sql, roomno, (err) => {
         if (err) throw err;
@@ -56,9 +56,9 @@ var endwordstart = function (roomno) {
         db.query(sql3, num, (err2, row2, f2) => {
             if (err2) throw err2;
             yam.startword[roomno] = row2[0].word;
-            yam.nowword[roomno] = row2[0].word[yam.startwordidx[roomno]];
+            yam.nowword[roomno] = row2[0].word[yam.round[roomno]];
             //시작하는사람닉네임, 시작단어(전체라운드 단어), 시작단어 인덱스(라운드)
-            yam.io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, yam.startwordidx[roomno]);
+            yam.io.to(roomno).emit('gamestart', row[0].user_name, row2[0].word, yam.round[roomno]);
             
             //4초 후에 라운드 시작
             var nexttime = 0;

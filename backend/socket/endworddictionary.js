@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 var yam = require('../yam');
-var timer = require('../socket/gametimer');
+var timer = require('../socket/endwordtimer');
 const multer = require('multer');
 const upload = multer({ dest: './upload' });
 
@@ -27,7 +27,7 @@ const db = mysql.createConnection({
 });
 db.connect();
 
-var dictionary = function (roomno, word, order) {//방 번호, 단어, 차례
+var endworddictionary = function (roomno, word, order) {//방 번호, 단어, 차례
     //api 주소로 마지막 ko부분을 바꾸면 다른 언어로 호환 가능
 
     let link = "https://api.dictionaryapi.dev/api/v2/entries/en/";
@@ -144,4 +144,4 @@ var dictionary = function (roomno, word, order) {//방 번호, 단어, 차례
         }
     });
 }
-exports.dictionary = dictionary;
+exports.endworddictionary = endworddictionary;

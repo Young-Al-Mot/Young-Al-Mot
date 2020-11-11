@@ -12,9 +12,9 @@ const db = mysql.createConnection({
 db.connect();
 
 var yam = require('../yam');
-var dictionary = require('./dictionary');
+var endworddictionary = require('./endworddictionary');
 
-var gameanswer = function (roomno, message, order) {
+var endwordanswer = function (roomno, message, order) {
     let sql = `SELECT * FROM chatting WHERE room_no=? and chat=?`;
     let list = [roomno, message];
     db.query(sql, list, (err, row, f) => {
@@ -27,7 +27,7 @@ var gameanswer = function (roomno, message, order) {
             console.log(message[0]);
             if (yam.nowword[roomno][yam.nowword[roomno].length - 1] == message[0]) { //끝말 일치
                 //끝말 일치, 설공
-                dictionary.dictionary(roomno, message, order);
+                endworddictionary.endworddictionary(roomno, message, order);
             }
             else {
                 //끝말 불일치, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
@@ -42,4 +42,4 @@ var gameanswer = function (roomno, message, order) {
         }
     })
 }
-exports.gameanswer = gameanswer;
+exports.endwordanswer = endwordanswer;
