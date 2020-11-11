@@ -5,7 +5,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
 
-var yam = require('./yam');
 var create = require('./routes/user_create');
 var main = require('./routes/main');
 var roomnumber = require('./routes/roomnumber');
@@ -14,13 +13,11 @@ var roominchk = require('./routes/roominchk');
 var roomout = require('./routes/roomout');
 var ready = require('./routes/ready');
 
-
 var roommessage = require('./socket/message');
-var timer = require('./socket/gametimer');
 var roomjoin = require('./socket/roomjoin');
 var endwordstart = require('./socket/endwordstart');
-var gameanswer = require('./socket/gameanswer');
-var dictionary = require('./socket/dictionary');
+var endwordanswer = require('./socket/endwordanswer');
+//var astandsforstart = require('./socket/astandsforstart');
 
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR, SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require('constants');
@@ -60,14 +57,14 @@ for (var i = 0; i < timelist.length; i++) {
     roomuseridx[i] = 0;
 }
 var startword = new Array(100); //시작단어
-var startwordidx = new Array(100); //시작단어 인덱스(라운드)
+var round = new Array(100); //시작단어 인덱스(라운드)
 var nowword = new Array(100); //현재단어
 console.log(startword);
 
 exports.L = timelist;
 exports.W = waitlist;
 exports.startword = startword;
-exports.startwordidx = startwordidx;
+exports.round = round;
 exports.nowword = nowword;
 exports.roomuserlist = roomuserlist;
 exports.roomuseridx = roomuseridx;
@@ -92,13 +89,16 @@ io.on('connection', (socket) => {
         if (gametype == '끝말잇기') {
             endwordstart.endwordstart(roomno);
         }
-        else {
-    
+        else if (gametype == 'A stands for') {
+            //astandsforstart.astandsforstart(roomno);
+        }
+        else{
+
         }
     })//'gamestart' event end
 
     socket.on('gameanswer', (roomno, message, order) => {
-        gameanswer.gameanswer(roomno, message, order);
+        endwordanswer.endwordanswer(roomno, message, order);
         console.log("gameanswer");
     })
 

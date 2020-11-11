@@ -25,7 +25,7 @@ const db = mysql.createConnection({
 db.connect();
 
 const yam = require('../yam');
-var timer = require('../socket/gametimer');
+var timer = require('../socket/endwordtimer');
 
 exports.roomout = app.post('/roomout', upload.single(), (req, res) =>{
     let roomno;
