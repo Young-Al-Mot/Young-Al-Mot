@@ -37,7 +37,12 @@ const timer = (roomno) => {
                 //yam.round[roomno] == yam.startword[roomno].length - 1이면 게임 끝, 아니면 다음 라운드
                 if (yam.round[roomno] == yam.startword[roomno].length - 1) {
                     //게임 끝, roomuser 정보를 점수 순으로 gameend 이벤트 보냄
-                    let sql2 = `SELECT * FROM roomuser WHERE room_no=? ORDER BY score DESC`;
+                    let sql2 = `UPDATE roomlist SET state=0 WHERE room_no=?`;
+                    db.query(sql2, roomno, (err2) => {
+                        if(err2) throw err2;
+                    })
+                    
+                    sql2 = `SELECT * FROM roomuser WHERE room_no=? ORDER BY score DESC`;
                     db.query(sql2, roomno, (err2, row, f) => {
                         if (err2) throw err2;
 
