@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 import { getSocket } from "../socket/SocketFunc";
+import ScoreBoarder from "./ScoreBoarder";
 
 const gmaeroundtime = 7;
 
@@ -83,9 +84,11 @@ const AStandFor = ({
   startAlp,
   nickname,
   isStart,
+  roomUser,
   setstartAlp,
   setisStart,
   setgameStart,
+  setroomUser,
 }) => {
   const room = useSelector((state) => state.room.room);
   const [round, setround] = useState(1);
@@ -117,21 +120,58 @@ const AStandFor = ({
     socket.on("standtime", (time) => {
       settimer(time);
     });
+
+    socket.on("standend", (val) => {
+      console.log("gameend");
+      let tmp = [];
+      for (let i = 0; i < val.length; i++) {
+        let nowname = val[i].user_name;
+        tmp.push({
+          user: nowname,
+          score: val[i].score,
+          key: i,
+          ready: val[i].ready,
+          master: val[i].master,
+        });
+      }
+
+      setisStart(-1); //스코어 화면표시는 -1
+      setround(0);
+
+      setroomUser(tmp);
+    });
+
   });
 
   useEffect(() => {
     socket.on("standanswer", (word, answer, answeruser) => {
       if (nickname == answeruser) {
+ 
         //정답이면 화면의 정답리스트에 추가
         if (answer) {
+          console.log("정답",word);
           const tmp = answerList;
-          let tmp2 = { word: word, key: tmp.length };
+          let tmp2 = { answer: word, key: tmp.length };
           tmp.unshift(tmp2);
+          console.log("tmp",tmp);
           setanswerList(tmp);
         }
       }
     });
   }, [answerList]);
+
+  const showScoreBoarder = () => {
+    console.log("isstart",isStart)
+    if (isStart == -1)
+      return (
+        <ScoreBoarder
+          setisStart={setisStart}
+          roomUser={roomUser}
+          setroomUser={setroomUser}
+        />
+      );
+    else return;
+  };
 
   const showAnswerList = () => {
     answerList.map((val) => {
@@ -167,6 +207,7 @@ const AStandFor = ({
       </TopContent>
       <MidContnet>{showAnswerList()}</MidContnet>
       <BotContent>{message}</BotContent>
+      {showScoreBoarder()}
     </AllContent>
   );
 };
