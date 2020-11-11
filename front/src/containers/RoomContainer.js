@@ -78,12 +78,11 @@ const RoomContainer = () => {
   const [allmessage, setAllmessage] = useState("");
   const [isReady, setisReady] = useState(false);
   const [roomUser, setroomUser] = useState([
-    { user: user.currentNickname, score: "", key: 0, ready: 0, master: 1 },
+    { user: user.currentNickname, score: 0, key: 0, ready: 0, master: 1 },
   ]);
   const [isMaster, setisMaster] = useState(0);
   const [gameStart, setgameStart] = useState(0); //이게 1일때 방장이 시작누르면 게임시작할수있음
-  const [playerScore, setplayerScore] = useState({}); //"유저이름":점수 이런식으로 관리
-  const [isStart, setisStart] = useState(0); //게임중인지 아닌지 나타냄
+  const [isStart, setisStart] = useState(0); //게임중인지 아닌지 나타냄(0은 대기방, 1은 게임중, -1은 점수창)
 
   //endword
   const [order, setorder] = useState("");
@@ -125,6 +124,7 @@ const RoomContainer = () => {
   };
 
   //msg소켓 보내는거
+  //gameanswer소켓 보내는건
   const send = (e) => {
     if (message != "") {
       socket.emit("msg", {
@@ -211,7 +211,7 @@ const RoomContainer = () => {
         }
         tmp.push({
           user: nowname,
-          score: playerScore[nowname],
+          score: 0,
           key: i,
           ready: val[i].ready,
           master: val[i].master,
@@ -239,12 +239,16 @@ const RoomContainer = () => {
           startWord={startWord}
           round={round}
           timer={timer}
+          roomUser={roomUser}
+          isStart={isStart}
           settimer={settimer}
           setround={setround}
           setstartWord={setstartWord}
           setword={setword}
           setorder={setorder}
           setisStart={setisStart}
+          setgameStart={setgameStart}
+          setroomUser={setroomUser}
         />
       );
     }
