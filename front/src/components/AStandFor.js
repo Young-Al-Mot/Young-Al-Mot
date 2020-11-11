@@ -38,9 +38,9 @@ const MidContnet = styled.div`
   text-align: center;
 `;
 const BotContent = styled.div`
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 5%;
   width: 85%;
   margin-bottom: 10px;
@@ -49,27 +49,36 @@ const BotContent = styled.div`
 
 const socket = getSocket();
 
-const AStandFor = ({message}) => {
+const AStandFor = ({
+  message,
+  timer,
+  settimer,
+  startAlp,
+  setstartAlp,
+  nickname,
+}) => {
   const room = useSelector((state) => state.room.room);
-  const [startAlp, setstartAlp] = useState("");
   const [round, setround] = useState(1);
   const [answerList, setanswerList] = useState([]);
 
   useEffect(() => {
-    socket.on("gamestart", (gamealp, gameround) => {
+    socket.on("standstart", (gamealp, gameround) => {
+      console.log("startalp", gamealp);
       setstartAlp(gamealp);
       setround(gameround);
     });
   });
 
   useEffect(() => {
-    socket.on("standanswer", (word, answer) => {
-      //정답이면 화면의 정답리스트에 추가
-      if (answer) {
-        const tmp = answerList;
-        let tmp2 = { word: word, key: tmp.length };
-        tmp.unshift(tmp2);
-        setanswerList(tmp);
+    socket.on("standanswer", (word, answer, answeruser) => {
+      if (nickname == answeruser) {
+        //정답이면 화면의 정답리스트에 추가
+        if (answer) {
+          const tmp = answerList;
+          let tmp2 = { word: word, key: tmp.length };
+          tmp.unshift(tmp2);
+          setanswerList(tmp);
+        }
       }
     });
   }, [answerList]);

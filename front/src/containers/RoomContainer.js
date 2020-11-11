@@ -84,13 +84,16 @@ const RoomContainer = () => {
   const [isMaster, setisMaster] = useState(0);
   const [gameStart, setgameStart] = useState(0); //이게 1일때 방장이 시작누르면 게임시작할수있음
   const [isStart, setisStart] = useState(0); //게임중인지 아닌지 나타냄(0은 대기방, 1은 게임중, -1은 점수창)
+  const [timer, settimer] = useState(0);
 
   //endword
   const [order, setorder] = useState("");
   const [word, setword] = useState("");
   const [round, setround] = useState(-1);
   const [startWord, setstartWord] = useState("");
-  const [timer, settimer] = useState(0);
+
+  //A Stands For
+  const [startAlp, setstartAlp] = useState("");
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
@@ -191,7 +194,7 @@ const RoomContainer = () => {
     console.log("roomcontainer mount");
     //msg소켓 받는거
     socket.on("msg", (obj) => {
-      console.log("msg", obj);
+      console.log("msg");
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
@@ -268,7 +271,16 @@ const RoomContainer = () => {
         />
       );
     } else if (room.gametype == "A Stands For") {
-      return <AStandFor message={message} />;
+      return (
+        <AStandFor
+          message={message}
+          timer={timer}
+          startAlp={startAlp}
+          nickname={user.currentNickname}
+          settimer={settimer}
+          setstartAlp={setstartAlp}
+        />
+      );
     }
   };
 
