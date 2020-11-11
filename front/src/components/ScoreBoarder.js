@@ -12,19 +12,17 @@ const ScoreBoardContent = styled.div`
   border: solid thin;
 `;
 
-const ScoreBoarder = ({ setisStart ,roomUser,setroomUser}) => {
-
+const ScoreBoarder = ({ setisStart, roomUser, setroomUser }) => {
   const clickScoreBoard = () => {
     setisStart(0); //대기방으로 바꿈
-    
+
     //유저 점수 없앰
-    let tmp=roomUser;
-    let i=0;
-    for(i=0;i<tmp.length;i++){
-        tmp[i].score=0;
+    let tmp = roomUser;
+    let i = 0;
+    for (i = 0; i < tmp.length; i++) {
+      tmp[i].score = 0;
     }
     setroomUser(tmp);
-    
   };
 
   const scoreBoard = roomUser.map((val) => {
@@ -34,7 +32,6 @@ const ScoreBoarder = ({ setisStart ,roomUser,setroomUser}) => {
       </div>
     );
   });
-
 
   return (
     <ScoreBoardContent>

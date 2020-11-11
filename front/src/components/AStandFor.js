@@ -42,11 +42,14 @@ const TopBotContent = styled.div`
   text-align: center;
 `;
 const MidContnet = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: auto;
   height: 70%;
   width: 85%;
   border: solid thin;
   font-size: 200%;
-  text-align: center;
 `;
 const BotContent = styled.div`
   display: flex;
@@ -85,16 +88,19 @@ const AStandFor = ({
   nickname,
   isStart,
   roomUser,
+  answerList,
   setstartAlp,
   setisStart,
   setgameStart,
   setroomUser,
+  setanswerList,
 }) => {
   const room = useSelector((state) => state.room.room);
   const [round, setround] = useState(1);
-  const [answerList, setanswerList] = useState([]);
   const [waitTime, setwaitTime] = useState(-1);
+  const [wrongWord, setwrongWord] = useState("");
 
+  //start,time,end소켓
   useEffect(() => {
     socket.on("standstart", (gamealp, gameround) => {
       console.log("startalp", gamealp);
@@ -136,32 +142,37 @@ const AStandFor = ({
       }
 
       setisStart(-1); //스코어 화면표시는 -1
-      setround(0);
+      setround(1);
 
       setroomUser(tmp);
     });
-
   });
 
+  //answer소켓
   useEffect(() => {
     socket.on("standanswer", (word, answer, answeruser) => {
       if (nickname == answeruser) {
- 
         //정답이면 화면의 정답리스트에 추가
         if (answer) {
-          console.log("정답",word);
+          console.log("정답", word);
           const tmp = answerList;
           let tmp2 = { answer: word, key: tmp.length };
-          tmp.unshift(tmp2);
-          console.log("tmp",tmp);
+          tmp.push(tmp2);
+          console.log("tmp", tmp);
           setanswerList(tmp);
+        } else {
+          //틀릴경우
+          setwrongWord(word);
+          const tmp = setInterval(() => {
+            setwrongWord("");
+            clearInterval(tmp);
+          }, 500);
         }
       }
     });
   }, [answerList]);
 
   const showScoreBoarder = () => {
-    console.log("isstart",isStart)
     if (isStart == -1)
       return (
         <ScoreBoarder
@@ -173,11 +184,20 @@ const AStandFor = ({
     else return;
   };
 
-  const showAnswerList = () => {
-    answerList.map((val) => {
-      return <div key={val.key}>{val.answer}</div>;
-    });
-  };
+  const showAnswerList = answerList.map((val) => {
+    if(val.key==answerList.length-1){
+      return (
+        <div key={val.key} style={{ margin: "5px" ,color:'green'}}>
+        {val.answer}
+      </div>
+      )
+    }
+    return (
+      <div key={val.key} style={{ margin: "5px" }}>
+        {val.answer}
+      </div>
+    );
+  });
 
   const timerBar = () => {
     if (timer <= gmaeroundtime && timer > 0) {
@@ -196,6 +216,8 @@ const AStandFor = ({
     }
   };
 
+  const showWrongWord = <div style={{ color: "red" }}>{wrongWord}</div>;
+
   return (
     <AllContent>
       <TopContent>
@@ -205,9 +227,9 @@ const AStandFor = ({
         </TopMidContent>
         <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
-      <MidContnet>{showAnswerList()}</MidContnet>
-      <BotContent>{message}</BotContent>
-      {showScoreBoarder()}
+      <MidContnet>{showAnswerList}</MidContnet>
+      <BotContent>{wrongWord == "" ? message : showWrongWord}</BotContent>
+      {showScoreBoarder}
     </AllContent>
   );
 };
