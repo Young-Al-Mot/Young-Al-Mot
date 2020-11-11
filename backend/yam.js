@@ -58,6 +58,7 @@ for (var i = 0; i < timelist.length; i++) {
 }
 var startword = new Array(100); //시작단어
 var round = new Array(100); //시작단어 인덱스(라운드)
+var maxround = new Array(100); //선택한 라운드
 var nowword = new Array(100); //현재단어
 console.log(startword);
 
@@ -65,6 +66,7 @@ exports.L = timelist;
 exports.W = waitlist;
 exports.startword = startword;
 exports.round = round;
+exports.maxround = maxround;
 exports.nowword = nowword;
 exports.roomuserlist = roomuserlist;
 exports.roomuseridx = roomuseridx;
