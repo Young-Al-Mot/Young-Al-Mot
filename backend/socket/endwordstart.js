@@ -30,7 +30,7 @@ var endwordstart = function (roomno) {
     })
 
     //게임시작하면 방인원들 레디 없애고 방에 업데이트된거 던져줌
-    db.query('UPDATE roomuser SET ready=0 WHERE room_no=?', roomno, (err) => {
+    db.query('UPDATE roomuser SET ready=0, score=0 WHERE room_no=?', roomno, (err) => {
         if (err) throw err;
         let sql2 = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
         db.query(sql2, roomno, (err, row, field) => {
