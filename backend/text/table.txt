@@ -93,3 +93,10 @@ create table dict(
    `word` varchar(50),
    primary key(`word`)
 );
+
+create table userword(
+   `user_name` varchar(12) NOT NULL,
+   `chat` varchar(50) NOT NULL,
+   `room_no` int,
+   primary key(`user_name`, `chat`)
+);
