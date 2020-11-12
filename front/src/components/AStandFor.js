@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { getSocket } from "../socket/SocketFunc";
 import ScoreBoarder from "./ScoreBoarder";
 
-const gmaeroundtime = 7;
+const gmaeroundtime = 20;
 
 const AllContent = styled.div`
   display: flex;

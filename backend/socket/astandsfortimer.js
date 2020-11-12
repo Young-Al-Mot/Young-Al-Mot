@@ -18,14 +18,14 @@ const timer = (roomno) => {
     var t = -1;
     //경과시간 메시지 (나중에 emit는 지울거)
     t++;
-    yam.io.to(roomno).emit('standtime', 7 - t);
-    console.log("timer", 7 - t);
+    yam.io.to(roomno).emit('standtime', 20 - t);
+    console.log("timer", 20 - t);
     var ontime = setInterval(() => {
         t++;
-        yam.io.to(roomno).emit('standtime', 7 - t);
-        console.log("timer", 7 - t);
+        yam.io.to(roomno).emit('standtime', 20 - t);
+        console.log("timer", 20 - t);
 
-        if (t == 7) {
+        if (t == 20) {
             //시간초과 이벤트 발생, 발생 할때마다 userword 테이블 초기화
             let sql = `DELETE FROM userword WHERE room_no=?`;
             db.query(sql, roomno, (err) => {
