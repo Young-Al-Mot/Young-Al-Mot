@@ -1,5 +1,6 @@
 import axios from "axios";
 import { socketConnect } from "../socket/SocketFunc";
+import {config} from '../config';
 
 // 액션타입
 const ROOM_IN = "ROOM_IN";
@@ -45,7 +46,7 @@ export const roomCreateRequest = (
   //방 만들면 방번호 서버에서 리턴해줘야됨
   return axios({
     method: "POST",
-    url: "http://localhost:5000/roomnumber",
+    url: `${config.api}/roomnumber`,
     data: {
       userid: JSON.parse(sessionStorage.userInfo).username,
       title,
@@ -65,7 +66,7 @@ export const roomCreateRequest = (
 export const roomInRequest = (roomid, password) => (dispatch) => {
   return axios({
     method: "POST",
-    url: "http://localhost:5000/roominchk",
+    url: `${config.api}/roominchk`,
     data: {
       userid: JSON.parse(sessionStorage.userInfo).username,
       roomid,
@@ -102,7 +103,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
 export const roomOutRequest = (userid) => (dispatch) => {
   return axios({
     method: "POST",
-    url: "http://localhost:5000/roomout",
+    url: `${config.api}/roomout`,
     data: {
       userid: userid,
     },

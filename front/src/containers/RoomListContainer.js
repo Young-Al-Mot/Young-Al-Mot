@@ -6,6 +6,7 @@ import axios from "axios";
 import RoomList from "../components/RoomList";
 import { roomInRequest, roomOutRequest } from "../modules/room";
 import {socketIn,getSocket} from "../socket/SocketFunc";
+import {config} from '../config';
 
 const RoomListContainer = () => {
   const history = useHistory();
@@ -44,7 +45,7 @@ const RoomListContainer = () => {
   const getInfo = () => {
     axios({
       method: "POST",
-      url: "http://localhost:5000/roomlist",
+      url: `${config.api}/roomlist`,
       data: {},
     }).then((res) => {
       console.log(res.data.list);

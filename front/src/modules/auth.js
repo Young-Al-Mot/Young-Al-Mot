@@ -1,4 +1,5 @@
 import axios from "axios";
+import {config} from "../config";
 
 //액션 타입 만들기
 const AUTH_LOGIN = "AUTH_LOGIN"; //로그인
@@ -34,7 +35,7 @@ export function registerRequest(userid, password, nickname, email) {
     dispatch(register());
 
     return axios
-      .post("http://localhost:5000/user_create", {
+      .post(`${config.api}/user_create`, {
         userid: userid,
         password: password,
         nickname: nickname,
@@ -55,7 +56,7 @@ export const loginRequest = (userid, password) => (dispatch) => {
   // API REQUEST
   return axios({
     method: "POST",
-    url: "http://localhost:5000/loginchk",
+    url: `${config.api}/loginchk`,
     data: {
       userid: userid,
       password: password,

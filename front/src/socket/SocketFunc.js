@@ -1,7 +1,8 @@
 import React from "react";
 import socketio from "socket.io-client";
+import {config} from "../config";
 
-const socket = socketio.connect("http://localhost:5000");
+const socket = socketio.connect(config.api);
 
 export const socketConnect = () => {
   socket.connect();
