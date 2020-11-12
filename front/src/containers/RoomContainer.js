@@ -11,6 +11,7 @@ import { roomOutRequest } from "../modules/room";
 import GameReady from "../components/GameReady";
 import NowUser from "../components/NowUser";
 import { getSocket } from "../socket/SocketFunc";
+import {config} from "../config";
 
 import Endword from "../components/Endword";
 import AStandFor from "../components/AStandFor";
@@ -113,7 +114,7 @@ const RoomContainer = () => {
     } else {
       axios({
         method: "POST",
-        url: "http://localhost:5000/ready",
+        url: `${config.api}/ready`,
         data: {
           nickname: user.currentNickname,
           roomid: room.roomid,
