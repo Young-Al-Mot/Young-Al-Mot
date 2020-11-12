@@ -18,7 +18,7 @@ const upload = multer({dest: './upload'});
 const _secret = fs.readFileSync('./secret.txt','utf8').split(" ");
 
 const db = mysql.createConnection({
-    host:'localhost',
+    host:_secret[2],
     user:_secret[0],
     password:_secret[1],
     database:'yam'
