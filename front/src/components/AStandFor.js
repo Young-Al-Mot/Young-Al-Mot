@@ -102,6 +102,7 @@ const AStandFor = ({
 
   //start,time,end소켓
   useEffect(() => {
+    socket.off('standstart');
     socket.on("standstart", (gamealp, gameround) => {
       console.log("startalp", gamealp);
       setstartAlp(gamealp);
@@ -127,6 +128,7 @@ const AStandFor = ({
       settimer(time);
     });
 
+    socket.off('standend');
     socket.on("standend", (val) => {
       console.log("gameend");
       let tmp = [];
@@ -229,7 +231,7 @@ const AStandFor = ({
       </TopContent>
       <MidContnet>{showAnswerList}</MidContnet>
       <BotContent>{wrongWord == "" ? message : showWrongWord}</BotContent>
-      {showScoreBoarder}
+      {showScoreBoarder()}
     </AllContent>
   );
 };
