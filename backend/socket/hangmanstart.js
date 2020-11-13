@@ -18,6 +18,7 @@ var hangmanstart = function (roomno) {
     yam.roomuserlist[roomno].splice(0, yam.roomuserlist[roomno].length);
     yam.roomuseridx[roomno] = 0;
     yam.round[roomno] = 1;
+    yam.nowlife[roomno] = yam.life;
     let sql = `UPDATE roomlist SET state=1 WHERE room_no=?`;
     db.query(sql, roomno, (err) => {
         if (err) throw err;

@@ -49,9 +49,9 @@ var hangmananswer = function (roomno, msg, username) {
                 })
             }
             else { //다음 라운드
-                //라운드 끝, 다음 차례, 다음 인덱스
+                yam.nowlife[roomno] = yam.life;
                 yam.round[roomno]++;
-                
+
                 //시작단어 랜덤, 현재 12개
                 var num = Math.floor(Math.random() * 12);
                 let sql2 = `SELECT * FROM words`;
@@ -87,9 +87,9 @@ var hangmananswer = function (roomno, msg, username) {
                     })
                 }
                 else { //다음 라운드
-                    //라운드 끝, 다음 차례, 다음 인덱스
+                    yam.nowlife[roomno] = yam.life;
                     yam.round[roomno]++;
-                    
+
                     //시작단어 랜덤, 현재 12개
                     var num = Math.floor(Math.random() * 12);
                     let sql2 = `SELECT * FROM words`;
@@ -101,6 +101,10 @@ var hangmananswer = function (roomno, msg, username) {
                         yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
                     })
                 }
+            }
+            else { //목숨 남음, 다음 차례
+                //0(실패), 틀린 단어, 다음 사람, 남은 목숨
+                yam.io.to(roomno).emit('hanganswer', 0, msg, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], yam.nowlife[roomno]);
             }
         }
     }
@@ -118,6 +122,9 @@ var hangmananswer = function (roomno, msg, username) {
             db.query(sql, list, (err) => {
                 if (err) throw err;
             })
+
+            //1(성공), 알파벳, 다음 사람, 남은목숨, 인덱스
+            yam.io.to(roomno).emit('hanganswer', 1, msg, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], yam.nowlife[roomno], wordindex);
         }
         else { //해당 알파벳이 없으면
             yam.nowlife[roomno]--; //목숨 차감
@@ -142,9 +149,9 @@ var hangmananswer = function (roomno, msg, username) {
                     })
                 }
                 else { //다음 라운드
-                    //라운드 끝, 다음 차례, 다음 인덱스
+                    yam.nowlife[roomno] = yam.life;
                     yam.round[roomno]++;
-                    
+
                     //시작단어 랜덤, 현재 12개
                     var num = Math.floor(Math.random() * 12);
                     let sql2 = `SELECT * FROM words`;
@@ -156,6 +163,10 @@ var hangmananswer = function (roomno, msg, username) {
                         yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
                     })
                 }
+            }
+            else { //목숨 남음, 다음 차례
+                //0(실패), 알파벳, 다음 사람, 남은 목숨
+                yam.io.to(roomno).emit('hanganswer', 0, msg, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], yam.nowlife[roomno]);
             }
         }
     }
