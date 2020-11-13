@@ -93,6 +93,7 @@ const HangMan = ({
       setisStart(1); //게임중인거 나타냄
       setgameStart(0); //방장 게임 시작버튼 비활성화
 
+      setlife(7);
       setfailAlp([]);
       setorder(gameorder);
       setround(gameround);
