@@ -70,15 +70,17 @@ const HangMan = ({
   round,
   word,
   order,
+  alp,
   setroomUser,
   setisStart,
   setgameStart,
   setround,
   setword,
   setorder,
+  setalp,
 }) => {
   const room = useSelector((state) => state.room.room);
-  const [alp, setalp] = useState([]);
+
   const [failAlp, setfailAlp] = useState([]); //틀렷던 알파벳,단어
   const [life, setlife] = useState(7);
 
