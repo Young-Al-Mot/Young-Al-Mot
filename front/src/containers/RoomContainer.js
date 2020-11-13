@@ -87,11 +87,11 @@ const RoomContainer = () => {
   const [gameStart, setgameStart] = useState(0); //이게 1일때 방장이 시작누르면 게임시작할수있음
   const [isStart, setisStart] = useState(0); //게임중인지 아닌지 나타냄(0은 대기방, 1은 게임중, -1은 점수창)
   const [timer, settimer] = useState(0);
+  const [round, setround] = useState(1);
 
   //endword
   const [order, setorder] = useState("");
   const [word, setword] = useState("");
-  const [round, setround] = useState(1);
   const [startWord, setstartWord] = useState("");
 
   //A Stands For
@@ -314,12 +314,14 @@ const RoomContainer = () => {
           roomUser={roomUser}
           isStart={isStart}
           answerList={answerList}
+          round={round}
           settimer={settimer}
           setstartAlp={setstartAlp}
           setisStart={setisStart}
           setgameStart={setgameStart}
           setroomUser={setroomUser}
           setanswerList={setanswerList}
+          setround={setround}
         />
       );
     } else {
