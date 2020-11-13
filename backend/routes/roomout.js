@@ -64,13 +64,8 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) => {
                     console.log(row2[0].master);
 
                     if (row3[0].nowplayer > 1) {//사람 한명 나갔으니 nowplayer-1
-                        if (row3[0].state == 1) {
-                            //방이 시작중이고 본인 턴이라면 다음사람으로 턴 넘겨야함
-                            //나갔을때 혼자 있으면 게임 끝나야함
-                            yam.roomuserlist[roomno].splice(yam.roomuseridx[roomno], 1); //나간사람 삭제
-                            yam.roomuseridx[roomno] = yam.roomuseridx[roomno] % yam.roomuserlist[roomno].length; //다음사람으로 인덱스 조정
-
-                            //시간 다시
+                        if (row3[0].nowplayer == 2) { //나갔을 때 혼자있는 경우
+                            //게임 끝
                             if (yam.L[roomno].length != 0) {
                                 clearInterval(yam.L[roomno][0]);
                                 yam.L[roomno].shift();
@@ -79,10 +74,59 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) => {
                                 clearInterval(yam.W[roomno][0]);
                                 yam.W[roomno].shift();
                             }
-                            console.log(yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
-                            //endwordanswer -> 현재 단어, 다음 사람
-                            yam.io.to(roomno).emit('endwordanswer', yam.nowword[roomno], yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
-                            timer.T(roomno);
+                            let sql31 = `UPDATE roomlist SET state=0 WHERE room_no=?`;
+                            db.query(sql31, roomno, (err31) => {
+                                if (err31) throw err31;
+                            })
+
+                            sql31 = `SELECT * FROM roomuser WHERE room_no=? and user_name!=?`;
+                            db.query(sql31, [roomno, row2[0].user_name], (err31, row31, f31) => {
+                                if (err31) throw err31;
+
+                                if(row3[0].game_name == '끝말잇기') yam.io.to(roomno).emit('gameend', row31);
+                                else if(row3[0].game_name == 'A Stands For') yam.io.to(roomno).emit('standend', row31);
+                                else yam.io.to(roomno).emit('hangend', row31);
+                                let sql32 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
+                                db.query(sql32, roomno, (err32) => {
+                                    if (err32) throw err32;
+                                });
+                            })
+                        }
+                        else if (row3[0].game_name != 'A Stands For' && row3[0].state == 1 && row2[0].user_name == yam.roomuserlist[roomno][yam.roomuseridx[roomno]]) {
+                            //방이 시작중이고 본인 턴이라면 다음사람으로 턴 넘겨야함
+                            yam.roomuserlist[roomno].splice(yam.roomuseridx[roomno], 1); //나간사람 삭제
+                            yam.roomuseridx[roomno] = yam.roomuseridx[roomno] % yam.roomuserlist[roomno].length; //다음사람으로 인덱스 조정
+
+                            if (row3[0].game_name == '끝말잇기') {
+                                //시간 다시
+                                if (yam.L[roomno].length != 0) {
+                                    clearInterval(yam.L[roomno][0]);
+                                    yam.L[roomno].shift();
+                                }
+                                if (yam.W[roomno].length != 0) {
+                                    clearInterval(yam.W[roomno][0]);
+                                    yam.W[roomno].shift();
+                                }
+                                console.log(yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
+                                //endwordanswer -> 현재 단어, 다음 사람
+                                yam.io.to(roomno).emit('endwordanswer', yam.nowword[roomno], yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
+
+                                //4초 후에 게임 재시작
+                                var nexttime = 0;
+                                var nextwait = setInterval(() => {
+                                    nexttime++;
+                                    if (nexttime == 4) {
+                                        clearInterval(nextwait);
+                                        yam.W[roomno].shift();
+                                        timer.T(roomno);
+                                    }
+                                }, 1000);
+                                yam.W[roomno].push(nextwait);
+                            }
+                            else {
+                                //-1(나감), '', 다음 사람
+                                yam.io.to(roomno).emit('hanganswer', -1, '', yam.roomuserlist[roomno][yam.roomuseridx[roomno]]);
+                            }
                         }
 
                         let sql4 = `UPDATE roomlist SET nowplayer=nowplayer-1 WHERE room_no=?`;
