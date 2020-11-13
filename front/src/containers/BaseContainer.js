@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useCallback } from "react";
 import { userInfoRequest } from "../modules/auth";
 import { useDispatch } from "react-redux";
+
 
 const BaseContainer = () => {
   const dispatch = useDispatch();
 
-  const checkUser = () => {
+  const checkUser = useCallback(() => {
     const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
     if (userInfo) {
       //원래는 인자로 토큰만 넣으면되는데 테스트용으로 이름이랑 닉네임 넣어줌
@@ -13,7 +14,7 @@ const BaseContainer = () => {
         userInfoRequest(userInfo.username, userInfo.nickname, userInfo.token)
       );
     }
-  };
+  },[dispatch]);
 
   useEffect(() => {
     checkUser();

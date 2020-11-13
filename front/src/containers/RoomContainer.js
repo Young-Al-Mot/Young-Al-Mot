@@ -11,10 +11,11 @@ import { roomOutRequest } from "../modules/room";
 import GameReady from "../components/GameReady";
 import NowUser from "../components/NowUser";
 import { getSocket } from "../socket/SocketFunc";
-import {config} from "../config";
+import { config } from "../config";
 
 import Endword from "../components/Endword";
 import AStandFor from "../components/AStandFor";
+import HangMan from "../components/HangMan";
 
 const AllContent = styled.div`
   height: 100vh;
@@ -90,7 +91,7 @@ const RoomContainer = () => {
   //endword
   const [order, setorder] = useState("");
   const [word, setword] = useState("");
-  const [round, setround] = useState(-1);
+  const [round, setround] = useState(1);
   const [startWord, setstartWord] = useState("");
 
   //A Stands For
@@ -106,6 +107,7 @@ const RoomContainer = () => {
     console.log("click ready");
     if (isMaster) {
       if (gameStart) {
+        console.log("aa",gameStart);
         //게임시작 누르면 소켓에 알림(방번호, 게임타입)
         socket.emit("gamestart", room.roomid, room.gametype);
       } else {
@@ -201,12 +203,23 @@ const RoomContainer = () => {
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
       setLogs(logs2);
-      const tmp = logs.map((e) => (
-        <ChatBodyContent key={e.key}>
-          <ChatName>{e.name}</ChatName>
-          <ChatMessage>{e.message}</ChatMessage>
-        </ChatBodyContent>
-      ));
+      const tmp = logs.map((e) => {
+        if (user.currentNickname == e.name) {
+          return (
+            <ChatBodyContent style={{ backgroundColor: "yellow" }} key={e.key}>
+              <ChatName>{e.name}</ChatName>
+              <ChatMessage>{e.message}</ChatMessage>
+            </ChatBodyContent>
+          );
+        } else {
+          return (
+            <ChatBodyContent key={e.key}>
+              <ChatName>{e.name}</ChatName>
+              <ChatMessage>{e.message}</ChatMessage>
+            </ChatBodyContent>
+          );
+        }
+      });
       setAllmessage(tmp);
     });
   }, [logs]);
@@ -288,6 +301,24 @@ const RoomContainer = () => {
           setgameStart={setgameStart}
           setroomUser={setroomUser}
           setanswerList={setanswerList}
+        />
+      );
+    } else {
+      //행맨
+      return (
+        <HangMan
+          message={message}
+          roomUser={roomUser}
+          isStart={isStart}
+          round={round}
+          word={word}
+          order={order}
+          setroomUser={setroomUser}
+          setisStart={setisStart}
+          setgameStart={setgameStart}
+          setround={setround}
+          setword={setword}
+          setorder={setorder}
         />
       );
     }
