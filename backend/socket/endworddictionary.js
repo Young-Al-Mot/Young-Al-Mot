@@ -99,7 +99,7 @@ var endworddictionary = function (roomno, word, order) {//방 번호, 단어, �
             li = [word.length * 5, order];
             db.query(sql, li, (err) => {
                 if (err) throw err;
-            
+
 
                 sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
                 db.query(sql, roomno, (err, row, f) => {
@@ -122,23 +122,22 @@ var endworddictionary = function (roomno, word, order) {//방 번호, 단어, �
                     clearInterval(yam.L[roomno][0]);
                     yam.L[roomno].shift();
                 }
-                
+
                 sql = `SELECT * FROM roomuser  WHERE room_no=? ORDER BY intime ASC`;
                 db.query(sql, roomno, (err, row, f) => {
-                    if(err) throw err;
+                    if (err) throw err;
 
                     //맞춘 단어, 다음순서, 1(성공), 유저정보
                     yam.io.to(roomno).emit('gameanswer', word, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], 1);
-                    yam.io.to(roomno).emit('join',row);
+                    yam.io.to(roomno).emit('join', row);
                 })
             })
-            yam.io.to(roomno).emit('msg', { name: 'System', message: '있음' });
 
             var nexttime = 0;
             var nextwait = setInterval(() => {
                 nexttime++;
                 //2초 쉬고 다시 시간
-                if(nexttime == 2){
+                if (nexttime == 2) {
                     clearInterval(nextwait);
                     yam.W[roomno].shift();
                     timer.T(roomno);
@@ -148,7 +147,6 @@ var endworddictionary = function (roomno, word, order) {//방 번호, 단어, �
         }
         else { //사전에 없는 단어, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
             yam.io.to(roomno).emit('gameanswer', yam.nowword[roomno], order, 0, word);
-            yam.io.to(roomno).emit('msg', { name: 'System', message: '없음' });
         }
     });
 }
