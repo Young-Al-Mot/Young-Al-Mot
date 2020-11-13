@@ -20,7 +20,7 @@ var endwordanswer = require('./socket/endwordanswer');
 var standstart = require('./socket/astandsforstart');
 var standanswer = require('./socket/astandsforanswer');
 var hangmanstart = require('./socket/hangmanstart');
-//var hangmananswer = require('./socket/hangmananswer');
+var hangmananswer = require('./socket/hangmananswer');
 
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR, SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require('constants');
@@ -63,8 +63,8 @@ var startword = new Array(100); //시작단어
 var round = new Array(100); //시작단어 인덱스(라운드)
 var maxround = new Array(100); //선택한 라운드
 var nowword = new Array(100); //현재단어
-var nowlife = new Array(100, 7);
 var life = 7;
+var nowlife = new Array(100, life);
 
 exports.L = timelist;
 exports.W = waitlist;
@@ -107,12 +107,17 @@ io.on('connection', (socket) => {
 
     socket.on('gameanswer', (roomno, message, order) => {
         endwordanswer.endwordanswer(roomno, message, order);
-        console.log("gameanswer");
+        console.log('gameanswer');
     })
 
     socket.on('standanswer', (roomno, message, username) => {
         standanswer.standanswer(roomno, message, username);
-        console.log("standanswer");
+        console.log('standanswer');
+    })
+
+    socket.on('hanganswer', (roomno, msg, username) => {
+        hangmananswer.hangmananswer(roomno, msg, username);
+        console.log('hanganswer');
     })
 
     socket.on('join', (data) => {

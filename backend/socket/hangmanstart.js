@@ -51,13 +51,8 @@ var hangmanstart = function (roomno) {
             if (err2) throw err2;
             yam.nowword[roomno] = row2[num].word; //라운드 단어
 
-            let sql4 = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
-            db.query(sql4, roomno, (err4, row4, f4) => {
-                if (err4) throw err4;
-
-                //시작하는사람닉네임, 라운드 단어, 라운드
-                yam.io.to(roomno).emit('hangstart', row[0].user_name, row2[num].word, yam.round[roomno]);
-            })
+            //시작하는사람닉네임, 라운드 단어, 라운드
+            yam.io.to(roomno).emit('hangstart', row[0].user_name, row2[num].word, yam.round[roomno]);
         })
     })
 }
