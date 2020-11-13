@@ -160,6 +160,11 @@ const RoomContainer = () => {
               user.currentNickname
             );
           }
+        }else{//행맨
+          if(order==user.currentNickname){
+            socket.emit("hanganswer",room.roomid,message,order);
+          }
+
         }
       }
     }

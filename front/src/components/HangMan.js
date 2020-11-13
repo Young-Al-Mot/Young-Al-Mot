@@ -41,8 +41,16 @@ const MidContnet = styled.div`
   width: 85%;
   font-size: 200%;
 `;
-const MidMainContent = styled.div``;
-const MidSubContnet = styled.div``;
+const MidMainContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 85%;
+`;
+const MidSubContnet = styled.div`
+  width: 15%;
+  font-size: 18px;
+`;
 const BotContent = styled.div`
   display: flex;
   justify-content: center;
@@ -71,7 +79,8 @@ const HangMan = ({
 }) => {
   const room = useSelector((state) => state.room.room);
   const [alp, setalp] = useState([]);
-  const [failAlp, setfailAlp] = useState([]);//틀렷던 알파벳,단어
+  const [failAlp, setfailAlp] = useState([]); //틀렷던 알파벳,단어
+  const [life, setlife] = useState(7);
 
   //start,end소켓
   useEffect(() => {
@@ -89,7 +98,7 @@ const HangMan = ({
       let i = 0;
       const tmp = [];
       for (i = 0; i < gameword.length; i++) {
-        tmp.push("");
+        tmp.push({ key: i, alp: "" });
       }
       setalp(tmp); //단어 배열로 설정
     });
@@ -116,16 +125,46 @@ const HangMan = ({
     });
   });
 
-  //정답 맞췃을때
-  useEffect(()=>{
-
-  });
+  //정답 맞췃을때 틀렷을때, 순서인사람이 나갓을때
+  useEffect(() => {
+    socket.off("hanganswer");
+    socket.on(
+      "hanganswer",
+      (isAnswer, gamealp, nextuser, gamelife, answeridx) => {
+        //알파벳 정답일경우
+        if (isAnswer == 1) {
+          const tmp = alp;
+          //상단 알파벳 배열에 맞춘 알파벳 업데이트
+          answeridx.map((val) => {
+            tmp[val].alp = gamealp;
+          });
+          setalp(tmp);
+          setorder(nextuser);
+        } else if (isAnswer == 0) {
+          //단어,알파벳 틀린경우
+          const tmp = failAlp;
+          tmp.push({ key: tmp.length, alp: gamealp });
+          setfailAlp(tmp);
+          setlife(gamelife);
+          setorder(nextuser);
+        } else if (isAnswer == -1) {
+          //순서인사람이 나갔을때
+          setorder(nextuser);
+        }
+        //단어 정답일경우 바로 gameend이벤트 발생하니 여기서 처리X
+      }
+    );
+  }, [failAlp, alp]);
 
   const showAlp = () => {
     return alp.map((val) => {
-      return <TopChildContent>{val}</TopChildContent>;
+      return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
     });
   };
+
+  const showFailAlp = failAlp.map((val) => {
+    return <div key={val.key}>{val.alp}</div>;
+  });
 
   const showScoreBoarder = () => {
     if (isStart == -1)
@@ -146,8 +185,14 @@ const HangMan = ({
         {/* 맞춘 알파벳 보여줌 */}
       </TopContent>
       <MidContnet>
-        <MidSubContnet>{/* 틀렷던 알파벳,단어 보여줌 */}</MidSubContnet>
-        <MidMainContent>{/* 행맨 그림 보여줌 */}</MidMainContent>
+        <MidSubContnet>
+          {showFailAlp}
+          {/* 틀렷던 알파벳,단어 보여줌 */}
+        </MidSubContnet>
+        <MidMainContent>
+          {life}
+          {/* 행맨 그림 보여줌 */}
+        </MidMainContent>
       </MidContnet>
       <BotContent>{message}</BotContent>
       {showScoreBoarder()}
