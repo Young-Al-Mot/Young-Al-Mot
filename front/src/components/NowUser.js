@@ -3,15 +3,15 @@ import styled from "styled-components";
 
 const Content = styled.div`
   display: flex;
-  height: 100%;
-  border: solid thin;
+  height:200%;
+  width:30%;
+  flex-direction: column;
 `;
 const Child = styled.div`
   display: flex;
-  justify-content: center;
+  align-content: center;
   align-items: center;
   flex: 1;
-  border: solid thin;
 `;
 
 

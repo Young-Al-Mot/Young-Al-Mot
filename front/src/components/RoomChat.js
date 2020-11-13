@@ -18,8 +18,8 @@ const TextContent = styled.div`
   width: 100%;
   min-width: 300px;
   border: 1px solid black;
-  border-radius:5px;
-  font-size:110%;
+  border-radius:20px;
+  font-size:105%;
   margin-top:15px;
 `;
 
@@ -29,16 +29,15 @@ const MessageContent = styled.div`
   align-items:center;
   max-width:100%;
   height:20%;
-  border: 1px solid black;
-  border-radius:5px;
+  border:1px solid black;
+  border-radius:20px;
 `;
 
 const MessageInput = styled.input`
   width:85%;
   height:60%;
-  font-family:message-box;
+  border:0px;
   font-size:150%;
-
 `;
 
 const SendButton = styled.button`
@@ -55,7 +54,7 @@ const SendButton = styled.button`
   font-size: 100%;
   background: #555273;
   line-height:270%;
-  border-radius:5px;
+  border-radius:20px;
   &:hover {
     background: ${lighten(0.1, '#555273')};
   }
