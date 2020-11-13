@@ -74,8 +74,8 @@ const socket = getSocket();
 const RoomContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.status);
-  const room = useSelector((state) => state.room.room);
+  const user = useSelector(state => state.auth.status);
+  const room = useSelector(state => state.room.room);
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
   const [allmessage, setAllmessage] = useState("");
@@ -101,12 +101,12 @@ const RoomContainer = () => {
   //행맨
   const [alp, setalp] = useState([]);
 
-  const handleChangeMessage = (e) => {
+  const handleChangeMessage = e => {
     setMessage(e.target.value);
   };
 
   //게임준비, 게임시작
-  const handleReadyClick = (e) => {
+  const handleReadyClick = e => {
     console.log("click ready");
     if (isMaster) {
       if (gameStart) {
@@ -125,10 +125,10 @@ const RoomContainer = () => {
           roomid: room.roomid,
         },
       })
-        .then((res) => {
+        .then(res => {
           setisReady(res.data.ready);
         })
-        .catch((e) => {
+        .catch(e => {
           console.log("서버와 통신에 실패했습니다");
         });
     }
@@ -136,7 +136,7 @@ const RoomContainer = () => {
 
   //msg소켓 보내는거
   //gameanswer소켓 보내는건
-  const send = (e) => {
+  const send = e => {
     if (message != "") {
       socket.emit("msg", {
         roomno: room.roomid,
@@ -173,11 +173,8 @@ const RoomContainer = () => {
                 isSame = 1;
               }
             }
-            if (isSame)
-              alert("이미 입력한 알파벳입니다");
-            else
-              socket.emit("hanganswer", room.roomid, message, order);
-            
+            if (isSame) alert("이미 입력한 알파벳입니다");
+            else socket.emit("hanganswer", room.roomid, message, order);
           }
         }
       }
@@ -198,7 +195,7 @@ const RoomContainer = () => {
     };
 
     //창 닫거나 새로고침할때 이벤트
-    window.onbeforeunload = (e) => {
+    window.onbeforeunload = e => {
       e.returnValue = "";
       return "";
     };
@@ -216,13 +213,13 @@ const RoomContainer = () => {
   useEffect(() => {
     console.log("roomcontainer mount");
     //msg소켓 받는거
-    socket.on("msg", (obj) => {
+    socket.on("msg", obj => {
       console.log("msg");
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
       setLogs(logs2);
-      const tmp = logs.map((e) => {
+      const tmp = logs.map(e => {
         if (user.currentNickname == e.name) {
           return (
             <ChatBodyContent style={{ backgroundColor: "yellow" }} key={e.key}>
@@ -249,7 +246,7 @@ const RoomContainer = () => {
     //join이벤트 받으면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
     //ready해도 여기서 처리함 (ready 0은 레디 안한거 1은 레디한거)
     socket.off("join"); //왜인지 모르겟지만 2번 실행되길레 한번 꺼줌(어디서 실행되는지 모르겟음)
-    socket.on("join", (val) => {
+    socket.on("join", val => {
       //val에 roomuser정보 받아옴
       console.log("join", val);
       let tmp = [];
@@ -302,6 +299,7 @@ const RoomContainer = () => {
           setisStart={setisStart}
           setgameStart={setgameStart}
           setroomUser={setroomUser}
+          readybutton={readybutton}
         />
       );
     } else if (room.gametype == "A Stands For") {
@@ -362,13 +360,13 @@ const RoomContainer = () => {
   return (
     <AllContent>
       <TopContent>
+          <RoomOut roomOut={roomOut} />
         <NowUser roomUser={roomUser} order={order} />
       </TopContent>
       <BodyContent>{game()}</BodyContent>
-
       <BottomContent>
-        {/* 채팅, 나가기 */}
-        <BotLeft>{readybutton()}</BotLeft>
+        <BotLeft>
+        </BotLeft>
         <BotMid>
           <RoomChat
             user={user}
@@ -380,9 +378,7 @@ const RoomContainer = () => {
             allmessage={allmessage}
           />
         </BotMid>
-        <BotRight>
-          <RoomOut roomOut={roomOut} />
-        </BotRight>
+        <BotRight></BotRight>
       </BottomContent>
     </AllContent>
   );
