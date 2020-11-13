@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const Out = styled.button`
-  width: 150px;
-  height: 40px;
+  width: 100px;
+  height: 50px;
   font-size: 18px;
   margin:10px;
 `;

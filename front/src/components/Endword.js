@@ -5,7 +5,6 @@ import ScoreBoarder from "./ScoreBoarder";
 
 const AllContent = styled.div`
   display: flex;
-  border: solid thin;
   height: 100%;
   width: 100%;
   justify-content: space-between;
@@ -17,50 +16,65 @@ const TopContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 100px;
+  margin-bottom: 30px;
   height: 10%;
   font-size: 45px;
   font-family: sans-serif;
 `;
 const TopTopContent = styled.div`
-  margin-top: 20px;
-  padding-top: 20px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-bottom: 5px;
+  text-align: center;
+  width: 300px;
+  border-bottom: 1px solid black;
 `;
-const TopBotContent = styled.div`
+const MiddleBotContent = styled.div`
+  margin-bottom: 180px;
   height: 25px;
   font-size: 100%;
-  margin-top: 10px;
   text-align: center;
 `;
-const MidContnet = styled.div`
+const MidContent = styled.div`
   height: 20%;
-  width: 85%;
+  width: 50%;
+  margin-bottom: 10px;
   border: solid thin;
   font-size: 200%;
   text-align: center;
 `;
+
 const BotContent = styled.div`
-  margin-bottom: 10px;
   border: solid thin;
+  text-align: center;
+  font-family: sans-serif;
+  width: 50%;
+  height: 10%;
+  font-size: 2em;
+  overflow: hidden;
+  margin-bottom:10px;
 `;
+
 const ProgressBarWrapper = styled.div`
-  margin: 30px;
-  border: 2px solid lightblue;
-  height: 5vh;
-  width: 60vw;
+  height: 1vh;
+  width: 35vw;
+  background-color: ${props=>props.colors};
 `;
 const fill = keyframes`
   0% {width: 0%}
   100% {width: 100%} 
 `;
+
 const ProgressBar = styled.div`
-  background: lightblue;
+  background-color: blue;
   height: 100%;
   animation: ${fill} 5s linear;
   animation-duration: 1;
   animation-direction: reverse;
   animation-fill-mode: forwards;
 `;
+
 
 const socket = getSocket();
 
@@ -70,6 +84,7 @@ const Endword = ({
   startWord,
   round,
   timer,
+  order,
   roomUser,
   isStart,
   settimer,
@@ -80,6 +95,7 @@ const Endword = ({
   setisStart,
   setgameStart,
   setroomUser,
+  readybutton,
 }) => {
   const [answerSuccess, setanswerSuccess] = useState(0);
   const [waitTime, setwaitTime] = useState(-1);
@@ -132,12 +148,12 @@ const Endword = ({
       console.log("다음순서", order);
     });
     socket.off("gametime");
-    socket.on("gametime", (time) => {
+    socket.on("gametime", time => {
       settimer(time);
       setword(word[word.length - 1]);
     });
 
-    socket.on("gameend", (val) => {
+    socket.on("gameend", val => {
       let tmp = [];
       let tmp2 = [];
       for (let i = 0; i < val.length; i++) {
@@ -164,13 +180,13 @@ const Endword = ({
   const timerBar = () => {
     if (timer <= 5 && timer > 0) {
       return (
-        <ProgressBarWrapper>
+        <ProgressBarWrapper colors='gray'>
           <ProgressBar />
         </ProgressBarWrapper>
       );
     } else if (timer == 0) {
       return (
-        <ProgressBarWrapper>
+        <ProgressBarWrapper colors='white'>
           {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}
           {waitTime != 0 ? (waitTime == -1 ? true : waitTime) : "게임시작"}
         </ProgressBarWrapper>
@@ -202,6 +218,13 @@ const Endword = ({
     else return;
   };
 
+  const showMessage = () => {
+    if (order == roomUser.user) {
+      return <BotContent>{message}</BotContent>;
+    } else {
+      return <BotContent>{message}</BotContent>;
+    }
+  };
   return (
     <AllContent>
       <TopContent>
@@ -209,14 +232,15 @@ const Endword = ({
           {startWord}
           {/* 라운드에 해당하는 글짜를 크게표시하거나 색을 다르게 표시해야함 */}
         </TopTopContent>
-        <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
-      <MidContnet>
+      <MidContent>
         {wordColor()}
+        {readybutton()}
         {/* 이전단어의 마지막 글자 보여줌 / 정답을 엔터or전송 하면 서버에서 확인후
         초록글씨or빨간글씨 로 입력한 단어 표시 */}
-      </MidContnet>
+      </MidContent>
       <BotContent>{message}</BotContent>
+      <MiddleBotContent>{timerBar()}</MiddleBotContent>
       {showScoreBoarder()}
     </AllContent>
   );
