@@ -29,6 +29,12 @@ var hangmananswer = function (roomno, msg, username) {
             db.query(sql, username, (err) => {
                 if (err) throw err;
             })
+            sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
+            db.query(sql, roomno, (err, row, f) => {
+                if (err) throw err;
+
+                yam.io.to(roomno).emit('join', row);
+            })
 
             if (yam.round[roomno] == yam.maxround[roomno]) {
                 //게임 끝, roomuser 정보를 점수 순으로 gameend 이벤트 보냄
@@ -123,6 +129,12 @@ var hangmananswer = function (roomno, msg, username) {
                 if (err) throw err;
             })
 
+            sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
+            db.query(sql, roomno, (err, row, f) => {
+                if (err) throw err;
+
+                yam.io.to(roomno).emit('join', row);
+            })
             //1(성공), 알파벳, 다음 사람, 남은목숨, 인덱스
             yam.io.to(roomno).emit('hanganswer', 1, msg, yam.roomuserlist[roomno][yam.roomuseridx[roomno]], yam.nowlife[roomno], wordindex);
         }
