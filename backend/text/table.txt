@@ -94,6 +94,13 @@ create table userword(
    primary key(`user_name`, `chat`)
 );
 
+#소켓 id, 게임닉네임 관리 table
+create table socketid(
+   `socket_id` varchar(30) NOT NULL,
+   `user_id` varchar(12) NOT NULL,
+   primary key(`user_id`)
+);
+
 ------------------------------------------------------------------------------
 #drop table
 

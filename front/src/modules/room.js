@@ -101,15 +101,16 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
 };
 
 export const roomOutRequest = (userid) => (dispatch) => {
-  return axios({
-    method: "POST",
-    url: `${config.api}/roomout`,
-    data: {
-      userid: userid,
-    },
-  }).then((res) => {
-    if (res.data.success) return dispatch(roomout());
-  });
+  // return axios({
+  //   method: "POST",
+  //   url: `${config.api}/roomout`,
+  //   data: {
+  //     userid: userid,
+  //   },
+  // }).then((res) => {
+  //   if (res.data.success) return dispatch(roomout());
+  // });
+  return dispatch(roomout());
 };
 
 //리듀서
