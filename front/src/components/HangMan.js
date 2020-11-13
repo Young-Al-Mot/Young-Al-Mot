@@ -123,7 +123,9 @@ const HangMan = ({
 
       setisStart(-1); //스코어 화면표시는 -1
       setround(1);
-
+      setfailAlp([]);
+      setalp([]);
+      setlife(7);
       setroomUser(tmp);
     });
   });
@@ -193,7 +195,7 @@ const HangMan = ({
           {/* 틀렷던 알파벳,단어 보여줌 */}
         </MidSubContnet>
         <MidMainContent>
-          {life}
+          {isStart==1? life:""}
           {/* 행맨 그림 보여줌 */}
         </MidMainContent>
       </MidContnet>

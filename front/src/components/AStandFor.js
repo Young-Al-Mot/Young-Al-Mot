@@ -83,26 +83,27 @@ const socket = getSocket();
 const AStandFor = ({
   message,
   timer,
-  settimer,
   startAlp,
   nickname,
-  isStart,
   roomUser,
+  isStart,
   answerList,
+  round,
+  settimer,
   setstartAlp,
   setisStart,
   setgameStart,
   setroomUser,
   setanswerList,
+  setround,
 }) => {
   const room = useSelector((state) => state.room.room);
-  const [round, setround] = useState(1);
   const [waitTime, setwaitTime] = useState(-1);
   const [wrongWord, setwrongWord] = useState("");
 
   //start,time,end소켓
   useEffect(() => {
-    socket.off('standstart');
+    socket.off("standstart");
     socket.on("standstart", (gamealp, gameround) => {
       console.log("startalp", gamealp);
       setstartAlp(gamealp);
@@ -128,7 +129,7 @@ const AStandFor = ({
       settimer(time);
     });
 
-    socket.off('standend');
+    socket.off("standend");
     socket.on("standend", (val) => {
       console.log("gameend");
       let tmp = [];
@@ -144,8 +145,9 @@ const AStandFor = ({
       }
 
       setisStart(-1); //스코어 화면표시는 -1
+      setstartAlp("");
+      setanswerList([]);
       setround(1);
-
       setroomUser(tmp);
     });
   });
@@ -187,12 +189,12 @@ const AStandFor = ({
   };
 
   const showAnswerList = answerList.map((val) => {
-    if(val.key==answerList.length-1){
+    if (val.key == answerList.length - 1) {
       return (
-        <div key={val.key} style={{ margin: "5px" ,color:'green'}}>
-        {val.answer}
-      </div>
-      )
+        <div key={val.key} style={{ margin: "5px", color: "green" }}>
+          {val.answer}
+        </div>
+      );
     }
     return (
       <div key={val.key} style={{ margin: "5px" }}>
