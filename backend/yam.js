@@ -19,6 +19,8 @@ var endwordstart = require('./socket/endwordstart');
 var endwordanswer = require('./socket/endwordanswer');
 var standstart = require('./socket/astandsforstart');
 var standanswer = require('./socket/astandsforanswer');
+var hangmanstart = require('./socket/hangmanstart');
+//var hangmananswer = require('./socket/hangmananswer');
 
 const socketio = require('socket.io');
 const { DH_UNABLE_TO_CHECK_GENERATOR, SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require('constants');
@@ -61,7 +63,8 @@ var startword = new Array(100); //시작단어
 var round = new Array(100); //시작단어 인덱스(라운드)
 var maxround = new Array(100); //선택한 라운드
 var nowword = new Array(100); //현재단어
-console.log(startword);
+var nowlife = new Array(100, 7);
+var life = 7;
 
 exports.L = timelist;
 exports.W = waitlist;
@@ -71,6 +74,8 @@ exports.maxround = maxround;
 exports.nowword = nowword;
 exports.roomuserlist = roomuserlist;
 exports.roomuseridx = roomuseridx;
+exports.nowlife = nowlife;
+exports.life = life;
 
 app.post('/user_create', create.create);
 app.post('/loginchk', main.main);
@@ -95,8 +100,8 @@ io.on('connection', (socket) => {
         else if (gametype == 'A Stands For') {
             standstart.standstart(roomno);
         }
-        else{
-
+        else {
+            hangmanstart.hangmanstart(roomno);
         }
     })//'gamestart' event end
 
