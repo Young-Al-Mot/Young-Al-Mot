@@ -27,7 +27,7 @@ db.connect();
 const yam = require('../yam');
 var timer = require('../socket/endwordtimer');
 
-exports.roomout = app.post('/roomout', upload.single(), (req, res) => {
+const room_out=(req, res) => {
     let roomno;
     let userid = req.body.userid;
     let sql = `SELECT * FROM user WHERE user_id=?`;
@@ -179,8 +179,14 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) => {
                     }
                 })
                 yam.io.to(roomno).emit('msg', { name: 'System', message: row[0].user_name + '님이 방을 나갔습니다.' });
-                return res.json({ success: true });
+                if(res==undefined)
+                    return;
+                else
+                    return res.json({ success: true });
             })
         })
     })
-});
+}
+
+exports.roomout = app.post('/roomout', upload.single(), room_out);
+exports.room_out=room_out;

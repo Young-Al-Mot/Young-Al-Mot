@@ -87,10 +87,32 @@ app.post('/ready', ready.ready);
 
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
-    // 메시지를 받으면
-    console.log("connect", socket.id);
+    //소켓 접속하면 소켓아이디랑 닉네임 테이블에 저장
+    socket.on('socketin',(nickname)=>{
+        console.log('socketin',nickname,socket.id);
+        if(nickname!=undefined){
+            let sql = `INSERT INTO socketid VALUES (?,?)`;
+            db.query(sql, [socket.id,nickname], (err) => {
+                if (err) throw err;
+            });
+        }
+    });
+    
+    //소켓이 끊어지면 방에서 나가게함
     socket.on("disconnect", (reason) => {
         console.log("disconnect", socket.id);
+        let sql = `SELECT * FROM socketid WHERE socket_id=?`;
+        db.query(sql, socket.id, (err,row) => {
+            if (err) throw err;
+            if(row[0]!=undefined){
+                let sql2='DELETE FROM socketid WHERE socket_id=?';
+                db.query(sql2,socket.id,(err2)=>{
+                    if(err2) throw err2;
+                    roomout.room_out({body:{userid:row[0].user_id}});
+
+                })
+            }
+        });
     })
 
     socket.on('gamestart', (roomno, gametype) => {//방번호, 무슨게임인지 받음\

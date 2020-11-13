@@ -44,7 +44,7 @@ const RoomCreateContainer = () => {
       round
     )).then((res) => {
         //방만들기 성공하면 방안으로 입장
-        socketIn(res.roomid,user.currentNickname);
+        socketIn(res.roomid,user.currentNickname,user.currentUser);
         history.push("/room");
     });
   };
