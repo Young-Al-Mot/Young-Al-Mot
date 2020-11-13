@@ -32,13 +32,11 @@ var endwordanswer = function (roomno, message, order) {
             else {
                 //끝말 불일치, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
                 yam.io.to(roomno).emit('gameanswer', yam.nowword[roomno], order, 0, message);
-                yam.io.to(roomno).emit('msg', { name: 'System', message: '끝말 불일치' });
             }
         }
         else {
             //중복, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
             yam.io.to(roomno).emit('gameanswer', yam.nowword[roomno], order, 0, message);
-            yam.io.to(roomno).emit('msg', { name: 'System', message: '중복단어' });
         }
     })
 }
