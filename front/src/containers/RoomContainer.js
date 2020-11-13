@@ -98,6 +98,9 @@ const RoomContainer = () => {
   const [startAlp, setstartAlp] = useState("");
   const [answerList, setanswerList] = useState([]);
 
+  //행맨
+  const [alp, setalp] = useState([]);
+
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
@@ -107,7 +110,7 @@ const RoomContainer = () => {
     console.log("click ready");
     if (isMaster) {
       if (gameStart) {
-        console.log("aa",gameStart);
+        console.log("aa", gameStart);
         //게임시작 누르면 소켓에 알림(방번호, 게임타입)
         socket.emit("gamestart", room.roomid, room.gametype);
       } else {
@@ -159,6 +162,22 @@ const RoomContainer = () => {
               message,
               user.currentNickname
             );
+          }
+        } else {
+          //행맨
+          if (order == user.currentNickname) {
+            let i = 0;
+            let isSame = 0;
+            for (i = 0; i < alp.length; i++) {
+              if (alp[i].alp == message) {
+                isSame = 1;
+              }
+            }
+            if (isSame)
+              alert("이미 입력한 알파벳입니다");
+            else
+              socket.emit("hanganswer", room.roomid, message, order);
+            
           }
         }
       }
@@ -313,12 +332,14 @@ const RoomContainer = () => {
           round={round}
           word={word}
           order={order}
+          alp={alp}
           setroomUser={setroomUser}
           setisStart={setisStart}
           setgameStart={setgameStart}
           setround={setround}
           setword={setword}
           setorder={setorder}
+          setalp={setalp}
         />
       );
     }
