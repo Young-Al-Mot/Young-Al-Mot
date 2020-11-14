@@ -2,8 +2,15 @@ import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { getSocket } from "../socket/SocketFunc";
 import ScoreBoarder from "./ScoreBoarder";
+import modenine from './MODENINE.TTF'
 
 const AllContent = styled.div`
+  @font-face {
+    font-family: modenine;
+    src: local('modenine'),
+    url(${modenine});
+  }
+  font-family: modenine;
   display: flex;
   height: 100%;
   width: 100%;
@@ -16,50 +23,67 @@ const TopContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
-  margin-bottom: 30px;
-  height: 10%;
+  margin-top: 70px;
+  margin-bottom: 60px;
+  height: 5%;
   font-size: 45px;
-  font-family: sans-serif;
 `;
 const TopTopContent = styled.div`
   margin-top: 50px;
-  margin-bottom: 50px;
   padding-bottom: 5px;
   text-align: center;
   width: 300px;
-  border-bottom: 1px solid black;
+`;
+const TopBottomContent = styled.div`
+  margin-bottom: 40px;
+  margin-top:10px;
 `;
 const MiddleBotContent = styled.div`
-  margin-bottom: 180px;
+  margin-bottom: 100px;
   height: 25px;
   font-size: 100%;
   text-align: center;
 `;
 const MidContent = styled.div`
-  height: 20%;
-  width: 50%;
+  height: 60%;
+  width: 40%;
   margin-bottom: 10px;
-  border: solid thin;
+  background-color: #2f70a8;
+  border-radius: 50px 0px 50px 0px;
   font-size: 200%;
   text-align: center;
 `;
-
+const MidContent2 = styled.div`
+  text-align: center;
+  margin-top: 5%;
+  margin-left: 30%;
+`;
 const BotContent = styled.div`
-  border: solid thin;
   text-align: center;
   font-family: sans-serif;
-  width: 50%;
-  height: 10%;
+  width: 40%;
+  height: 35%;
   font-size: 2em;
-  overflow: hidden;
-  margin-bottom:10px;
+  background-color: #2f70a8;
+  border-radius: 15px;
+  margin-top: 10px;
 `;
+
+const BotContent2 = styled.div`
+  text-align: center;
+  margin-left:5%;
+  margin-top:1.5%;
+  width: 90%;
+  height: 65%;
+  background-color: white;
+  font-size: 0.8em;
+  border-radius: 15px;
+`
 
 const ProgressBarWrapper = styled.div`
   height: 1vh;
-  width: 35vw;
-  background-color: ${props=>props.colors};
+  width: 25vw;
+  background-color: ${props => props.colors};
 `;
 const fill = keyframes`
   0% {width: 0%}
@@ -67,14 +91,13 @@ const fill = keyframes`
 `;
 
 const ProgressBar = styled.div`
-  background-color: blue;
+  background-color: #fdcb85;
   height: 100%;
   animation: ${fill} 5s linear;
   animation-duration: 1;
   animation-direction: reverse;
   animation-fill-mode: forwards;
 `;
-
 
 const socket = getSocket();
 
@@ -180,13 +203,13 @@ const Endword = ({
   const timerBar = () => {
     if (timer <= 5 && timer > 0) {
       return (
-        <ProgressBarWrapper colors='gray'>
+        <ProgressBarWrapper colors="gray">
           <ProgressBar />
         </ProgressBarWrapper>
       );
     } else if (timer == 0) {
       return (
-        <ProgressBarWrapper colors='white'>
+        <ProgressBarWrapper>
           {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}
           {waitTime != 0 ? (waitTime == -1 ? true : waitTime) : "게임시작"}
         </ProgressBarWrapper>
@@ -197,7 +220,7 @@ const Endword = ({
   const wordColor = () => {
     if (word == undefined) return;
     if (word.length > 1) {
-      if (answerSuccess) return <div style={{ color: "green" }}>{word}</div>;
+      if (answerSuccess) return <div style={{ color: '#97cfcb' }}>{word}</div>;
       else {
         return <div style={{ color: "red" }}>{word}</div>;
       }
@@ -232,15 +255,16 @@ const Endword = ({
           {startWord}
           {/* 라운드에 해당하는 글짜를 크게표시하거나 색을 다르게 표시해야함 */}
         </TopTopContent>
+        <TopBottomContent>{timerBar()}</TopBottomContent>
       </TopContent>
       <MidContent>
         {wordColor()}
-        {readybutton()}
+        <MidContent2>{readybutton()}</MidContent2>
         {/* 이전단어의 마지막 글자 보여줌 / 정답을 엔터or전송 하면 서버에서 확인후
         초록글씨or빨간글씨 로 입력한 단어 표시 */}
       </MidContent>
-      <BotContent>{message}</BotContent>
-      <MiddleBotContent>{timerBar()}</MiddleBotContent>
+      <BotContent><BotContent2>{message}</BotContent2></BotContent>
+      <MiddleBotContent></MiddleBotContent>
       {showScoreBoarder()}
     </AllContent>
   );

@@ -21,8 +21,10 @@ const AllContent = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   justify-content: space-around;
 `;
+
 const ChatName = styled.span`
   display: flex;
   width: 20%;
@@ -42,14 +44,21 @@ const ChatBodyContent = styled.div`
   max-width: 100%;
 `;
 const TopContent = styled.div`
-  height: 5%;
+  height: 10%;
+  margin-left:10%;
+`;
+const TopContentLeft = styled.div`
+  margin-top:10%;
+`;
+const TopContentRight = styled.div`
+  margin-left:85%;
 `;
 const BodyContent = styled.div`
   margin: 15px;
-  height: 60%;
+  height: 50%;
 `;
 const BottomContent = styled.div`
-  height: 35%;
+  height: 40%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -61,7 +70,7 @@ const BotLeft = styled.div`
 const BotMid = styled.div`
   height: 99%;
   flex: 3;
-  margin-bottom: 1%;
+  margin-bottom: 3%;
 `;
 const BotRight = styled.div`
   flex: 1;
@@ -100,7 +109,6 @@ const RoomContainer = () => {
 
   //행맨
   const [alp, setalp] = useState([]);
-
   const handleChangeMessage = e => {
     setMessage(e.target.value);
   };
@@ -215,27 +223,54 @@ const RoomContainer = () => {
     //msg소켓 받는거
     socket.on("msg", obj => {
       console.log("msg");
+      if (sessionStorage.count == 0) {
+        sessionStorage.setItem("count", 1);
+      } else {
+        sessionStorage.setItem("count", 0);
+      }
+      console.log(sessionStorage.count + "count");
       const logs2 = logs;
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
       setLogs(logs2);
       const tmp = logs.map(e => {
+        console.log(order + " : order");
         if (user.currentNickname == e.name) {
           return (
-            <ChatBodyContent style={{ backgroundColor: "yellow" }} key={e.key}>
-              <ChatName>{e.name}</ChatName>
-              <ChatMessage>{e.message}</ChatMessage>
+            <ChatBodyContent key={e.key}>
+              <ChatName style={{ backgroundColor: "#feffd4" }}>
+                {e.name}
+              </ChatName>
+              <ChatMessage style={{ backgroundColor: "#fdffba" }}>
+                {e.message}
+              </ChatMessage>
+            </ChatBodyContent>
+          );
+        } else if (e.name == "System") {
+          return (
+            <ChatBodyContent key={e.key}>
+              <ChatName style={{ backgroundColor: "#a1a1a1" }}>
+                {e.name}
+              </ChatName>
+              <ChatMessage style={{ backgroundColor: "#a1a1a1" }}>
+                {e.message}
+              </ChatMessage>
             </ChatBodyContent>
           );
         } else {
           return (
             <ChatBodyContent key={e.key}>
-              <ChatName>{e.name}</ChatName>
-              <ChatMessage>{e.message}</ChatMessage>
+              <ChatName style={{ backgroundColor: "#eae6ff" }}>
+                {e.name}
+              </ChatName>
+              <ChatMessage style={{ backgroundColor: "#d6cfff" }}>
+                {e.message}
+              </ChatMessage>
             </ChatBodyContent>
           );
         }
       });
+
       setAllmessage(tmp);
     });
   }, [logs]);
@@ -360,13 +395,12 @@ const RoomContainer = () => {
   return (
     <AllContent>
       <TopContent>
-          <RoomOut roomOut={roomOut} />
-        <NowUser roomUser={roomUser} order={order} />
+        <TopContentRight><RoomOut roomOut={roomOut} /></TopContentRight>
+        <TopContentLeft><NowUser roomUser={roomUser} order={order} /></TopContentLeft>
       </TopContent>
       <BodyContent>{game()}</BodyContent>
       <BottomContent>
-        <BotLeft>
-        </BotLeft>
+        <BotLeft></BotLeft>
         <BotMid>
           <RoomChat
             user={user}
