@@ -1,29 +1,32 @@
 import React from "react";
-import styled from "styled-components";
+import styled,{createGlobalStyle} from "styled-components";
+import modenine from './MODENINE.TTF'
 
-const Ready = styled.button`
-  width: 150px;
+const Ready = styled.div`
+  @font-face {
+    font-family: modenine;
+    src: local('modenine'),
+    url(${modenine});
+  }
+  font-family: modenine;
+  width: 300px;
   height: 40px;
-  font-size: 18px;
-  margin:10px;
+  font-size: 50px;
+  color: white;
 `;
 
-const GameReady = ({isMaster,isReady,handleReadyClick}) => {
-  const text = ()=> {
-    if(isMaster){
-      return "게임시작";
-    }
-    else if(isReady){
-      return "준비완료";
-    }else{
-      return "준비하기";
-    }
+const GameReady = ({ isMaster, isReady, handleReadyClick }) => {
+  if (isMaster) {
+    return <Ready onClick={handleReadyClick}>Game Start</Ready>;
+  } else if (isReady) {
+    return (
+      <Ready onClick={handleReadyClick} style={{ color:'#fdcb85'}}>
+        Ready
+      </Ready>
+    );
+  } else {
+    return <Ready onClick={handleReadyClick}>Ready</Ready>;
   }
-  
-
-  return <Ready onClick={handleReadyClick}>
-    {text()}
-    </Ready>;
 };
 
 export default GameReady;

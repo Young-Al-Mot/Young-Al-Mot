@@ -1,48 +1,72 @@
 import React from "react";
 import styled from "styled-components";
+import Crown from './Crown.png';
+import Check from './Check.png';
+import Nope from './Nope.png';
+import modenine from './MODENINE.TTF'
 
 const Content = styled.div`
+  @font-face {
+    font-family: modenine;
+    src: local('modenine'),
+    url(${modenine});
+  }
+  font-family: modenine;
   display: flex;
-  height:200%;
-  width:30%;
+  height:100%;
+  width:15%;
   flex-direction: column;
+  font-size: 20px;
 `;
 const Child = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
   flex: 1;
+  flex-direction: row;
+`;
+const Children1 = styled.div`
+  display: flex;
+  align-content: left;
+  align-items: left;
+  flex: 0.5;
+  margin-bottom:10%;
+`;
+const Children2 = styled.div`
+  display: flex;
+  align-content: center;
+  align-items: center;
+  flex: 1.5;
+  margin-bottom:10%;
+`;
+const Children3 = styled.div`
+  display: flex;
+  align-content: center;
+  align-items: center;
+  flex: 1;
+  margin-bottom:10%;
 `;
 
 
 const NowUser = ({ roomUser, order }) => {
-  const readystyle = {
-    backgroundColor: "#9B98B9",
-  };
-  const notstyle = {
-    backgroundColor: "#ffffff",
-  };
-  const orderstyle = {
-    backgroundColor:"#D5D5D5",
-  }
 
   const userlist = roomUser.map((val) => {
     if (val.ready == 1) {
       return (
-        <Child key={val.key} style={readystyle}>
-          {val.master?"(방장)":""}{val.user}:{val.score}
+        <Child key={val.key}>
+          <Children1>{val.master?<img src={Crown}/>:<img src={Nope}/>}</Children1><Children2>{val.user}:{val.score}</Children2><Children3>{<img src={Check}/>}</Children3>
         </Child>
       );
     }else if(val.user==order){
       return (
-        <Child key={val.key} style={orderstyle}>
-          {val.master?"(방장)":""}{val.user}:{val.score}
+        <Child key={val.key}>
+          <Children1>{val.master?<img src={Crown}/>:<img src={Nope}/>}</Children1><Children2>{val.user}:{val.score}</Children2><Children3></Children3>
         </Child>
       );
     } else {
       return (
-        <Child key={val.key} style={notstyle}>
-          {val.master?"(방장)":""}{val.user}:{val.score}
+        <Child key={val.key}>
+          <Children1>{val.master?<img src={Crown}/>:<img src={Nope}/>}</Children1><Children2>{val.user}:{val.score}</Children2><Children3></Children3>
         </Child>
       );
     }

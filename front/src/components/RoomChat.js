@@ -4,23 +4,25 @@ import { darken, lighten } from 'polished';
 
 const ChatContent=styled.div`
   height:100%;
-  width:100%;
+  width:80%;
+  margin-left:10%;
   display:flex;
   flex-direction:column;
   justify-content:space-around;
+  margin-bottom:20%;
 `;
 
 const TextContent = styled.div`
   color: black;
   overflow: auto;
-  height: 70%;
+  height: 100%;
   min-height:200px;
   width: 100%;
   min-width: 300px;
-  border: 1px solid black;
-  border-radius:20px;
+  border-radius:50px 0px 50px 0px;
+  background-color: #2f70a8;
   font-size:105%;
-  margin-top:15px;
+  margin-bottom:7%;
 `;
 
 const MessageContent = styled.div`
@@ -29,8 +31,9 @@ const MessageContent = styled.div`
   align-items:center;
   max-width:100%;
   height:20%;
-  border:1px solid black;
+  background-color: #2f70a8;
   border-radius:20px;
+  margin-bottom:10%;
 `;
 
 const MessageInput = styled.input`
@@ -38,11 +41,12 @@ const MessageInput = styled.input`
   height:60%;
   border:0px;
   font-size:150%;
+  background-color:white;
+  border-radius:50px;
 `;
 
 const SendButton = styled.button`
   display: flex;
-  border-radius: 8px;
   justify-content:center;
   align-items:center;
   color: white;

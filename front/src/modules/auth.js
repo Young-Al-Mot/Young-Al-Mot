@@ -191,6 +191,7 @@ const auth = (state = initialState, action) => {
         },
       };
     case AUTH_LOGIN_SUCCESS:
+      sessionStorage.setItem('count', 0);
       sessionStorage.setItem(
         "userInfo",
         JSON.stringify({
@@ -220,6 +221,7 @@ const auth = (state = initialState, action) => {
       };
     case AUTH_LOGOUT:
       sessionStorage.removeItem("userInfo");
+      sessionStorage.removeItem("count");
       return {
         ...state,
         status: {
