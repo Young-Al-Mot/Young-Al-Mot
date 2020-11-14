@@ -67,7 +67,7 @@ const RoomListContainer = () => {
         } else if (res.error == 5) {
           alert("비밀번호가 틀렸습니다");
         } else if (res.roomid != 0) {
-          socketIn(roomid,user.currentNickname,user.currentUser);
+          socketIn(roomid,user.currentNickname);
           history.push("/room");
         }
       });
@@ -80,7 +80,7 @@ const RoomListContainer = () => {
           alert("방이 가득찼습니다");
           getInfo();
         } else if (res.roomid != 0) {
-          socketIn(val,user.currentNickname,user.currentUser);
+          socketIn(val,user.currentNickname);
           history.push("/room");
         }
       });

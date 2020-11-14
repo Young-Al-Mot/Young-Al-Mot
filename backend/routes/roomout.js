@@ -37,7 +37,8 @@ const room_out=(req, res) => {
     console.log("")
 
     if (userid == "") {
-        return res.status(400).json();
+        return;
+        // return res.status(400).json();
     }
 
     db.query(sql, userid, (err, row, field) => {
