@@ -9,6 +9,7 @@ export const socketConnect = () => {
 };
 
 export const socketIn = (roomid, nickname) => {
+  console.log("socket",socket);
   //방에 들어가게되면 소켓으로 방 접속한걸 알림
   socket.emit("join", {
     roomno: roomid,

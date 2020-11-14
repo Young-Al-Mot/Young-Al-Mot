@@ -96,11 +96,11 @@ const RoomContainer = () => {
   const [gameStart, setgameStart] = useState(0); //이게 1일때 방장이 시작누르면 게임시작할수있음
   const [isStart, setisStart] = useState(0); //게임중인지 아닌지 나타냄(0은 대기방, 1은 게임중, -1은 점수창)
   const [timer, settimer] = useState(0);
+  const [round, setround] = useState(1);
 
   //endword
   const [order, setorder] = useState("");
   const [word, setword] = useState("");
-  const [round, setround] = useState(1);
   const [startWord, setstartWord] = useState("");
 
   //A Stands For
@@ -189,6 +189,7 @@ const RoomContainer = () => {
     }
   };
 
+  //'socketConection'이벤트
   useEffect(() => {
     //새로고침하면 방 나가게 됨
     //새로고침으로 리듀서 초기화되면 roomid 0되니까 그거이용
@@ -215,6 +216,15 @@ const RoomContainer = () => {
         dispatch(roomOutRequest(user.currentUser));
       }
     }
+
+    //서버가 갱신되어서 소켓id가 바뀔경우를 위해 이렇게함
+    //소켓연결이 되면 서버에서 'socketConection'이벤트가오고
+    //그럼 클라이언트에서는 유저id를 보내줌
+    socket.off('socketConection');
+    socket.on('socketConection',(val)=>{
+      if(val)
+        socket.emit('socketin',user.currentUser);
+    })
   });
 
   //msg소켓
@@ -347,12 +357,14 @@ const RoomContainer = () => {
           roomUser={roomUser}
           isStart={isStart}
           answerList={answerList}
+          round={round}
           settimer={settimer}
           setstartAlp={setstartAlp}
           setisStart={setisStart}
           setgameStart={setgameStart}
           setroomUser={setroomUser}
           setanswerList={setanswerList}
+          setround={setround}
         />
       );
     } else {

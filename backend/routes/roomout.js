@@ -27,7 +27,7 @@ db.connect();
 const yam = require('../yam');
 var timer = require('../socket/endwordtimer');
 
-exports.roomout = app.post('/roomout', upload.single(), (req, res) => {
+const room_out=(req, res) => {
     let roomno;
     let userid = req.body.userid;
     let sql = `SELECT * FROM user WHERE user_id=?`;
@@ -37,7 +37,8 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) => {
     console.log("")
 
     if (userid == "") {
-        return res.status(400).json();
+        return;
+        // return res.status(400).json();
     }
 
     db.query(sql, userid, (err, row, field) => {
@@ -64,7 +65,7 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) => {
                     console.log(row2[0].master);
 
                     if (row3[0].nowplayer > 1) {//사람 한명 나갔으니 nowplayer-1
-                        if (row3[0].nowplayer == 2) { //나갔을 때 혼자있는 경우
+                        if (row3[0].nowplayer == 2 && row3[0].state == 1) { //나갔을 때 혼자있는 경우
                             //게임 끝
                             if (yam.L[roomno].length != 0) {
                                 clearInterval(yam.L[roomno][0]);
@@ -179,8 +180,14 @@ exports.roomout = app.post('/roomout', upload.single(), (req, res) => {
                     }
                 })
                 yam.io.to(roomno).emit('msg', { name: 'System', message: row[0].user_name + '님이 방을 나갔습니다.' });
-                return res.json({ success: true });
+                if(res==undefined)
+                    return;
+                else
+                    return res.json({ success: true });
             })
         })
     })
-});
+}
+
+exports.roomout = app.post('/roomout', upload.single(), room_out);
+exports.room_out=room_out;
