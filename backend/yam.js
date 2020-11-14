@@ -87,16 +87,37 @@ app.post('/ready', ready.ready);
 
 // 클라이언트가 접속했을 때의 이벤트 설정
 io.on('connection', (socket) => {
+    console.log("conection",socket.id);
+
+    //서버가 클라이언트 접속을 확인하면 신호를 보냄
+    socket.emit("socketConection",1);
+
     //소켓 접속하면 소켓아이디랑 닉네임 테이블에 저장
-    socket.on('socketin',(nickname)=>{
-        console.log('socketin',nickname,socket.id);
-        if(nickname!=undefined){
-            let sql = `INSERT INTO socketid VALUES (?,?)`;
-            db.query(sql, [socket.id,nickname], (err) => {
+    socket.on('socketin',(userid)=>{
+        console.log('socketin',userid,socket.id);
+        if(userid!=undefined){
+            let sql=`SELECT * FROM socketid WHERE user_id=?`;
+            db.query(sql,userid,(err,row)=>{
                 if (err) throw err;
-            });
+
+                if(row.length==0){//아무것도없으면 insert
+                    let sql2 = `INSERT INTO socketid VALUES (?,?)`;
+                    db.query(sql2, [socket.id,userid], (err2) => {
+                        if (err2) throw err2;
+                    });
+                }else{
+                    //이미 있으면 업데이트
+                    let sql2 = `UPDATE socketid SET socket_id=? WHERE user_id=?`;
+                    db.query(sql2, [socket.id,userid], (err2) => {
+                        if (err2) throw err2;
+                    });
+                }
+            })
+
+            
         }
     });
+
     
     //소켓이 끊어지면 방에서 나가게함
     socket.on("disconnect", (reason) => {
