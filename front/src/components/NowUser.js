@@ -60,7 +60,7 @@ const NowUser = ({ roomUser, order }) => {
     }else if(val.user==order){
       return (
         <Child key={val.key}>
-          <Children1>{val.master?<img src={Crown}/>:<img src={Nope}/>}</Children1><Children2>{val.user}:{val.score}</Children2><Children3></Children3>
+          <Children1>{val.master?<img src={Crown}/>:<img src={Nope}/>}</Children1><Children2 style={{color:'#fdcb85'}}>{val.user}:{val.score}</Children2><Children3></Children3>
         </Child>
       );
     } else {

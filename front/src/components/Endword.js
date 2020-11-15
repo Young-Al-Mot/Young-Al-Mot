@@ -84,6 +84,7 @@ const ProgressBarWrapper = styled.div`
   height: 1vh;
   width: 25vw;
   background-color: ${props => props.colors};
+  text-align:center;
 `;
 const fill = keyframes`
   0% {width: 0%}
@@ -211,7 +212,7 @@ const Endword = ({
       return (
         <ProgressBarWrapper>
           {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}
-          {waitTime != 0 ? (waitTime == -1 ? true : waitTime) : "게임시작"}
+          {waitTime != 0 ? (waitTime == -1 ? true : waitTime):"GO!"}
         </ProgressBarWrapper>
       );
     }

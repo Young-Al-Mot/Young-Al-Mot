@@ -25,23 +25,31 @@ const AllContent = styled.div`
   justify-content: space-around;
 `;
 
-const ChatName = styled.span`
-  display: flex;
-  width: 20%;
-  min-width: 220px;
-  align-items: center;
-  justify-content: center;
-  border-right: solid thin;
-`;
-const ChatMessage = styled.span`
-  width: 80%;
-  padding-left: 5px;
-  word-break: break-all;
-`;
 const ChatBodyContent = styled.div`
   display: flex;
-  border-bottom: solid thin;
-  max-width: 100%;
+  border: 1px solid thin;
+  border-radius: 50px;
+  margin-left:10%;
+  padding-left:5%;
+  width: 75%;
+  margin-top:0.87%;
+  height: 20%;
+  font-size:105%;
+  align-items:center;
+`;
+
+const ChatBodyContent2 = styled.div`
+  display: flex;
+  border: 1px solid thin;
+  border-radius: 50px;
+  margin-left:10%;
+  font-size:105%;
+  width: 75%;
+  margin-top:0.87%;
+  height: 20%;
+  align-items:center;
+  justify-content:flex-end;
+  padding-right:5%;
 `;
 const TopContent = styled.div`
   height: 10%;
@@ -247,35 +255,20 @@ const RoomContainer = () => {
         console.log(order + " : order");
         if (user.currentNickname == e.name) {
           return (
-            <ChatBodyContent key={e.key}>
-              <ChatName style={{ backgroundColor: "#feffd4" }}>
-                {e.name}
-              </ChatName>
-              <ChatMessage style={{ backgroundColor: "#fdffba" }}>
-                {e.message}
-              </ChatMessage>
-            </ChatBodyContent>
+            <ChatBodyContent2 key={e.key} style={{backgroundColor: '#97cfcb'}} >
+              {e.message}
+            </ChatBodyContent2>
           );
         } else if (e.name == "System") {
           return (
-            <ChatBodyContent key={e.key}>
-              <ChatName style={{ backgroundColor: "#a1a1a1" }}>
-                {e.name}
-              </ChatName>
-              <ChatMessage style={{ backgroundColor: "#a1a1a1" }}>
-                {e.message}
-              </ChatMessage>
+            <ChatBodyContent key={e.key} style={{backgroundColor: '#a1a1a1'}}>
+              {e.name} : {e.message}
             </ChatBodyContent>
           );
         } else {
           return (
-            <ChatBodyContent key={e.key}>
-              <ChatName style={{ backgroundColor: "#eae6ff" }}>
-                {e.name}
-              </ChatName>
-              <ChatMessage style={{ backgroundColor: "#d6cfff" }}>
-                {e.message}
-              </ChatMessage>
+            <ChatBodyContent key={e.key} style={{backgroundColor: 'white'}}>
+              {e.name} : {e.message}
             </ChatBodyContent>
           );
         }
@@ -365,6 +358,7 @@ const RoomContainer = () => {
           setroomUser={setroomUser}
           setanswerList={setanswerList}
           setround={setround}
+          readybutton={readybutton}
         />
       );
     } else {

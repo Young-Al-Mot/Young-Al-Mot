@@ -41,7 +41,7 @@ const TopBotContent = styled.div`
   margin-top: 10px;
   text-align: center;
 `;
-const MidContnet = styled.div`
+const MidContent = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -50,7 +50,9 @@ const MidContnet = styled.div`
   width: 85%;
   border: solid thin;
   font-size: 200%;
+  background-color: #2f70a8;
 `;
+
 const BotContent = styled.div`
   display: flex;
   justify-content: center;
@@ -61,18 +63,20 @@ const BotContent = styled.div`
   border: solid thin;
 `;
 const ProgressBarWrapper = styled.div`
-  border: 2px solid lightblue;
-  height: 2vh;
-  width: 60vw;
+  height: 1vh;
+  width: 25vw;
+  background-color: ${props => props.colors};
+  text-align:center;
 `;
 const fill = keyframes`
   0% {width: 0%}
   100% {width: 100%} 
 `;
+
 const ProgressBar = styled.div`
-  background: lightblue;
+  background-color: #fdcb85;
   height: 100%;
-  animation: ${fill} ${gmaeroundtime}s linear;
+  animation: ${fill} 5s linear;
   animation-duration: 1;
   animation-direction: reverse;
   animation-fill-mode: forwards;
@@ -96,8 +100,9 @@ const AStandFor = ({
   setroomUser,
   setanswerList,
   setround,
+  readybutton,
 }) => {
-  const room = useSelector((state) => state.room.room);
+  const room = useSelector(state => state.room.room);
   const [waitTime, setwaitTime] = useState(-1);
   const [wrongWord, setwrongWord] = useState("");
 
@@ -125,12 +130,12 @@ const AStandFor = ({
     });
 
     socket.off("standtime");
-    socket.on("standtime", (time) => {
+    socket.on("standtime", time => {
       settimer(time);
     });
 
     socket.off("standend");
-    socket.on("standend", (val) => {
+    socket.on("standend", val => {
       console.log("gameend");
       let tmp = [];
       for (let i = 0; i < val.length; i++) {
@@ -188,7 +193,7 @@ const AStandFor = ({
     else return;
   };
 
-  const showAnswerList = answerList.map((val) => {
+  const showAnswerList = answerList.map(val => {
     if (val.key == answerList.length - 1) {
       return (
         <div key={val.key} style={{ margin: "5px", color: "green" }}>
@@ -206,7 +211,7 @@ const AStandFor = ({
   const timerBar = () => {
     if (timer <= gmaeroundtime && timer > 0) {
       return (
-        <ProgressBarWrapper>
+        <ProgressBarWrapper colors="gray">
           <ProgressBar />
         </ProgressBarWrapper>
       );
@@ -214,7 +219,7 @@ const AStandFor = ({
       return (
         <ProgressBarWrapper>
           {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}
-          {waitTime != 0 ? (waitTime == -1 ? true : waitTime) : "게임시작"}
+          {waitTime != 0 ? (waitTime == -1 ? true : waitTime) : "GO!"}
         </ProgressBarWrapper>
       );
     }
@@ -231,7 +236,7 @@ const AStandFor = ({
         </TopMidContent>
         <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
-      <MidContnet>{showAnswerList}</MidContnet>
+      <MidContent>{showAnswerList}{readybutton()}</MidContent>
       <BotContent>{wrongWord == "" ? message : showWrongWord}</BotContent>
       {showScoreBoarder()}
     </AllContent>
