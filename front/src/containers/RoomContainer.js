@@ -261,7 +261,7 @@ const RoomContainer = () => {
           );
         } else if (e.name == "System") {
           return (
-            <ChatBodyContent key={e.key} style={{backgroundColor: '#a1a1a1'}}>
+            <ChatBodyContent key={e.key} style={{backgroundColor: '#aaafca'}}>
               {e.name} : {e.message}
             </ChatBodyContent>
           );
