@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { darken, lighten } from 'polished';
+import modenine from './MODENINE.TTF'
 
 const ChatContent=styled.div`
   height:100%;
@@ -22,7 +23,7 @@ const TextContent = styled.div`
   border-radius:50px 0px 50px 0px;
   background-color: #2f70a8;
   font-size:105%;
-  margin-bottom:7%;
+  margin-bottom:4%;
 `;
 
 const MessageContent = styled.div`
@@ -30,41 +31,40 @@ const MessageContent = styled.div`
   justify-content:space-around;
   align-items:center;
   max-width:100%;
-  height:20%;
+  height:100px;
   background-color: #2f70a8;
   border-radius:20px;
   margin-bottom:10%;
 `;
 
 const MessageInput = styled.input`
-  width:85%;
+  width:82%;
   height:60%;
+  margin-left:3%;
   border:0px;
   font-size:150%;
   background-color:white;
   border-radius:50px;
 `;
 
-const SendButton = styled.button`
+const SendButton = styled.div`
+  @font-face {
+    font-family: modenine;
+    src: local('modenine'),
+    url(${modenine});
+  }
+  font-family: modenine;
   display: flex;
   justify-content:center;
   align-items:center;
-  color: white;
-  cursor: pointer;
+  color: #fdcb85;
   height: 70%;
   width:15%;
   max-width: 90px;
   min-width:50px;
-  font-size: 100%;
-  background: #555273;
+  font-size: 200%;
   line-height:270%;
-  border-radius:20px;
-  &:hover {
-    background: ${lighten(0.1, '#555273')};
-  }
-  &:active {
-    background: ${darken(0.1, '#555273')};
-  }
+  padding-right:2%;
 `;
 
 
@@ -96,7 +96,7 @@ const RoomChat = ({
             onChange={handleChangeMessage}
             onKeyPress={handleKeyPress}
           />
-        <SendButton onClick={send}>전송</SendButton>
+        <SendButton onClick={send}>Send</SendButton>
       </MessageContent>
       
     </ChatContent>
