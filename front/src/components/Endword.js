@@ -45,18 +45,19 @@ const MiddleBotContent = styled.div`
   text-align: center;
 `;
 const MidContent = styled.div`
+  display: flex;
   height: 60%;
   width: 40%;
   margin-bottom: 10px;
   background-color: #2f70a8;
   border-radius: 50px 0px 50px 0px;
-  font-size: 200%;
-  text-align: center;
+  font-size: 300%;
+  justify-content: center;
+  align-items: center;
+  color: white;
 `;
 const MidContent2 = styled.div`
   text-align: center;
-  margin-top: 5%;
-  margin-left: 30%;
 `;
 const BotContent = styled.div`
   text-align: center;
@@ -85,6 +86,7 @@ const ProgressBarWrapper = styled.div`
   width: 25vw;
   background-color: ${props => props.colors};
   text-align:center;
+  font-size:80%;
 `;
 const fill = keyframes`
   0% {width: 0%}
