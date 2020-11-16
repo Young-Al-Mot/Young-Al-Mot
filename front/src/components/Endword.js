@@ -129,6 +129,7 @@ const Endword = ({
 
   useEffect(() => {
     //게임 시작할때 순서인사람 닉네임, 전체라운드 단어, 라운드
+    socket.off('gamestart');
     socket.on("gamestart", (order, startword, gameround) => {
       setorder(order); //순서인사람 닉네임
       setisStart(1); //게임중인거 나타냄
@@ -180,6 +181,7 @@ const Endword = ({
       setword(word[word.length - 1]);
     });
 
+    socket.off('gameend');
     socket.on("gameend", val => {
       let tmp = [];
       let tmp2 = [];
