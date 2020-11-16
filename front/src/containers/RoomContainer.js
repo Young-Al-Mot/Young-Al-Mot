@@ -129,6 +129,7 @@ const RoomContainer = () => {
         console.log("aa", gameStart);
         //게임시작 누르면 소켓에 알림(방번호, 게임타입)
         socket.emit("gamestart", room.roomid, room.gametype);
+        setisReady(0);
       } else {
         alert("플레이어가 모두 준비를 완료해야 합니다");
       }

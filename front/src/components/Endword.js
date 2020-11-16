@@ -79,6 +79,7 @@ const BotContent2 = styled.div`
   background-color: white;
   font-size: 0.8em;
   border-radius: 15px;
+  overflow: hidden;
 `
 
 const ProgressBarWrapper = styled.div`
