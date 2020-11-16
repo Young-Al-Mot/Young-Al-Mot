@@ -3,12 +3,12 @@ import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 import { getSocket } from "../socket/SocketFunc";
 import ScoreBoarder from "./ScoreBoarder";
+import modenine from "./MODENINE.TTF";
 
 const gmaeroundtime = 20;
 
 const AllContent = styled.div`
   display: flex;
-  border: solid thin;
   height: 100%;
   width: 100%;
   justify-content: space-between;
@@ -16,51 +16,68 @@ const AllContent = styled.div`
   flex-direction: column;
 `;
 const TopContent = styled.div`
+  @font-face {
+    font-family: modenine;
+    src: local("modenine"), url(${modenine});
+  }
+  font-family: modenine;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
-  height: 15%;
+  margin-top: 0px;
+  height: 20%;
   width: 100%;
   font-family: sans-serif;
 `;
 const TopTopContent = styled.div`
-  font-size: 20px;
+  font-size: 30px;
+  text-transform:uppercase;
+  margin-bottom:5px;
 `;
 const TopMidContent = styled.div`
   display: flex;
   justify-content: center;
   font-size: 15px;
   width: 100%;
-  border-bottom: solid thin;
 `;
 const TopBotContent = styled.div`
+  @font-face {
+    font-family: modenine;
+    src: local("modenine"), url(${modenine});
+  }
+  font-family: modenine;
   height: 25px;
-  font-size: 100%;
+  font-size: 120%;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   text-align: center;
 `;
 const MidContent = styled.div`
+  @font-face {
+    font-family: modenine;
+    src: local("modenine"), url(${modenine});
+  }
+  font-family: modenine;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
   overflow: auto;
-  height: 60%;
-  width: 60%;
+  height: 70%;
+  width: 55%;
   border: solid thin;
   font-size: 200%;
   background-color: #2f70a8;
-  margin-bottom: 5%;
   color: white;
+  border-radius:50px;
 `;
 const MidContent1 = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: row;
-  align-content:flex-start;
-  justify-content:flex-start;
+  align-content: flex-start;
+  justify-content: flex-start;
 `;
 const MidContent2 = styled.div`
   display: flex;
@@ -73,15 +90,16 @@ const BotContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5%;
-  width: 85%;
-  margin-bottom: 10px;
-  border: solid thin;
+  height: 10%;
+  width: 50%;
+  font-size:130%;
+  padding-top:1%;
+  margin-bottom:4%;
 `;
 const ProgressBarWrapper = styled.div`
   height: 1vh;
   width: 25vw;
-  background-color: ${(props) => props.colors};
+  background-color: ${props => props.colors};
   text-align: center;
 `;
 const fill = keyframes`
@@ -119,7 +137,7 @@ const AStandFor = ({
   readybutton,
   setisReady,
 }) => {
-  const room = useSelector((state) => state.room.room);
+  const room = useSelector(state => state.room.room);
   const [waitTime, setwaitTime] = useState(-1);
   const [wrongWord, setwrongWord] = useState("");
 
@@ -148,12 +166,12 @@ const AStandFor = ({
     });
 
     socket.off("standtime");
-    socket.on("standtime", (time) => {
+    socket.on("standtime", time => {
       settimer(time);
     });
 
     socket.off("standend");
-    socket.on("standend", (val) => {
+    socket.on("standend", val => {
       console.log("gameend");
       let tmp = [];
       for (let i = 0; i < val.length; i++) {
@@ -177,8 +195,8 @@ const AStandFor = ({
 
   //answer소켓
   useEffect(() => {
-    socket.off('standanswer');
-    socket.off('standanswer');
+    socket.off("standanswer");
+    socket.off("standanswer");
     socket.on("standanswer", (word, answer, answeruser) => {
       if (nickname == answeruser) {
         //정답이면 화면의 정답리스트에 추가
@@ -195,7 +213,7 @@ const AStandFor = ({
           const tmp = setInterval(() => {
             setwrongWord("");
             clearInterval(tmp);
-          }, 500);
+          }, 1000);
         }
       }
     });
@@ -213,10 +231,10 @@ const AStandFor = ({
     else return;
   };
 
-  const showAnswerList = answerList.map((val) => {
+  const showAnswerList = answerList.map(val => {
     if (val.key == answerList.length - 1) {
       return (
-        <div key={val.key} style={{ margin: "5px", color: "#97cfcb" }}>
+        <div key={val.key} style={{ margin: "5px", color: "#97cfcb"}}>
           {val.answer}
         </div>
       );
@@ -250,9 +268,9 @@ const AStandFor = ({
   return (
     <AllContent>
       <TopContent>
-        <TopTopContent>시작 알파벳 {startAlp}</TopTopContent>
+        <TopTopContent>Start Word [{startAlp}]</TopTopContent>
         <TopMidContent>
-          라운드 {round}/{room.maxround}
+          Round {round}/{room.maxround}
         </TopMidContent>
         <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
@@ -260,7 +278,7 @@ const AStandFor = ({
         <MidContent1>{showAnswerList}</MidContent1>
         <MidContent2>{readybutton()}</MidContent2>
       </MidContent>
-      <BotContent>{wrongWord == "" ? message : showWrongWord}</BotContent>
+      <BotContent>{showWrongWord}</BotContent>
       {showScoreBoarder()}
     </AllContent>
   );

@@ -29,37 +29,37 @@ const ChatBodyContent = styled.div`
   display: flex;
   border: 1px solid thin;
   border-radius: 50px;
-  margin-left:10%;
-  padding-left:5%;
+  margin-left: 10%;
+  padding-left: 5%;
   width: 75%;
-  margin-top:0.87%;
+  margin-top: 0.87%;
   height: 20%;
-  font-size:105%;
-  align-items:center;
+  font-size: 105%;
+  align-items: center;
 `;
 
 const ChatBodyContent2 = styled.div`
   display: flex;
   border: 1px solid thin;
   border-radius: 50px;
-  margin-left:10%;
-  font-size:105%;
+  margin-left: 10%;
+  font-size: 105%;
   width: 75%;
-  margin-top:0.87%;
+  margin-top: 0.87%;
   height: 20%;
-  align-items:center;
-  justify-content:flex-end;
-  padding-right:5%;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 5%;
 `;
 const TopContent = styled.div`
   height: 10%;
-  margin-left:10%;
+  margin-left: 10%;
 `;
 const TopContentLeft = styled.div`
-  margin-top:10%;
+  margin-top: 10%;
 `;
 const TopContentRight = styled.div`
-  margin-left:85%;
+  margin-left: 85%;
 `;
 const BodyContent = styled.div`
   margin: 15px;
@@ -167,7 +167,12 @@ const RoomContainer = () => {
           //타이머 존재할때방 정답 전송됨
           if (timer > 0) {
             if (order == user.currentNickname) {
-              socket.emit("gameanswer", room.roomid, message, order);
+              socket.emit(
+                "gameanswer",
+                room.roomid,
+                message.toLowerCase(),
+                order
+              );
             }
           }
         } else if (room.gametype == "A Stands For") {
@@ -175,7 +180,7 @@ const RoomContainer = () => {
             socket.emit(
               "standanswer",
               room.roomid,
-              message,
+              message.toLowerCase(),
               user.currentNickname
             );
           }
@@ -190,7 +195,13 @@ const RoomContainer = () => {
               }
             }
             if (isSame) alert("이미 입력한 알파벳입니다");
-            else socket.emit("hanganswer", room.roomid, message, order);
+            else
+              socket.emit(
+                "hanganswer",
+                room.roomid,
+                message.toLowerCase(),
+                order
+              );
           }
         }
       }
@@ -228,11 +239,10 @@ const RoomContainer = () => {
     //서버가 갱신되어서 소켓id가 바뀔경우를 위해 이렇게함
     //소켓연결이 되면 서버에서 'socketConection'이벤트가오고
     //그럼 클라이언트에서는 유저id를 보내줌
-    socket.off('socketConection');
-    socket.on('socketConection',(val)=>{
-      if(val)
-        socket.emit('socketin',user.currentUser);
-    })
+    socket.off("socketConection");
+    socket.on("socketConection", val => {
+      if (val) socket.emit("socketin", user.currentUser);
+    });
   });
 
   //msg소켓
@@ -254,19 +264,22 @@ const RoomContainer = () => {
       const tmp = logs.map(e => {
         if (user.currentNickname == e.name) {
           return (
-            <ChatBodyContent2 key={e.key} style={{backgroundColor: '#97cfcb'}} >
+            <ChatBodyContent2
+              key={e.key}
+              style={{ backgroundColor: "#97cfcb" }}
+            >
               {e.message}
             </ChatBodyContent2>
           );
         } else if (e.name == "System") {
           return (
-            <ChatBodyContent key={e.key} style={{backgroundColor: '#aaafca'}}>
+            <ChatBodyContent key={e.key} style={{ backgroundColor: "#aaafca" }}>
               {e.name} : {e.message}
             </ChatBodyContent>
           );
         } else {
           return (
-            <ChatBodyContent key={e.key} style={{backgroundColor: 'white'}}>
+            <ChatBodyContent key={e.key} style={{ backgroundColor: "white" }}>
               {e.name} : {e.message}
             </ChatBodyContent>
           );
@@ -403,8 +416,12 @@ const RoomContainer = () => {
   return (
     <AllContent>
       <TopContent>
-        <TopContentRight><RoomOut roomOut={roomOut} /></TopContentRight>
-        <TopContentLeft><NowUser roomUser={roomUser} order={order} /></TopContentLeft>
+        <TopContentRight>
+          <RoomOut roomOut={roomOut} />
+        </TopContentRight>
+        <TopContentLeft>
+          <NowUser roomUser={roomUser} order={order} />
+        </TopContentLeft>
       </TopContent>
       <BodyContent>{game()}</BodyContent>
       <BottomContent>
