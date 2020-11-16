@@ -169,6 +169,7 @@ const AStandFor = ({
 
   //answer소켓
   useEffect(() => {
+    socket.off('standanswer');
     socket.on("standanswer", (word, answer, answeruser) => {
       if (nickname == answeruser) {
         //정답이면 화면의 정답리스트에 추가
