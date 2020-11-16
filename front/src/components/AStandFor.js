@@ -111,6 +111,7 @@ const AStandFor = ({
   setanswerList,
   setround,
   readybutton,
+  setisReady,
 }) => {
   const room = useSelector((state) => state.room.room);
   const [waitTime, setwaitTime] = useState(-1);
@@ -125,7 +126,8 @@ const AStandFor = ({
       setround(gameround);
       setisStart(1); //게임중인거 나타냄
       setgameStart(0); //방장 게임 시작버튼 비활성화
-
+      setisReady(0);
+      
       //게임 시작하기 전에 3 2 1 게임시작 표시해줌
       //(서버에서도 gamestart이벤트 보내고 4초뒤 게임 시작함)
       let i = 3;

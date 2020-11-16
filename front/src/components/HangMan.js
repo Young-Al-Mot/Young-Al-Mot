@@ -78,6 +78,7 @@ const HangMan = ({
   setword,
   setorder,
   setalp,
+  setisReady,
 }) => {
   const room = useSelector((state) => state.room.room);
 
@@ -92,6 +93,7 @@ const HangMan = ({
       console.log("hangstart");
       setisStart(1); //게임중인거 나타냄
       setgameStart(0); //방장 게임 시작버튼 비활성화
+      setisReady(0);
 
       setlife(7);
       setfailAlp([]);
