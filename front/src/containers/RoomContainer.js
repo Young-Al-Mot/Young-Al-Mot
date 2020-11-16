@@ -252,7 +252,6 @@ const RoomContainer = () => {
       logs2.unshift(obj); // 로그에 추가하기
       setLogs(logs2);
       const tmp = logs.map(e => {
-        console.log(order + " : order");
         if (user.currentNickname == e.name) {
           return (
             <ChatBodyContent2 key={e.key} style={{backgroundColor: '#97cfcb'}} >
