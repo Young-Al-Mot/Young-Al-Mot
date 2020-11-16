@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled, { keyframes } from "styled-components";
 import { getSocket } from "../socket/SocketFunc";
 import ScoreBoarder from "./ScoreBoarder";
-import modenine from './MODENINE.TTF'
+import modenine from "./MODENINE.TTF";
 
 const AllContent = styled.div`
   @font-face {
     font-family: modenine;
-    src: local('modenine'),
-    url(${modenine});
+    src: local("modenine"), url(${modenine});
   }
   font-family: modenine;
   display: flex;
@@ -29,6 +28,8 @@ const TopContent = styled.div`
   font-size: 45px;
 `;
 const TopTopContent = styled.div`
+  display: flex;
+  flex-direction: row;
   margin-top: 50px;
   padding-bottom: 5px;
   text-align: center;
@@ -36,7 +37,7 @@ const TopTopContent = styled.div`
 `;
 const TopBottomContent = styled.div`
   margin-bottom: 40px;
-  margin-top:10px;
+  margin-top: 10px;
 `;
 const MiddleBotContent = styled.div`
   margin-bottom: 100px;
@@ -72,22 +73,22 @@ const BotContent = styled.div`
 
 const BotContent2 = styled.div`
   text-align: center;
-  margin-left:5%;
-  margin-top:1.5%;
+  margin-left: 5%;
+  margin-top: 1.5%;
   width: 90%;
   height: 65%;
   background-color: white;
   font-size: 0.8em;
   border-radius: 15px;
   overflow: hidden;
-`
+`;
 
 const ProgressBarWrapper = styled.div`
   height: 1vh;
   width: 25vw;
-  background-color: ${props => props.colors};
-  text-align:center;
-  font-size:80%;
+  background-color: ${(props) => props.colors};
+  text-align: center;
+  font-size: 80%;
 `;
 const fill = keyframes`
   0% {width: 0%}
@@ -130,14 +131,14 @@ const Endword = ({
 
   useEffect(() => {
     //게임 시작할때 순서인사람 닉네임, 전체라운드 단어, 라운드
-    socket.off('gamestart');
+    socket.off("gamestart");
     socket.on("gamestart", (order, startword, gameround) => {
       setorder(order); //순서인사람 닉네임
       setisStart(1); //게임중인거 나타냄
       setgameStart(0); //방장 게임 시작버튼 비활성화
       setstartWord(startword);
       setisReady(0);
-      
+
       //라운드 시작할때 전체 라운드 단어중 라운드에 해당하는 인덱스 단어 세팅
       setword(startword[gameround]);
       setround(gameround);
@@ -178,13 +179,13 @@ const Endword = ({
       console.log("다음순서", order);
     });
     socket.off("gametime");
-    socket.on("gametime", time => {
+    socket.on("gametime", (time) => {
       settimer(time);
       setword(word[word.length - 1]);
     });
 
-    socket.off('gameend');
-    socket.on("gameend", val => {
+    socket.off("gameend");
+    socket.on("gameend", (val) => {
       let tmp = [];
       let tmp2 = [];
       for (let i = 0; i < val.length; i++) {
@@ -219,7 +220,7 @@ const Endword = ({
       return (
         <ProgressBarWrapper>
           {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}
-          {waitTime != 0 ? (waitTime == -1 ? true : waitTime):"GO!"}
+          {waitTime != 0 ? (waitTime == -1 ? true : waitTime) : "GO!"}
         </ProgressBarWrapper>
       );
     }
@@ -228,7 +229,7 @@ const Endword = ({
   const wordColor = () => {
     if (word == undefined) return;
     if (word.length > 1) {
-      if (answerSuccess) return <div style={{ color: '#97cfcb' }}>{word}</div>;
+      if (answerSuccess) return <div style={{ color: "#97cfcb" }}>{word}</div>;
       else {
         return <div style={{ color: "red" }}>{word}</div>;
       }
@@ -249,6 +250,20 @@ const Endword = ({
     else return;
   };
 
+  const showStartWord = useCallback(() => {
+    let i = 0;
+    const tmp = [];
+
+    for (i = 0; i < startWord.length; i++) {
+      if (round == i) {
+        tmp.push(<div style={{ color: "red" }}>{startWord[i]}</div>);
+      } else {
+        tmp.push(<div>{startWord[i]}</div>);
+      }
+    }
+    return tmp;
+  }, [startWord]);
+
   const showMessage = () => {
     if (order == roomUser.user) {
       return <BotContent>{message}</BotContent>;
@@ -259,10 +274,7 @@ const Endword = ({
   return (
     <AllContent>
       <TopContent>
-        <TopTopContent>
-          {startWord}
-          {/* 라운드에 해당하는 글짜를 크게표시하거나 색을 다르게 표시해야함 */}
-        </TopTopContent>
+        <TopTopContent>{showStartWord()}</TopTopContent>
         <TopBottomContent>{timerBar()}</TopBottomContent>
       </TopContent>
       <MidContent>
@@ -271,7 +283,9 @@ const Endword = ({
         {/* 이전단어의 마지막 글자 보여줌 / 정답을 엔터or전송 하면 서버에서 확인후
         초록글씨or빨간글씨 로 입력한 단어 표시 */}
       </MidContent>
-      <BotContent><BotContent2>{message}</BotContent2></BotContent>
+      <BotContent>
+        <BotContent2>{message}</BotContent2>
+      </BotContent>
       <MiddleBotContent></MiddleBotContent>
       {showScoreBoarder()}
     </AllContent>
