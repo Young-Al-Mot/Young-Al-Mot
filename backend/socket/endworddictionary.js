@@ -59,8 +59,8 @@ var endworddictionary = function (roomno, word, order) {//방 번호, 단어, �
                     console.log("internet reference")
                     request(options, function (err, response, resultset) {
                         //에러 발생시
-                        if (err != null) {
-
+                        if (resultset === undefined || resultset === null) {
+                            resultset = ['-'];
                         }
 
                         //meanings가 없으면 단어가 없는 것이므로 meanings를 찾는다
