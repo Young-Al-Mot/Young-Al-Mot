@@ -87,13 +87,6 @@ create table dict(
    primary key(`word`)
 );
 
-create table userword(
-   `user_name` varchar(12) NOT NULL,
-   `chat` varchar(50) NOT NULL,
-   `room_no` int,
-   primary key(`user_name`, `chat`)
-);
-
 #소켓 id, 게임닉네임 관리 table
 create table socketid(
    `socket_id` varchar(30) NOT NULL,
@@ -111,4 +104,11 @@ create table endword(
    `score` int,
    `intime` datetime,
    primary key(`user_name`)
+);
+
+create table userword(
+   `user_name` varchar(12) NOT NULL,
+   `chat` varchar(50) NOT NULL,
+   `room_no` int,
+   primary key(`user_name`, `chat`)
 );

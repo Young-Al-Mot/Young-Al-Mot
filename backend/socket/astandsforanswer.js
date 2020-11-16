@@ -15,8 +15,8 @@ var yam = require('../yam');
 var standdictionary = require('./astandsfordictionary');
 
 var standanswer = function (roomno, message, username) {
-    let sql = `SELECT * FROM userword WHERE user_name=? and chat=?`;
-    let list = [username, message];
+    let sql = `SELECT * FROM chatting WHERE chat=?`;
+    let list = [message];
     db.query(sql, list, (err, row, f) => {
         if (err) throw err;
 

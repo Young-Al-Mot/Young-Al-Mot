@@ -72,7 +72,7 @@ var standdictionary = function (roomno, word, username) {//방 번호, 단어, �
                             let sqlwordinsert = 'INSERT INTO dict(word) VALUES(?)';
                             db.query(sqlwordinsert, word, (errwin, wresult, fields) => {
                                 if (errwin) {
-                                    resolve(false);
+                                    resolve(result);
                                 }
                             })
                         }
@@ -91,10 +91,10 @@ var standdictionary = function (roomno, word, username) {//방 번호, 단어, �
         console.log(result);
         if (result) { //사전에 있는 단어, 성공
             //중복단어 테이블에 insert
-            let sql = `INSERT INTO userword VALUES(?,?,?)`;
-            let li = [username, word, roomno];
+            let sql = `INSERT INTO chatting VALUES(?,?)`;
+            let li = [roomno, word];
             db.query(sql, li, (err) => {
-                if (err) throw err;
+
             })
 
             sql = `UPDATE roomuser SET score=score+? WHERE user_name=?`;

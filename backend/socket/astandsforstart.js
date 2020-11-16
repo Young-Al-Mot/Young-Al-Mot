@@ -23,8 +23,8 @@ var standstart = function (roomno) {
         if (err) throw err;
     })
 
-    //유저별 단어 초기화
-    sql = `DELETE FROM userword WHERE room_no=?`;
+    //단어 초기화
+    sql = `DELETE FROM chatting WHERE room_no=?`;
     db.query(sql, roomno, (err) => {
         if (err) throw err;
     })
