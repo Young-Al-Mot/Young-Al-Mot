@@ -44,13 +44,23 @@ const TopBotContent = styled.div`
 const MidContent = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-content: flex-start;
+  align-content:flex-start;
+  justify-content:flex-start;
   overflow: auto;
-  height: 70%;
-  width: 85%;
+  height: 60%;
+  width: 60%;
   border: solid thin;
   font-size: 200%;
   background-color: #2f70a8;
+  margin-bottom: 5%;
+`;
+const MidContent2 = styled.div`
+  display: flex;
+  margin-top: 8%;
+  margin-left: 37.5%;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
 `;
 
 const BotContent = styled.div`
@@ -65,8 +75,8 @@ const BotContent = styled.div`
 const ProgressBarWrapper = styled.div`
   height: 1vh;
   width: 25vw;
-  background-color: ${props => props.colors};
-  text-align:center;
+  background-color: ${(props) => props.colors};
+  text-align: center;
 `;
 const fill = keyframes`
   0% {width: 0%}
@@ -76,7 +86,7 @@ const fill = keyframes`
 const ProgressBar = styled.div`
   background-color: #fdcb85;
   height: 100%;
-  animation: ${fill} 5s linear;
+  animation: ${fill} 20s linear;
   animation-duration: 1;
   animation-direction: reverse;
   animation-fill-mode: forwards;
@@ -102,7 +112,7 @@ const AStandFor = ({
   setround,
   readybutton,
 }) => {
-  const room = useSelector(state => state.room.room);
+  const room = useSelector((state) => state.room.room);
   const [waitTime, setwaitTime] = useState(-1);
   const [wrongWord, setwrongWord] = useState("");
 
@@ -130,12 +140,12 @@ const AStandFor = ({
     });
 
     socket.off("standtime");
-    socket.on("standtime", time => {
+    socket.on("standtime", (time) => {
       settimer(time);
     });
 
     socket.off("standend");
-    socket.on("standend", val => {
+    socket.on("standend", (val) => {
       console.log("gameend");
       let tmp = [];
       for (let i = 0; i < val.length; i++) {
@@ -193,7 +203,7 @@ const AStandFor = ({
     else return;
   };
 
-  const showAnswerList = answerList.map(val => {
+  const showAnswerList = answerList.map((val) => {
     if (val.key == answerList.length - 1) {
       return (
         <div key={val.key} style={{ margin: "5px", color: "green" }}>
@@ -236,7 +246,10 @@ const AStandFor = ({
         </TopMidContent>
         <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
-      <MidContent>{showAnswerList}{readybutton()}</MidContent>
+      <MidContent>
+        {showAnswerList}
+        <MidContent2>{readybutton()}</MidContent2>
+      </MidContent>
       <BotContent>{wrongWord == "" ? message : showWrongWord}</BotContent>
       {showScoreBoarder()}
     </AllContent>
