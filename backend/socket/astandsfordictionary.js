@@ -59,8 +59,8 @@ var standdictionary = function (roomno, word, username) {//방 번호, 단어, �
                     console.log("internet reference")
                     request(options, function (err, response, resultset) {
                         //에러 발생시
-                        if (err != null) {
-
+                        if (resultset === undefined || resultset === null) {
+                            resultset = ['-'];
                         }
 
                         //meanings가 없으면 단어가 없는 것이므로 meanings를 찾는다
@@ -96,8 +96,8 @@ var standdictionary = function (roomno, word, username) {//방 번호, 단어, �
             db.query(sql, li, (err) => {
 
             })
-            
-            if(yam.L[roomno].length){
+
+            if (yam.L[roomno].length) {
                 sql = `UPDATE roomuser SET score=score+? WHERE user_name=?`;
                 li = [word.length * 5, username];
                 db.query(sql, li, (err) => {
