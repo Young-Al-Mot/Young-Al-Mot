@@ -123,6 +123,7 @@ const Endword = ({
   setgameStart,
   setroomUser,
   readybutton,
+  setisReady,
 }) => {
   const [answerSuccess, setanswerSuccess] = useState(0);
   const [waitTime, setwaitTime] = useState(-1);
@@ -135,7 +136,8 @@ const Endword = ({
       setisStart(1); //게임중인거 나타냄
       setgameStart(0); //방장 게임 시작버튼 비활성화
       setstartWord(startword);
-
+      setisReady(0);
+      
       //라운드 시작할때 전체 라운드 단어중 라운드에 해당하는 인덱스 단어 세팅
       setword(startword[gameround]);
       setround(gameround);
