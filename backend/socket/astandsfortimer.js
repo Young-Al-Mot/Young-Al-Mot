@@ -26,8 +26,8 @@ const timer = (roomno) => {
         console.log("timer", 20 - t);
 
         if (t == 20) {
-            //시간초과 이벤트 발생, 발생 할때마다 userword 테이블 초기화
-            let sql = `DELETE FROM userword WHERE room_no=?`;
+            //시간초과 이벤트 발생, 발생 할때마다 chatting 테이블 초기화
+            let sql = `DELETE FROM chatting WHERE room_no=?`;
             db.query(sql, roomno, (err) => {
                 if (err) throw err;
             })
