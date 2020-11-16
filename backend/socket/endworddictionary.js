@@ -89,8 +89,19 @@ var endworddictionary = function (roomno, word, order) {//방 번호, 단어, �
         console.log(result);
         if (result) { //사전에 있는 단어, 성공
             //중복단어 테이블에 insert
-            let sql = `INSERT INTO chatting VALUES(?,?)`;
+            let sql = `SELECT * FROM chatting WHERE room_no=? and chat=?`;
             let li = [roomno, word];
+            db.query(sql, li, (err, row, f) => {
+                if(err) throw err;
+
+                if(row[0]){
+                    //중복, 실패 -> 현재 단어 그대로, 진행중인 사람, 0(실패), 틀린 단어
+                    yam.io.to(roomno).emit('gameanswer', yam.nowword[roomno], order, 0, word);
+                }
+            })
+
+            sql = `INSERT INTO chatting VALUES(?,?)`;
+            li = [roomno, word];
             db.query(sql, li, (err) => {
                 if (err) throw err;
             })
