@@ -96,28 +96,30 @@ var standdictionary = function (roomno, word, username) {//방 번호, 단어, �
             db.query(sql, li, (err) => {
 
             })
-
-            sql = `UPDATE roomuser SET score=score+? WHERE user_name=?`;
-            li = [word.length * 5, username];
-            db.query(sql, li, (err) => {
-                if (err) throw err;
-
-                sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
-                db.query(sql, roomno, (err, row, f) => {
+            
+            if(yam.L[roomno].length){
+                sql = `UPDATE roomuser SET score=score+? WHERE user_name=?`;
+                li = [word.length * 5, username];
+                db.query(sql, li, (err) => {
                     if (err) throw err;
 
-                    yam.io.to(roomno).emit('join', row);
-                })
+                    sql = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
+                    db.query(sql, roomno, (err, row, f) => {
+                        if (err) throw err;
 
-                sql = `SELECT * FROM roomuser  WHERE room_no=? ORDER BY intime ASC`;
-                db.query(sql, roomno, (err, row, f) => {
-                    if (err) throw err;
+                        yam.io.to(roomno).emit('join', row);
+                    })
 
-                    //맞춘 단어, 다음순서, 1(성공), 유저정보
-                    yam.io.to(roomno).emit('standanswer', word, 1, username);
-                    yam.io.to(roomno).emit('join', row);
+                    sql = `SELECT * FROM roomuser  WHERE room_no=? ORDER BY intime ASC`;
+                    db.query(sql, roomno, (err, row, f) => {
+                        if (err) throw err;
+
+                        //맞춘 단어, 다음순서, 1(성공), 유저정보
+                        yam.io.to(roomno).emit('standanswer', word, 1, username);
+                        yam.io.to(roomno).emit('join', row);
+                    })
                 })
-            })
+            }
         }
         else { //사전에 없는 단어, 실패 -> 닉네임, 단어, 0(실패)
             yam.io.to(roomno).emit('standanswer', word, 0, username);
