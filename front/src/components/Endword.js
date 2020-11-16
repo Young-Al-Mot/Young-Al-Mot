@@ -33,6 +33,7 @@ const TopTopContent = styled.div`
   margin-top: 50px;
   padding-bottom: 5px;
   text-align: center;
+  justify-content:center;
   width: 300px;
 `;
 const TopBottomContent = styled.div`
@@ -250,10 +251,9 @@ const Endword = ({
     else return;
   };
 
-  const showStartWord = useCallback(() => {
+  const showStartWord = () => {
     let i = 0;
     const tmp = [];
-
     for (i = 0; i < startWord.length; i++) {
       if (round == i) {
         tmp.push(<div style={{ color: "red" }}>{startWord[i]}</div>);
@@ -262,15 +262,8 @@ const Endword = ({
       }
     }
     return tmp;
-  }, [startWord]);
-
-  const showMessage = () => {
-    if (order == roomUser.user) {
-      return <BotContent>{message}</BotContent>;
-    } else {
-      return <BotContent>{message}</BotContent>;
-    }
   };
+
   return (
     <AllContent>
       <TopContent>

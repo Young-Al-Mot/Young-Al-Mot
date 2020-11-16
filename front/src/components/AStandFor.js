@@ -39,13 +39,14 @@ const TopBotContent = styled.div`
   height: 25px;
   font-size: 100%;
   margin-top: 10px;
+  margin-bottom: 10px;
   text-align: center;
 `;
 const MidContent = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-content:flex-start;
-  justify-content:flex-start;
+  align-items: center;
+  justify-content:center;
   overflow: auto;
   height: 60%;
   width: 60%;
@@ -53,11 +54,16 @@ const MidContent = styled.div`
   font-size: 200%;
   background-color: #2f70a8;
   margin-bottom: 5%;
+  color: white;
+`;
+const MidContent1 = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content:flex-start;
+  justify-content:flex-start;
 `;
 const MidContent2 = styled.div`
   display: flex;
-  margin-top: 8%;
-  margin-left: 37.5%;
   justify-content: center;
   align-content: center;
   text-align: center;
@@ -210,7 +216,7 @@ const AStandFor = ({
   const showAnswerList = answerList.map((val) => {
     if (val.key == answerList.length - 1) {
       return (
-        <div key={val.key} style={{ margin: "5px", color: "green" }}>
+        <div key={val.key} style={{ margin: "5px", color: "#97cfcb" }}>
           {val.answer}
         </div>
       );
@@ -251,7 +257,7 @@ const AStandFor = ({
         <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
       <MidContent>
-        {showAnswerList}
+        <MidContent1>{showAnswerList}</MidContent1>
         <MidContent2>{readybutton()}</MidContent2>
       </MidContent>
       <BotContent>{wrongWord == "" ? message : showWrongWord}</BotContent>
