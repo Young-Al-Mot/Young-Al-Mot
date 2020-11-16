@@ -71,7 +71,9 @@ var standdictionary = function (roomno, word, username) {//방 번호, 단어, �
                             //db에 없는 단어 추가
                             let sqlwordinsert = 'INSERT INTO dict(word) VALUES(?)';
                             db.query(sqlwordinsert, word, (errwin, wresult, fields) => {
-                                if (errwin) throw errwin;
+                                if (errwin) {
+                                    resolve(false);
+                                }
                             })
                         }
                         else {//단어가없음
