@@ -1,6 +1,6 @@
 import axios from "axios";
 import { socketConnect } from "../socket/SocketFunc";
-import {config} from '../config';
+import { config } from "../config";
 
 // 액션타입
 const ROOM_IN = "ROOM_IN";
@@ -18,7 +18,7 @@ const initialState = {
 };
 
 //액션 생성함수
-export const roomin = (roomid, title, gametype, peoplemaxnum,maxround) => {
+export const roomin = (roomid, title, gametype, peoplemaxnum, maxround) => {
   return {
     type: ROOM_IN,
     roomid,
@@ -55,12 +55,21 @@ export const roomCreateRequest = (
       peoplemaxnum,
       maxround,
     },
-  }).then((res) => {
-    socketConnect();
-    return dispatch(
-      roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround)
-    );
-  });
+  })
+    .then((res) => {
+      socketConnect();
+      return dispatch(
+        roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround)
+      );
+    })
+    .catch((e) => {
+      //이미 게임중인 아이디일경우
+      if(e.response.data.error==6){
+        return { roomid: 0, error: 6 };
+      }
+
+
+    });
 };
 
 export const roomInRequest = (roomid, password) => (dispatch) => {
@@ -95,6 +104,9 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
         return { roomid: 0, error: 4 };
       } else if (e.response.data.error == 5) {
         return { roomid: 0, error: 5 };
+      }else if(e.response.data.error==6){
+        //이미 게임중인 아이디일경우
+        return { roomid: 0, error: 6 };
       }
       return { roomid: 0 };
     });
@@ -124,7 +136,7 @@ const room = (state = initialState, action) => {
           gametype: action.gametype,
           peoplemaxnum: action.peoplemaxnum,
           roomid: action.roomid,
-          maxround:action.maxround,
+          maxround: action.maxround,
         },
       };
     case ROOM_OUT:
@@ -135,7 +147,7 @@ const room = (state = initialState, action) => {
           gametype: "",
           peoplemaxnum: -1,
           roomid: 0,
-          maxround:-1,
+          maxround: -1,
         },
       };
     default:
