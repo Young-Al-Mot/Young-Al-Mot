@@ -5,8 +5,8 @@ import axios from "axios";
 
 import RoomList from "../components/RoomList";
 import { roomInRequest, roomOutRequest } from "../modules/room";
-import {socketIn,getSocket} from "../socket/SocketFunc";
-import {config} from '../config';
+import { socketIn, getSocket } from "../socket/SocketFunc";
+import { config } from "../config";
 
 const RoomListContainer = () => {
   const history = useHistory();
@@ -17,7 +17,6 @@ const RoomListContainer = () => {
   const [roomid, setroomid] = useState(0);
   const [password, setpassword] = useState("");
   const user = useSelector((state) => state.auth.status);
-
 
   const handleChangeIsRoomCreate = () => {
     setIsRoomCreate(true);
@@ -39,7 +38,7 @@ const RoomListContainer = () => {
     setpassword(e.target.value);
   };
 
-  const socket=getSocket();
+  const socket = getSocket();
 
   //방정보 받아오는거
   const getInfo = () => {
@@ -66,11 +65,10 @@ const RoomListContainer = () => {
           getInfo();
         } else if (res.error == 5) {
           alert("비밀번호가 틀렸습니다");
-        } else if(res.error==6){
+        } else if (res.error == 6) {
           alert("이미 게임중인 아이디입니다");
-        }
-        else if (res.roomid != 0) {
-          socketIn(roomid,user.currentNickname);
+        } else if (res.roomid != 0) {
+          socketIn(roomid, user.currentNickname);
           history.push("/room");
         }
       });
@@ -82,8 +80,10 @@ const RoomListContainer = () => {
         if (res.error == 4) {
           alert("방이 가득찼습니다");
           getInfo();
+        } else if (res.error == 6) {
+          alert("이미 게임중인 아이디입니다");
         } else if (res.roomid != 0) {
-          socketIn(val,user.currentNickname);
+          socketIn(val, user.currentNickname);
           history.push("/room");
         }
       });
