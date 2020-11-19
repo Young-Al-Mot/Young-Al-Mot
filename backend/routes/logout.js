@@ -12,8 +12,10 @@ const conf = JSON.parse(data);
 const mysql = require('mysql');
 
 const multer = require('multer');
+const { json } = require('express');
 const upload = multer({dest: './upload'});
 
+//파일에서 문자열 받아와서 스페이스로나눔
 const _secret = fs.readFileSync('./secret.txt','utf8').split(" ");
 
 const db = mysql.createConnection({
@@ -24,15 +26,13 @@ const db = mysql.createConnection({
 });
 db.connect();
 
-exports.roomlist = app.post('/roomlist', upload.single(), (req, res) =>{
-    let sql = `SELECT * FROM roomlist WHERE state = 0 ORDER BY createtime DESC`;
-
-    db.query(sql, [], (err, rows, fields) => {
+exports.main = app.post('/loginchk', upload.single(), (req, res) =>{
+    let sql = `UPDATE user SET login=0 WHERE user_id=?`;
+    let id = req.body.userid;
+    let list = [id];
+    db.query(sql, list, (err) => {
         if(err) throw err;
-        
-        return res.json({
-            success: true,
-            list: rows
-        });
+
+        return res.json({ success: true });
     })
 });
