@@ -62,7 +62,7 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
                             });
                         }
                         else{
-                            sql = `INSERT INTO user(user_id, password, user_name, email) VALUES(?,?,?,?)`;
+                            sql = `INSERT INTO user(user_id, password, user_name, email, login) VALUES(?,?,?,?,0)`;
                             list = [id, password, name, email];
 
                             db.query(sql, list, (err4, result, fields) => {
