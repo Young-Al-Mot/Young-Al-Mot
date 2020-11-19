@@ -25,7 +25,7 @@ const db = mysql.createConnection({
 db.connect();
 
 exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
-    let sql = `SELECT * FROM roomlist WHERE room_no=?`;
+    let sql = `SELECT * FROM user WHERE user_id=?`;
     let roomno = req.body.roomid;
     let password = req.body.password;
     let userid = req.body.userid;
@@ -33,38 +33,54 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
     console.log("roominchk roomno",roomno);
     console.log("");
     
-    
-    db.query(sql, roomno, (err, rows, fields) => {
+    db.query(sql, userid, (err, r, f) => {
         if(err) throw err;
 
-        if(rows[0].password == null || password == rows[0].password){
-            if(rows[0].nowplayer == rows[0].maxplayer){
+        let sql2 = `SELECT * FROM roomuser WHERE user_name=?`;
+        db.query(sql2, r[0].user_name, (err2, r2, f2) => {
+            if(err2) throw err2;
+
+            if(r2[0]){
                 return res.status(400).json({
-                    error: 4//방이 가득찼습니다
-                 });
+                    error: 6//이미 게임중인 아이디입니다
+                });
             }
             else{
-                let sql2 = `UPDATE roomlist SET nowplayer=nowplayer+1 WHERE room_no=?`;
-
-                db.query(sql2, roomno, (err2, rows2, fields2) =>{
-                    if(err2) throw err2;
-                })
-
-                let sql3 = `SELECT * FROM user WHERE user_id=?`;
-                db.query(sql3, userid, (err3, row, field) => {
+                let sql3 = `SELECT * FROM roomlist WHERE room_no=?`;
+                db.query(sql3, roomno, (err3, rows, fields) => {
                     if(err3) throw err3;
-
-                    let sql4 = `INSERT INTO roomuser VALUES (?,?,?,?,?,?,now())`;
-                    db.query(sql4, [row[0].user_no, row[0].user_name, rows[0].room_no, 0, 0, 0], (err4, r, f) => {
-                        if(err4) throw err4;
-                    })
-
-                    return res.json({ success: true, roominfo:rows[0] });
+            
+                    if(rows[0].password == null || password == rows[0].password){
+                        if(rows[0].nowplayer == rows[0].maxplayer){
+                            return res.status(400).json({
+                                error: 4//방이 가득찼습니다
+                             });
+                        }
+                        else{
+                            let sql4 = `UPDATE roomlist SET nowplayer=nowplayer+1 WHERE room_no=?`;
+            
+                            db.query(sql4, roomno, (err4) =>{
+                                if(err4) throw err4;
+                            })
+            
+                            let sql5 = `SELECT * FROM user WHERE user_id=?`;
+                            db.query(sql5, userid, (err5, row, field) => {
+                                if(err5) throw err5;
+            
+                                let sql6 = `INSERT INTO roomuser VALUES (?,?,?,?,?,?,now())`;
+                                db.query(sql6, [row[0].user_no, row[0].user_name, rows[0].room_no, 0, 0, 0], (err6, r, f) => {
+                                    if(err6) throw err6;
+                                })
+            
+                                return res.json({ success: true, roominfo:rows[0] });
+                            })
+                        }
+                    }
+                    else return res.status(400).json({
+                        error: 5//방 비밀번호가 일치하지 않습니다
+                     });
                 })
             }
-        }
-        else return res.status(400).json({
-            error: 5//방 비밀번호가 일치하지 않습니다
-         });
+        })
     })
 });

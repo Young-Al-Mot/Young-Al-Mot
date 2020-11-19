@@ -60,30 +60,12 @@ create table roomuser(
 create table chatting(
    `room_no` int NOT NULL,
    `chat` varchar(50) NOT NULL,
-   primary key(`chat`)
+   primary key(`roomno`, `chat`)
 );
-
-#단어 테이블(나중에 추가할 예정)
-create table words(
-   `word` varchar(50),
-   `length` int
-);
-
-insert into words(word, length) values ('apple', 5);
-insert into words(word, length) values ('hello', 5);
-insert into words(word, length) values ('korea', 5);
-insert into words(word, length) values ('world', 5);
-insert into words(word, length) values ('random', 6);
-insert into words(word, length) values ('terran', 6);
-insert into words(word, length) values ('school', 6);
-insert into words(word, length) values ('korean', 6);
-insert into words(word, length) values ('english', 7);
-insert into words(word, length) values ('program', 7);
-insert into words(word, length) values ('balance', 7);
-insert into words(word, length) values ('because', 7);
 
 create table dict(
    `word` varchar(50),
+   `length` int,
    primary key(`word`)
 );
 
@@ -111,4 +93,10 @@ create table userword(
    `chat` varchar(50) NOT NULL,
    `room_no` int,
    primary key(`user_name`, `chat`)
+);
+
+#단어 테이블
+create table words(
+   `word` varchar(50),
+   `length` int
 );
