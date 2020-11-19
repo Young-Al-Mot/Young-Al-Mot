@@ -66,7 +66,10 @@ const RoomListContainer = () => {
           getInfo();
         } else if (res.error == 5) {
           alert("비밀번호가 틀렸습니다");
-        } else if (res.roomid != 0) {
+        } else if(res.error==6){
+          alert("이미 게임중인 아이디입니다");
+        }
+        else if (res.roomid != 0) {
           socketIn(roomid,user.currentNickname);
           history.push("/room");
         }
