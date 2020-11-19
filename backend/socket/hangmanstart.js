@@ -45,11 +45,11 @@ var hangmanstart = function (roomno) {
     db.query(sql2, roomno, (err, row, f) => {
         if (err) throw err;
 
-        //시작단어 랜덤, 현재 12개
-        var num = Math.floor(Math.random() * 12);
-        let sql3 = `SELECT * FROM words`;
+        let sql3 = `SELECT * FROM dict`;
         db.query(sql3, yam.maxround[roomno], (err2, row2, f2) => {
             if (err2) throw err2;
+            //시작단어 랜덤
+            var num = Math.floor(Math.random() * row2.length);
             yam.nowword[roomno] = row2[num].word; //라운드 단어
 
             //시작하는사람닉네임, 라운드 단어, 라운드
