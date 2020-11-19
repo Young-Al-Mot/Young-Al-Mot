@@ -58,11 +58,11 @@ var hangmananswer = function (roomno, msg, username) {
                 yam.nowlife[roomno] = yam.life;
                 yam.round[roomno]++;
 
-                //시작단어 랜덤, 현재 12개
-                var num = Math.floor(Math.random() * 12);
-                let sql2 = `SELECT * FROM words`;
+                let sql2 = `SELECT * FROM dict`;
                 db.query(sql2, yam.maxround[roomno], (err2, row, f2) => {
                     if (err2) throw err2;
+                    //시작단어 랜덤
+                    var num = Math.floor(Math.random() * row.length);
                     yam.nowword[roomno] = row[num].word; //라운드 단어
 
                     //시작하는사람닉네임, 라운드 단어, 라운드
@@ -96,11 +96,11 @@ var hangmananswer = function (roomno, msg, username) {
                     yam.nowlife[roomno] = yam.life;
                     yam.round[roomno]++;
 
-                    //시작단어 랜덤, 현재 12개
-                    var num = Math.floor(Math.random() * 12);
-                    let sql2 = `SELECT * FROM words`;
+                    let sql2 = `SELECT * FROM dict`;
                     db.query(sql2, yam.maxround[roomno], (err2, row, f2) => {
                         if (err2) throw err2;
+                        //시작단어 랜덤
+                        var num = Math.floor(Math.random() * row.length);
                         yam.nowword[roomno] = row[num].word; //라운드 단어
 
                         //시작하는사람닉네임, 라운드 단어, 라운드
@@ -164,11 +164,11 @@ var hangmananswer = function (roomno, msg, username) {
                     yam.nowlife[roomno] = yam.life;
                     yam.round[roomno]++;
 
-                    //시작단어 랜덤, 현재 12개
-                    var num = Math.floor(Math.random() * 12);
-                    let sql2 = `SELECT * FROM words`;
+                    let sql2 = `SELECT * FROM dict`;
                     db.query(sql2, yam.maxround[roomno], (err2, row, f2) => {
                         if (err2) throw err2;
+                        //시작단어 랜덤, 현재 12개
+                        var num = Math.floor(Math.random() * row.length);
                         yam.nowword[roomno] = row[num].word; //라운드 단어
 
                         //시작하는사람닉네임, 라운드 단어, 라운드

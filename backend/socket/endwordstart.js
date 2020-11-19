@@ -50,11 +50,11 @@ var endwordstart = function (roomno) {
     db.query(sql2, roomno, (err, row, f) => {
         if (err) throw err;
 
-        //시작단어 랜덤, 현재 10개
-        var num = Math.floor(Math.random() * 4);
-        let sql3 = `SELECT * FROM words WHERE length=?`;
+        let sql3 = `SELECT * FROM dict WHERE length=?`;
         db.query(sql3, yam.maxround[roomno], (err2, row2, f2) => {
             if (err2) throw err2;
+            //시작단어 랜덤
+            var num = Math.floor(Math.random() * row2.length);
             yam.startword[roomno] = row2[num].word;
             yam.nowword[roomno] = row2[num].word[yam.round[roomno]];
 

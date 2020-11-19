@@ -69,8 +69,8 @@ var endworddictionary = function (roomno, word, order) {//방 번호, 단어, �
                             console.log("word is exist");
                             result = true;
                             //db에 없는 단어 추가
-                            let sqlwordinsert = 'INSERT INTO dict(word) VALUES(?)';
-                            db.query(sqlwordinsert, word, (errwin, wresult, fields) => {
+                            let sqlwordinsert = 'INSERT INTO dict VALUES(?,?)';
+                            db.query(sqlwordinsert, [word, word.length], (errwin, wresult, fields) => {
                                 if (errwin) throw errwin;
                             })
                         }
