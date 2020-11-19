@@ -42,25 +42,13 @@ exports.main = app.post('/loginchk', upload.single(), (req, res) =>{
             if(password != rows[0].password){
                 return res.status(400).json({
                     error: 3//패스워드가 틀렸습니다
-                });
+                 });
             }
             else{
-                if(rows[0].login==1){
-                    return res.status(400).json({
-                        error: 6//이미 접속 중인 아이디입니다
-                    });
-                }
-                else{
-                    let sql2 = `UPDATE user SET login=1 WHERE user_id=?`;
-                    db.query(sql2, list, (err2) => {
-                        if(err2) throw err2;
-                    })
-
-                    res.json({
-                        success: true,
-                        nickname: rows[0].user_name
-                    });
-                }
+                res.json({
+                    success: true,
+                    nickname: rows[0].user_name
+                });
             }
         }
     })

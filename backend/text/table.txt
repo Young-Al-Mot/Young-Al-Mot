@@ -8,7 +8,6 @@ create table user(
    `password` varchar(20) NOT NULL,
    `user_name` varchar(12) NOT NULL,
    `email` varchar(40) NOT NULL,
-   `login` int,
    primary key(`user_no`)
 );
 
@@ -61,7 +60,7 @@ create table roomuser(
 create table chatting(
    `room_no` int NOT NULL,
    `chat` varchar(50) NOT NULL,
-   primary key(`room_no`, `chat`)
+   primary key(`chat`)
 );
 
 #단어 테이블(나중에 추가할 예정)
