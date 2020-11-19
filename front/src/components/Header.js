@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
+import Logo from "./Logo.png";
 
 import Logout from "./Logout";
 
@@ -11,13 +12,14 @@ const flexCenterAlign = css`
 `;
 const HeaderLabel = styled.div`
   border-bottom: solid;
-  height: 40px;
+  height: 55px;
   width: 96%;
   margin-left: 2%;
   margin-right: 2%;
   ${flexCenterAlign}
 `;
 const LogoLabel = styled.span`
+  margin-top: 10px;
   margin-left: 10px;
   font-size: 20px;
   text-align: left;
@@ -36,9 +38,8 @@ const InAuthLabel = styled.span`
   margin-right: 10px;
 `;
 
-
 const Header = () => {
-  const { status } = useSelector((state) => state.auth);
+  const { status } = useSelector(state => state.auth);
 
   const unLoginView = (
     <AuthLabel>
@@ -60,7 +61,7 @@ const Header = () => {
     <AuthLabel>
       <InAuthLabel>{status.currentNickname}님</InAuthLabel>
       <InAuthLabel>
-        <Logout/>
+        <Logout />
       </InAuthLabel>
     </AuthLabel>
   );
@@ -69,7 +70,7 @@ const Header = () => {
     <HeaderLabel>
       <LogoLabel>
         <Link style={{ textDecoration: "none" }} to="/">
-          영알못
+          <img src={Logo} />
         </Link>
       </LogoLabel>
       <EmptyLabel></EmptyLabel>

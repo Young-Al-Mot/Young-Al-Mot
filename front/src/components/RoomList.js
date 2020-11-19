@@ -2,10 +2,13 @@ import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import RoomCreateContainer from "../containers/RoomCreateContainer";
+import modenine from "./MODENINE.TTF";
+import Refresh from "./refresh.png";
+import Lock from "./lock.png";
 
 const AllContent = styled.div`
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 25%;
+  margin-right: 25%;
 `;
 
 const RoomContent = styled.div`
@@ -15,10 +18,13 @@ const RoomContent = styled.div`
 
 const RoomCreateContent = styled.div`
   position: absolute;
-  top: 150px;
-  width: 60%;
-  background-color: #fffff0;
-  border: solid thin;
+  top: 200px;
+  margin-left: 10%;
+  padding: 20px;
+  width: 30%;
+  border-radius: 30px;
+  background-color: #97cfcb;
+  border : 1px solid black;
 `;
 
 const TopContent = styled.div`
@@ -33,42 +39,60 @@ const Title = styled.div`
 `;
 
 const FuncBotton = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 18px;
 `;
 
+const TopRoomList = styled.div`
+  margin-bottom: 20px;
+  text-align: center;
+  color: white;
+  font-size: 200%;
+  border-radius: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #2f70a8;
+  box-shadow: 3px 3px 3px gray;
+`;
+
 const MiddleContent = styled.div`
-  border: solid thin;
+  background-color: #2f70a8;
+  padding-bottom: 2%;
+  box-shadow: 3px 3px 3px gray;
 `;
 
 const Header = styled.div`
   display: flex;
-  border-bottom: solid;
+  margin-bottom: 10px;
 `;
 
 const BodyContent = styled.div`
   display: flex;
-  border-top: solid thin;
+  margin-top: 2%;
+  border-radius: 50px;
+  background-color: white;
+  height: 40px;
+  width: 80%;
+  margin-left: 10%;
+  align-items: center;
 `;
 
 const RoomNo = styled.span`
   display: flex;
   justify-content: center;
-  border-right: solid thin;
   flex: 1;
 `;
 
 const RoomName = styled.span`
   display: flex;
   justify-content: center;
-  border-right: solid thin;
   flex: 3;
+  font-size: 120%;
 `;
 
 const GameName = styled.span`
   display: flex;
   justify-content: center;
-  border-right: solid thin;
   flex: 2;
 `;
 
@@ -78,11 +102,15 @@ const Player = styled.span`
   flex: 1;
 `;
 
-const Password= styled.div`
+const Password = styled.div`
   position: absolute;
-  top: 50px;
-  width: 60%;
-  background-color: #fffff0;
+  top: 80px;
+  margin-left: 25%;
+  padding-left: 1%;
+  padding-top: 0.9%;
+  height: 30px;
+  width: 40%;
+  background-color: #b3b3b3;
   border: solid thin;
 `;
 
@@ -109,13 +137,14 @@ const RoomList = ({
 
   const confirmPassword = (
     <Password>
-      <input type="passowrd" onChange={handleChangePassword} />
-      <button onClick={() => ClickRoom()}>확인</button>
+      <input type="password" onChange={handleChangePassword} />
+      &nbsp;&nbsp;
+      <button onClick={() => ClickRoom()}>확인</button>&nbsp;&nbsp;
       <button onClick={handleChangeIsPasswordConfirmFalse}>나가기</button>
     </Password>
   );
 
-  const roomInfoList = roomInfo.map((val) => (
+  const roomInfoList = roomInfo.map(val => (
     <BodyContent
       key={val.room_no}
       onClick={() => {
@@ -134,7 +163,10 @@ const RoomList = ({
       {val.password == null ? (
         <RoomNo>{val.room_no}</RoomNo>
       ) : (
-        <RoomNo>비밀방 {val.room_no}</RoomNo>
+        <RoomNo>
+          <img src={Lock} />
+          &nbsp;{val.room_no}
+        </RoomNo>
       )}
       <RoomName>{val.room_name}</RoomName>
       <GameName>{val.game_name}</GameName>
@@ -147,19 +179,23 @@ const RoomList = ({
   return (
     <AllContent>
       <RoomContent>
+        <TopRoomList>방목록</TopRoomList>
         <TopContent>
-          <Title>일반전</Title>
+          <Title></Title>
+
           <FuncBotton>
-            <a onClick={handleChangeIsRoomCreate}>방만들기</a>
-            <a onClick={getInfo}>새로고침</a>
+            <a onClick={handleChangeIsRoomCreate}>방만들기&nbsp;&nbsp;</a>
+            <a onClick={getInfo}>
+              <img src={Refresh} />
+            </a>
           </FuncBotton>
         </TopContent>
         <MiddleContent>
           <Header>
-            <RoomNo>방번호</RoomNo>
-            <RoomName>제목</RoomName>
-            <GameName>게임</GameName>
-            <Player>인원</Player>
+            {/* <RoomNo></RoomNo>
+            <RoomName></RoomName>
+            <GameName></GameName>
+            <Player></Player> */}
           </Header>
           {roomInfoList}
           {isPasswordConfirm ? confirmPassword : true}
