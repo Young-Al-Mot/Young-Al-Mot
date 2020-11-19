@@ -393,6 +393,7 @@ const RoomContainer = () => {
           setword={setword}
           setorder={setorder}
           setalp={setalp}
+          readybutton={readybutton}
           setisReady={setisReady}
         />
       );

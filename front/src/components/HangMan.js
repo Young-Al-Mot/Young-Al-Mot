@@ -3,10 +3,15 @@ import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 import { getSocket } from "../socket/SocketFunc";
 import ScoreBoarder from "./ScoreBoarder";
+import modenine from "./MODENINE.TTF";
 
 const AllContent = styled.div`
+ @font-face {
+    font-family: modenine;
+    src: local("modenine"), url(${modenine});
+  }
+  font-family: modenine;
   display: flex;
-  border: solid thin;
   height: 100%;
   width: 100%;
   justify-content: space-between;
@@ -32,22 +37,30 @@ const TopChildContent = styled.div`
   text-align: center;
 `;
 
-const MidContnet = styled.div`
+const MidContent = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-content: flex-start;
+  align-content: center;
+  justify-content: center;
   overflow: auto;
-  height: 70%;
-  width: 85%;
+  height: 60%;
+  width: 55%;
   font-size: 200%;
+  background-color: #2f70a8;
 `;
+
+const MidTopContent = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const MidMainContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 85%;
+  width: 60%;
 `;
-const MidSubContnet = styled.div`
+const MidSubContent = styled.div`
   width: 15%;
   font-size: 18px;
 `;
@@ -58,7 +71,6 @@ const BotContent = styled.div`
   height: 5%;
   width: 85%;
   margin-bottom: 10px;
-  border: solid thin;
 `;
 
 const socket = getSocket();
@@ -79,6 +91,7 @@ const HangMan = ({
   setorder,
   setalp,
   setisReady,
+  readybutton
 }) => {
   const room = useSelector((state) => state.room.room);
 
@@ -191,17 +204,18 @@ const HangMan = ({
         {showAlp()}
         {/* 맞춘 알파벳 보여줌 */}
       </TopContent>
-      <MidContnet>
-        <MidSubContnet>
+      <MidContent>
+        <MidTopContent>{readybutton()}</MidTopContent>
+        <MidSubContent>
           {showFailAlp}
           {/* 틀렷던 알파벳,단어 보여줌 */}
-        </MidSubContnet>
+        </MidSubContent>
         <MidMainContent>
           {isStart==1? life:""}
           {/* 행맨 그림 보여줌 */}
         </MidMainContent>
-      </MidContnet>
-      <BotContent>{message}</BotContent>
+      </MidContent>
+      <BotContent></BotContent>
       {showScoreBoarder()}
     </AllContent>
   );
