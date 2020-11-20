@@ -33,7 +33,7 @@ const TopTopContent = styled.div`
   margin-top: 50px;
   padding-bottom: 5px;
   text-align: center;
-  justify-content:center;
+  justify-content: center;
   width: 300px;
 `;
 const TopBottomContent = styled.div`
@@ -157,28 +157,6 @@ const Endword = ({
       }, 1000);
     });
 
-    socket.off("gameanswer");
-    socket.on("gameanswer", (word, order, answer, failword) => {
-      setorder(order); //순서인사람 닉네임
-      if (answer) {
-        //정답일경우
-        setword(word);
-        settimer(0);
-        setanswerSuccess(1);
-      } else {
-        //틀리면 빨간글씨로 틀린거 보여줌
-        console.log(failword);
-        setword(failword);
-        setanswerSuccess(0);
-        var wrongword = setInterval(() => {
-          //틀린거 보여주고 0.5초뒤에 원래대로 복구
-          setword(word[word.length - 1]);
-          setanswerSuccess(1);
-          clearInterval(wrongword);
-        }, 500);
-      }
-      console.log("다음순서", order);
-    });
     socket.off("gametime");
     socket.on("gametime", (time) => {
       settimer(time);
@@ -210,6 +188,35 @@ const Endword = ({
     });
   });
 
+  //gameanswer소켓
+  useEffect(() => {
+    socket.off("gameanswer");
+    socket.on("gameanswer", (word, order, answer, failword) => {
+      console.log("게임중인가", isStart);
+      if (isStart == 1) {
+        setorder(order); //순서인사람 닉네임
+        if (answer) {
+          //정답일경우
+          setword(word);
+          settimer(0);
+          setanswerSuccess(1);
+        } else {
+          //틀리면 빨간글씨로 틀린거 보여줌
+          console.log(failword);
+          setword(failword);
+          setanswerSuccess(0);
+          var wrongword = setInterval(() => {
+            //틀린거 보여주고 0.5초뒤에 원래대로 복구
+            setword(word[word.length - 1]);
+            setanswerSuccess(1);
+            clearInterval(wrongword);
+          }, 500);
+        }
+        console.log("다음순서", order);
+      }
+    });
+  }, [isStart]);
+
   const timerBar = () => {
     if (timer <= 5 && timer > 0) {
       return (
@@ -229,13 +236,16 @@ const Endword = ({
 
   const wordColor = () => {
     if (word == undefined) return;
-    if (word.length > 1) {
-      if (answerSuccess) return <div style={{ color: "#97cfcb" }}>{word}</div>;
-      else {
-        return <div style={{ color: "red" }}>{word}</div>;
+    if (isStart == 1) {
+      if (word.length > 1) {
+        if (answerSuccess)
+          return <div style={{ color: "#97cfcb" }}>{word}</div>;
+        else {
+          return <div style={{ color: "red" }}>{word}</div>;
+        }
+      } else if (word.length == 1) {
+        return <div>{word}</div>;
       }
-    } else if (word.length == 1) {
-      return <div>{word}</div>;
     }
   };
 
