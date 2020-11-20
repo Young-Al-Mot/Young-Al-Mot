@@ -92,6 +92,7 @@ const RoomChat = ({
           <MessageInput
             type="text"
             name="message"
+            placeholder="이곳에 정답을 입력해 주세요"
             value={message}
             onChange={handleChangeMessage}
             onKeyPress={handleKeyPress}
