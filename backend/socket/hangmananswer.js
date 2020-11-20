@@ -60,7 +60,7 @@ var hangmananswer = function (roomno, msg, username) {
                 yam.nowlife[roomno] = yam.life;
                 yam.round[roomno]++;
 
-                let sql2 = `SELECT * FROM dict`;
+                let sql2 = `SELECT * FROM dict WHERE length>4 and length<11`;
                 db.query(sql2, yam.maxround[roomno], (err2, row, f2) => {
                     if (err2) throw err2;
                     //시작단어 랜덤
@@ -99,7 +99,7 @@ var hangmananswer = function (roomno, msg, username) {
                     yam.nowlife[roomno] = yam.life;
                     yam.round[roomno]++;
 
-                    let sql2 = `SELECT * FROM dict`;
+                    let sql2 = `SELECT * FROM dict WHERE length>4 and length<11`;
                     db.query(sql2, yam.maxround[roomno], (err2, row, f2) => {
                         if (err2) throw err2;
                         //시작단어 랜덤
@@ -164,7 +164,7 @@ var hangmananswer = function (roomno, msg, username) {
                     yam.nowlife[roomno] = yam.life;
                     yam.round[roomno]++;
 
-                    let sql2 = `SELECT * FROM dict`;
+                    let sql2 = `SELECT * FROM dict WHERE length>4 and length<11`;
                     db.query(sql2, yam.maxround[roomno], (err2, row, f2) => {
                         if (err2) throw err2;
                         //시작단어 랜덤
@@ -208,7 +208,7 @@ var hangmananswer = function (roomno, msg, username) {
                     yam.nowlife[roomno] = yam.life;
                     yam.round[roomno]++;
 
-                    let sql2 = `SELECT * FROM dict`;
+                    let sql2 = `SELECT * FROM dict WHERE length>4 and length<11`;
                     db.query(sql2, yam.maxround[roomno], (err2, row, f2) => {
                         if (err2) throw err2;
                         //시작단어 랜덤, 현재 12개

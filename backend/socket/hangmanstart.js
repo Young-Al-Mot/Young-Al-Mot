@@ -45,7 +45,7 @@ var hangmanstart = function (roomno) {
     db.query(sql2, roomno, (err, row, f) => {
         if (err) throw err;
 
-        let sql3 = `SELECT * FROM dict`;
+        let sql3 = `SELECT * FROM dict WHERE length>4 and length<11`;
         db.query(sql3, yam.maxround[roomno], (err2, row2, f2) => {
             if (err2) throw err2;
             //시작단어 랜덤
