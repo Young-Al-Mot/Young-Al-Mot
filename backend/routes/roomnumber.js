@@ -34,6 +34,7 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) => {
     let maxplayer = req.body.peoplemaxnum;
     let round = req.body.maxround;
     let userid = req.body.userid;
+    let count = req.body.count;
     if (password == "") password = null;
 
     db.query(sql, userid, (err, r, f) => {
@@ -70,6 +71,10 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) => {
                             })
 
                             yam.maxround[rows[0].room_no] = round;
+                            if(gamename == '끝말잇기'){
+                                yam.MT[rows[0].room_no] = count;
+                            }
+
                             return res.json({
                                 success: true,
                                 roomnum: rows[0].room_no

@@ -24,6 +24,8 @@ const db = mysql.createConnection({
 });
 db.connect();
 
+var yam = require('../yam');
+
 exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
     let sql = `SELECT * FROM user WHERE user_id=?`;
     let roomno = req.body.roomid;
@@ -72,7 +74,7 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
                                     if(err6) throw err6;
                                 })
             
-                                return res.json({ success: true, roominfo:rows[0] });
+                                return res.json({ success: true, roominfo:rows[0], count:yam.MT[roomno] });
                             })
                         }
                     }

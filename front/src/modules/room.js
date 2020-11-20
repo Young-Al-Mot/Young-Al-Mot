@@ -95,7 +95,6 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
       if (res.data.success) {
         const roominfo = res.data.roominfo;
         socketConnect();
-
         return dispatch(
           roomin(
             roomid,
@@ -103,7 +102,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
             roominfo.game_name,
             roominfo.maxplayer,
             roominfo.round,
-            roominfo.count
+            res.data.count
           )
         );
       }

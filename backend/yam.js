@@ -63,6 +63,7 @@ var startword = new Array(100); //시작단어
 var round = new Array(100); //시작단어 인덱스(라운드)
 var maxround = new Array(100); //선택한 라운드
 var nowword = new Array(100); //현재단어
+var maxtime = new Array(100); //끝말잇기 시간선택
 var life = 7;
 var nowlife = new Array(100, life);
 var truealphabet = new Array(100, 0);
@@ -78,6 +79,7 @@ exports.roomuseridx = roomuseridx;
 exports.nowlife = nowlife;
 exports.life = life;
 exports.TA = truealphabet;
+exports.MT = maxtime;
 
 app.post('/user_create', create.create);
 app.post('/loginchk', main.main);
