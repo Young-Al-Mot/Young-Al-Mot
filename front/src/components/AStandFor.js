@@ -62,7 +62,8 @@ const MidContent = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-direction:column;
   overflow: auto;
   height: 70%;
   width: 55%;
@@ -72,9 +73,17 @@ const MidContent = styled.div`
   color: white;
   border-radius: 50px;
 `;
-const MidContent1 = styled.div`
-  height: 100%;
+const MidTopContent = styled.div`
+
+  margin-top:5%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+`;
+const MidContent1 = styled.div`
+  display: flex;
+  flex-wrap:wrap;
   flex-direction: row;
   align-content: flex-start;
   justify-content: flex-start;
@@ -266,16 +275,30 @@ const AStandFor = ({
 
   const showWrongWord = <div style={{ color: "red" }}>{wrongWord}</div>;
 
+  const showGuide = () => {
+    if (isStart == 1) {
+      return (
+        <div>
+          <span style={{ textTransform:"uppercase", color: "red" }}>{startAlp}</span>
+          {"로 시작하는 단어를 입력해주세요"}
+        </div>
+      );
+    }
+  };
+
   return (
     <AllContent>
       <TopContent>
-        <TopTopContent>Start Word [{startAlp}]</TopTopContent>
+        <TopTopContent>
+          Start Word [<span style={{ color: "red" }}>{startAlp}</span>]
+        </TopTopContent>
         <TopMidContent>
           Round {round}/{room.maxround}
         </TopMidContent>
         <TopBotContent>{timerBar()}</TopBotContent>
       </TopContent>
       <MidContent>
+        <MidTopContent>{showGuide()}</MidTopContent>
         <MidContent1>{showAnswerList}</MidContent1>
         <MidContent2>{readybutton()}</MidContent2>
       </MidContent>
