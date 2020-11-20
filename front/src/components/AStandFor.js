@@ -82,8 +82,8 @@ const MidTopContent = styled.div`
   font-size: 20px;
 `;
 const MidContent1 = styled.div`
-
   display: flex;
+  flex-wrap:wrap;
   flex-direction: row;
   align-content: flex-start;
   justify-content: flex-start;
