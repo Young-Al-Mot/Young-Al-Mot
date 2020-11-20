@@ -32,8 +32,8 @@ const TopContent = styled.div`
 `;
 const TopTopContent = styled.div`
   font-size: 30px;
-  text-transform:uppercase;
-  margin-bottom:5px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
 `;
 const TopMidContent = styled.div`
   display: flex;
@@ -70,7 +70,7 @@ const MidContent = styled.div`
   font-size: 200%;
   background-color: #2f70a8;
   color: white;
-  border-radius:50px;
+  border-radius: 50px;
 `;
 const MidContent1 = styled.div`
   height: 100%;
@@ -92,14 +92,14 @@ const BotContent = styled.div`
   align-items: center;
   height: 10%;
   width: 50%;
-  font-size:130%;
-  padding-top:1%;
-  margin-bottom:4%;
+  font-size: 130%;
+  padding-top: 1%;
+  margin-bottom: 4%;
 `;
 const ProgressBarWrapper = styled.div`
   height: 1vh;
   width: 25vw;
-  background-color: ${props => props.colors};
+  background-color: ${(props) => props.colors};
   text-align: center;
 `;
 const fill = keyframes`
@@ -137,7 +137,7 @@ const AStandFor = ({
   readybutton,
   setisReady,
 }) => {
-  const room = useSelector(state => state.room.room);
+  const room = useSelector((state) => state.room.room);
   const [waitTime, setwaitTime] = useState(-1);
   const [wrongWord, setwrongWord] = useState("");
 
@@ -166,12 +166,12 @@ const AStandFor = ({
     });
 
     socket.off("standtime");
-    socket.on("standtime", time => {
+    socket.on("standtime", (time) => {
       settimer(time);
     });
 
     socket.off("standend");
-    socket.on("standend", val => {
+    socket.on("standend", (val) => {
       console.log("gameend");
       let tmp = [];
       for (let i = 0; i < val.length; i++) {
@@ -198,8 +198,8 @@ const AStandFor = ({
     socket.off("standanswer");
     socket.off("standanswer");
     socket.on("standanswer", (word, answer, answeruser) => {
-      console.log("게임중인가",isStart);
-      if (nickname == answeruser && isStart==1) {
+      console.log("게임중인가", isStart);
+      if (nickname == answeruser && isStart == 1) {
         //정답이면 화면의 정답리스트에 추가
         if (answer) {
           console.log("정답", word);
@@ -218,7 +218,7 @@ const AStandFor = ({
         }
       }
     });
-  }, [answerList,isStart]);
+  }, [answerList, isStart]);
 
   const showScoreBoarder = () => {
     if (isStart == -1)
@@ -232,10 +232,10 @@ const AStandFor = ({
     else return;
   };
 
-  const showAnswerList = answerList.map(val => {
+  const showAnswerList = answerList.map((val) => {
     if (val.key == answerList.length - 1) {
       return (
-        <div key={val.key} style={{ margin: "5px", color: "#97cfcb"}}>
+        <div key={val.key} style={{ margin: "5px", color: "#97cfcb" }}>
           {val.answer}
         </div>
       );
@@ -248,7 +248,7 @@ const AStandFor = ({
   });
 
   const timerBar = () => {
-    if (timer <= gmaeroundtime && timer > 0) {
+    if (timer <= gmaeroundtime && timer > 0 && isStart == 1) {
       return (
         <ProgressBarWrapper colors="gray">
           <ProgressBar />

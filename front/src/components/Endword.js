@@ -224,7 +224,7 @@ const Endword = ({
           <ProgressBar />
         </ProgressBarWrapper>
       );
-    } else if (timer == 0) {
+    } else if (timer == 0|| isStart!=1) {
       return (
         <ProgressBarWrapper>
           {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}
