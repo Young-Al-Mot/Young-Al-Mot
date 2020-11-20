@@ -32,6 +32,10 @@ const RoomCreate = ({
         <div>
           {"라운드 : "}
           <select onChange={handelChangeRound}>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">2</option>
+            <option value="4">4</option>
             <option value="5">5</option>
             <option value="6">6</option>
             <option value="7">7</option>
@@ -80,7 +84,8 @@ const RoomCreate = ({
           <option value="3">3</option>
           <option value="4">4</option>
         </select>
-      </div><p></p>
+      </div>
+      <p></p>
       <button onClick={handleCreateroom}>방생성</button>
     </div>
   );
