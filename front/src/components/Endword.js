@@ -89,7 +89,7 @@ const BotContent2 = styled.div`
 const ProgressBarWrapper = styled.div`
   height: 1vh;
   width: 25vw;
-  background-color: ${(props) => props.colors};
+  background-color: ${props => props.colors};
   text-align: center;
   font-size: 80%;
 `;
@@ -101,7 +101,7 @@ const fill = keyframes`
 const ProgressBar = styled.div`
   background-color: #fdcb85;
   height: 100%;
-  animation: ${fill} ${gameroundtime}s linear;
+  animation: ${fill} ${props=>props.gameroundtime}s linear;
   animation-duration: 1;
   animation-direction: reverse;
   animation-fill-mode: forwards;
@@ -132,10 +132,10 @@ const Endword = ({
 }) => {
   const [answerSuccess, setanswerSuccess] = useState(0);
   const [waitTime, setwaitTime] = useState(-1);
-  
-  useEffect(()=>{
-   gameroundtime=count; 
-  },[round]);
+
+  useEffect(() => {
+    gameroundtime = count;
+  }, [round]);
 
   useEffect(() => {
     //게임 시작할때 순서인사람 닉네임, 전체라운드 단어, 라운드
@@ -165,13 +165,13 @@ const Endword = ({
     });
 
     socket.off("gametime");
-    socket.on("gametime", (time) => {
+    socket.on("gametime", time => {
       settimer(time);
       setword(word[word.length - 1]);
     });
 
     socket.off("gameend");
-    socket.on("gameend", (val) => {
+    socket.on("gameend", val => {
       let tmp = [];
       let tmp2 = [];
       for (let i = 0; i < val.length; i++) {
@@ -225,10 +225,10 @@ const Endword = ({
   }, [isStart]);
 
   const timerBar = () => {
-    if (timer <= gameroundtime && timer > 0 && isStart==1) {
+    if (timer <= gameroundtime && timer > 0 && isStart == 1) {
       return (
         <ProgressBarWrapper colors="gray">
-          <ProgressBar />
+          <ProgressBar gameroundtime={gameroundtime}/>
         </ProgressBarWrapper>
       );
     } else if (timer == 0) {
