@@ -12,6 +12,7 @@ const RoomCreate = ({
   handelChangeRound,
   handleChangePeopleNum,
   handleCreateroom,
+  handelChangeCount
 }) => {
   const gameOptin = () => {
     if (gametype == "A Stands For") {
@@ -41,7 +42,20 @@ const RoomCreate = ({
             <option value="7">7</option>
           </select>
           <br />
+        {"시간초 : "}
+        <select onChange={handelChangeCount}>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7" selected>7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <br />
         </div>
+
       );
     } else {
       //행맨

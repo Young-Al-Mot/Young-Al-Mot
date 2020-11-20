@@ -351,6 +351,7 @@ const RoomContainer = () => {
           setroomUser={setroomUser}
           readybutton={readybutton}
           setisReady={setisReady}
+          count={room.count}
         />
       );
     } else if (room.gametype == "A Stands For") {
