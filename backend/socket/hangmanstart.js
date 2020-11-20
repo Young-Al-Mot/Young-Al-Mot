@@ -51,9 +51,10 @@ var hangmanstart = function (roomno) {
             //시작단어 랜덤
             var num = Math.floor(Math.random() * row2.length);
             yam.nowword[roomno] = row2[num].word; //라운드 단어
+            yam.TA[roomno] = 0;
 
             //시작하는사람닉네임, 라운드 단어, 라운드
-            yam.io.to(roomno).emit('hangstart', row[0].user_name, row2[num].word, yam.round[roomno]);
+            yam.io.to(roomno).emit('hangstart', row[0].user_name, yam.nowword[roomno], yam.round[roomno]);
         })
     })
 }
