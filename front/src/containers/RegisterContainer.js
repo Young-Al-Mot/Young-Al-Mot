@@ -34,7 +34,7 @@ const RegisterContainer = () => {
 
   //영문자 혼합 8이상 20이하 검사
   const isMixedPassword = (str) => {
-    let ret1 = /^[a-zA-Z0-9]{8,20}$/.test(str);
+    let ret1 = /^[a-zA-Z0-9!@#$%^~*+=-]{8,20}$/.test(str);
     let ret2 = /[a-zA-Z]/g.test(str);
     let ret3 = /[0-9]/g.test(str);
 
