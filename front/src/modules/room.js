@@ -14,11 +14,19 @@ const initialState = {
     peoplemaxnum: -1,
     roomid: 0,
     maxround: -1,
+    count: 7,
   },
 };
 
 //액션 생성함수
-export const roomin = (roomid, title, gametype, peoplemaxnum, maxround) => {
+export const roomin = (
+  roomid,
+  title,
+  gametype,
+  peoplemaxnum,
+  maxround,
+  count
+) => {
   return {
     type: ROOM_IN,
     roomid,
@@ -26,6 +34,7 @@ export const roomin = (roomid, title, gametype, peoplemaxnum, maxround) => {
     gametype,
     peoplemaxnum,
     maxround,
+    count,
   };
 };
 
@@ -41,7 +50,8 @@ export const roomCreateRequest = (
   password,
   gametype,
   peoplemaxnum,
-  maxround
+  maxround,
+  count
 ) => (dispatch) => {
   //방 만들면 방번호 서버에서 리턴해줘야됨
   return axios({
@@ -54,21 +64,20 @@ export const roomCreateRequest = (
       gametype,
       peoplemaxnum,
       maxround,
+      count,
     },
   })
     .then((res) => {
       socketConnect();
       return dispatch(
-        roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround)
+        roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround, count)
       );
     })
     .catch((e) => {
       //이미 게임중인 아이디일경우
-      if(e.response.data.error==6){
+      if (e.response.data.error == 6) {
         return { roomid: 0, error: 6 };
       }
-
-
     });
 };
 
@@ -93,7 +102,8 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
             roominfo.room_name,
             roominfo.game_name,
             roominfo.maxplayer,
-            roominfo.round
+            roominfo.round,
+            roominfo.count
           )
         );
       }
@@ -104,7 +114,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
         return { roomid: 0, error: 4 };
       } else if (e.response.data.error == 5) {
         return { roomid: 0, error: 5 };
-      }else if(e.response.data.error==6){
+      } else if (e.response.data.error == 6) {
         //이미 게임중인 아이디일경우
         return { roomid: 0, error: 6 };
       }
@@ -137,6 +147,7 @@ const room = (state = initialState, action) => {
           peoplemaxnum: action.peoplemaxnum,
           roomid: action.roomid,
           maxround: action.maxround,
+          count:action.count,
         },
       };
     case ROOM_OUT:
@@ -148,6 +159,7 @@ const room = (state = initialState, action) => {
           peoplemaxnum: -1,
           roomid: 0,
           maxround: -1,
+          count:0,
         },
       };
     default:

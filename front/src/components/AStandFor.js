@@ -110,7 +110,7 @@ const fill = keyframes`
 const ProgressBar = styled.div`
   background-color: #fdcb85;
   height: 100%;
-  animation: ${fill} 20s linear;
+  animation: ${fill} ${gmaeroundtime}s linear;
   animation-duration: 1;
   animation-direction: reverse;
   animation-fill-mode: forwards;

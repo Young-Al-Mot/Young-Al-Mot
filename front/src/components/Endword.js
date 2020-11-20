@@ -4,6 +4,8 @@ import { getSocket } from "../socket/SocketFunc";
 import ScoreBoarder from "./ScoreBoarder";
 import modenine from "./MODENINE.TTF";
 
+let gameroundtime = 7;
+
 const AllContent = styled.div`
   @font-face {
     font-family: modenine;
@@ -99,7 +101,7 @@ const fill = keyframes`
 const ProgressBar = styled.div`
   background-color: #fdcb85;
   height: 100%;
-  animation: ${fill} 5s linear;
+  animation: ${fill} ${gameroundtime}s linear;
   animation-duration: 1;
   animation-direction: reverse;
   animation-fill-mode: forwards;
@@ -126,9 +128,14 @@ const Endword = ({
   setroomUser,
   readybutton,
   setisReady,
+  count,
 }) => {
   const [answerSuccess, setanswerSuccess] = useState(0);
   const [waitTime, setwaitTime] = useState(-1);
+  
+  useEffect(()=>{
+   gameroundtime=count; 
+  },[round]);
 
   useEffect(() => {
     //게임 시작할때 순서인사람 닉네임, 전체라운드 단어, 라운드
@@ -218,13 +225,13 @@ const Endword = ({
   }, [isStart]);
 
   const timerBar = () => {
-    if (timer <= 5 && timer > 0) {
+    if (timer <= gameroundtime && timer > 0 && isStart==1) {
       return (
         <ProgressBarWrapper colors="gray">
           <ProgressBar />
         </ProgressBarWrapper>
       );
-    } else if (timer == 0|| isStart!=1) {
+    } else if (timer == 0) {
       return (
         <ProgressBarWrapper>
           {/* 0이 아닐때( -1이면 아무것도안함 -1이아니면 시간출력) 0이맞으면 "게임시작" 출력 */}
