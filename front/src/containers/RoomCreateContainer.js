@@ -50,7 +50,7 @@ const RoomCreateContainer = () => {
 
   useEffect(() => {
     if (gametype == "끝말잇기") {
-      setround(5);
+      setround(1);
     } else {
       setround(1);
     }
