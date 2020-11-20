@@ -65,6 +65,7 @@ var maxround = new Array(100); //선택한 라운드
 var nowword = new Array(100); //현재단어
 var life = 7;
 var nowlife = new Array(100, life);
+var truealphabet = new Array(100, 0);
 
 exports.L = timelist;
 exports.W = waitlist;
@@ -76,6 +77,7 @@ exports.roomuserlist = roomuserlist;
 exports.roomuseridx = roomuseridx;
 exports.nowlife = nowlife;
 exports.life = life;
+exports.TA = truealphabet;
 
 app.post('/user_create', create.create);
 app.post('/loginchk', main.main);
