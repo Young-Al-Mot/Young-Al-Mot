@@ -14,17 +14,18 @@ db.connect();
 var yam = require('../yam');
 
 const timer = (roomno) => {
+    var maxtime = yam.MT[roomno];
     var t = -1;
     //경과시간 메시지 (나중에 emit는 지울거)
     t++;
-    yam.io.to(roomno).emit('gametime', 5 - t);
-    console.log("timer", 5 - t);
+    yam.io.to(roomno).emit('gametime', maxtime - t);
+    console.log("timer", maxtime - t);
     var ontime = setInterval(() => {
         t++;
-        yam.io.to(roomno).emit('gametime', 5 - t);
-        console.log("timer", 5 - t);
+        yam.io.to(roomno).emit('gametime', maxtime - t);
+        console.log("timer", maxtime - t);
 
-        if (t == 5) {
+        if (t == maxtime) {
             //시간초과 이벤트 발생, 발생 할때마다 chatting 테이블 초기화
             let sql = `DELETE FROM chatting WHERE room_no=?`;
             db.query(sql, roomno, (err) => {
