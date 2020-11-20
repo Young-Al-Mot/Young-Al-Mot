@@ -198,7 +198,8 @@ const AStandFor = ({
     socket.off("standanswer");
     socket.off("standanswer");
     socket.on("standanswer", (word, answer, answeruser) => {
-      if (nickname == answeruser) {
+      console.log("게임중인가",isStart);
+      if (nickname == answeruser && isStart==1) {
         //정답이면 화면의 정답리스트에 추가
         if (answer) {
           console.log("정답", word);
@@ -217,7 +218,7 @@ const AStandFor = ({
         }
       }
     });
-  }, [answerList]);
+  }, [answerList,isStart]);
 
   const showScoreBoarder = () => {
     if (isStart == -1)
