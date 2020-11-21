@@ -24,7 +24,7 @@ const db = mysql.createConnection({
 });
 db.connect();
 
-exports.roomlist = app.post('/roomlist', upload.single(), (req, res) =>{
+exports.roomlist = app.get('/roomlist', upload.single(), (req, res) =>{
     let sql = `SELECT * FROM roomlist WHERE state = 0 ORDER BY createtime DESC`;
 
     db.query(sql, [], (err, rows, fields) => {
