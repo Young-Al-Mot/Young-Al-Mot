@@ -38,6 +38,9 @@ var hangmananswer = function (roomno, msg, username) {
                 yam.io.to(roomno).emit('join', row);
             })
 
+            //-2(라운드 끝), '', '', 남은목숨
+            yam.io.to(roomno).emit('hanganswer', -2, '', '', 0);
+
             if (yam.round[roomno] == yam.maxround[roomno]) {
                 //게임 끝, roomuser 정보를 점수 순으로 gameend 이벤트 보냄
                 let sql2 = `UPDATE roomlist SET state=0 WHERE room_no=?`;
@@ -99,6 +102,9 @@ var hangmananswer = function (roomno, msg, username) {
 
             if (!yam.nowlife[roomno]) { //목숨0, 라운드 끝
                 yam.TA[roomno] = 0;
+
+                //-2(라운드 끝), '', '', 남은목숨
+                yam.io.to(roomno).emit('hanganswer', -2, '', '', 0);
                 if (yam.round[roomno] == yam.maxround[roomno]) {
                     //게임 끝, roomuser 정보를 점수 순으로 gameend 이벤트 보냄
                     let sql = `UPDATE roomlist SET state=0 WHERE room_no=?`;
@@ -186,6 +192,10 @@ var hangmananswer = function (roomno, msg, username) {
 
             if (yam.TA[roomno] == yam.nowword[roomno].length) { //모든 자리의 알파벳을 맞추면 라운드 끝
                 yam.TA[roomno] = 0;
+
+                //-2(라운드 끝), '', '', 남은목숨
+                yam.io.to(roomno).emit('hanganswer', -2, '', '', 0);
+
                 if (yam.round[roomno] == yam.maxround[roomno]) {
                     //게임 끝, roomuser 정보를 점수 순으로 gameend 이벤트 보냄
                     let sql2 = `UPDATE roomlist SET state=0 WHERE room_no=?`;
@@ -252,6 +262,10 @@ var hangmananswer = function (roomno, msg, username) {
 
             if (!yam.nowlife[roomno]) { //목숨0, 라운드 끝
                 yam.TA[roomno] = 0;
+
+                //-2(라운드 끝), '', '', 남은목숨
+                yam.io.to(roomno).emit('hanganswer', -2, '', '', 0);
+
                 if (yam.round[roomno] == yam.maxround[roomno]) {
                     //게임 끝, roomuser 정보를 점수 순으로 gameend 이벤트 보냄
                     let sql = `UPDATE roomlist SET state=0 WHERE room_no=?`;
@@ -270,7 +284,7 @@ var hangmananswer = function (roomno, msg, username) {
                             if (nexttime == 3) {
                                 clearInterval(nextwait);
                                 yam.W[roomno].shift();
-                                
+
                                 yam.io.to(roomno).emit('hangend', row);
                                 let sql2 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
                                 db.query(sql2, roomno, (err2) => {
