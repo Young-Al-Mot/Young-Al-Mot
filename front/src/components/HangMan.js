@@ -112,14 +112,10 @@ const HangMan = ({
   const room = useSelector(state => state.room.room);
 
   const [failAlp, setfailAlp] = useState([]); //틀렷던 알파벳,단어
-<<<<<<< HEAD
-  const [life, setlife] = useState(7);
   const [lifeAlp, setlifeAlp] = useState([]);
-=======
   const [life, setlife] = useState(10);
   const [roundend, setroundend] = useState(false);
 
->>>>>>> a9c626a0b8cc2837c4a1764f66337b7664d3f646
   //start,end소켓
   useEffect(() => {
     socket.off("hangstart");
@@ -209,21 +205,9 @@ const HangMan = ({
   }, [failAlp, alp]);
 
   const showAlp = () => {
-<<<<<<< HEAD
     return alp.map(val => {
       return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
     });
-=======
-    if (roundend) {
-      return word.map((val)=>{
-        return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
-      })
-    } else {
-      return alp.map((val) => {
-        return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
-      });
-    }
->>>>>>> a9c626a0b8cc2837c4a1764f66337b7664d3f646
   };
 
   const lifebar = () => {
@@ -271,8 +255,6 @@ const HangMan = ({
           {/* 틀렷던 알파벳,단어 보여줌 */}
         </MidSubContent>
         <MidMainContent>
-          {isStart == 1 ? life : ""}
-          {/* 행맨 그림 보여줌 */}
         </MidMainContent>
       </MidContent>
       <BotContent></BotContent>
