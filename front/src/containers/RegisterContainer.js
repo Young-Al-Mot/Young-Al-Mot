@@ -76,9 +76,7 @@ const RegisterContainer = () => {
         alert("닉네임을 입력해주세요")
       }else if(nickname.length!= nickname.replace(/ /g,"").length){
         alert("닉네임에 공백을 사용할수 없습니다")
-      }else if(!isValideEmail){
-        alert("이메일이 유효한 형식이 아닙니다");
-      } else {
+      }else {
         dispatch(registerRequest(username, password, nickname)).then(
           (res) => {
             //백엔드에서 어떻게 넘어오는지 보고 수정해
