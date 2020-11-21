@@ -43,7 +43,7 @@ const RoomListContainer = () => {
   //방정보 받아오는거
   const getInfo = () => {
     axios({
-      method: "POST",
+      method: "GET",
       url: `${config.api}/roomlist`,
       data: {},
     }).then((res) => {
@@ -96,7 +96,7 @@ const RoomListContainer = () => {
     socket.disconnect();
     console.log("roomlist mount");
     getInfo();
-  });
+  },[]);
 
   return (
     <RoomList
