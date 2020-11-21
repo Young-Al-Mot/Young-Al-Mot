@@ -29,7 +29,6 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
     let id = req.body.userid;
     let password = req.body.password;
     let name = req.body.nickname;
-    let email = req.body.email;
     let list = [id];
     db.query(sql, list, (err, idrows, fields) => {
         if(err) throw err;
@@ -51,27 +50,14 @@ exports.create = app.post('/user_create', upload.single(), (req, res) =>{
                     });
                 }
                 else{
-                    sql = `SELECT * FROM user WHERE email=?`;
-                    list = [email];
-                    db.query(sql, list, (err3, emailrows, fields) => {
-                        if(err3) throw err3;
+                    sql = `INSERT INTO user(user_id, password, user_name) VALUES(?,?,?)`;
+                    list = [id, password, name];
 
-                        if(emailrows[0]){
-                            return res.status(400).json({
-                                error: 2//이미 존재하는 이메일입니다
-                            });
-                        }
-                        else{
-                            sql = `INSERT INTO user(user_id, password, user_name, email) VALUES(?,?,?,?)`;
-                            list = [id, password, name, email];
+                    db.query(sql, list, (err4) => {
+                        if(err4) throw err4;
 
-                            db.query(sql, list, (err4, result, fields) => {
-                                if(err4) throw err4;
-
-                                res.json({success: true});
-                            }) //sign up
-                        }
-                    }) //emailrows end
+                        res.json({success: true});
+                    }) //sign up
                 }
             }) //namerows end
         }
