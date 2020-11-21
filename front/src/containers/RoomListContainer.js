@@ -96,7 +96,7 @@ const RoomListContainer = () => {
     socket.disconnect();
     console.log("roomlist mount");
     getInfo();
-  }, []);
+  });
 
   return (
     <RoomList

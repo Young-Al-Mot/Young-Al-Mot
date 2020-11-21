@@ -56,15 +56,12 @@ const RegisterForm = ({
   username,
   password,
   nickname,
-  email,
   passwordError,
   passwordIsSame,
   handleChangeUsername,
   handleChangePassword,
   handleChangeNickname,
-  handleChangeEmail,
   handleSubmit,
-  emailError,
   passwordConfirm,
 }) => {
   const handleKeyPress = (e) => {
@@ -108,15 +105,6 @@ const RegisterForm = ({
             value={nickname}
             onChange={handleChangeNickname}
           />
-        </LineLabel>
-        <LineLabel>
-          이메일:
-          <RegisterInput
-            type="text"
-            value={email}
-            onChange={handleChangeEmail}
-          />
-          <ErrorMessage>{emailError}</ErrorMessage>
         </LineLabel>
       </FormLabel>
       <RegisterButton onClick={handleSubmit}>회원가입 하기</RegisterButton>

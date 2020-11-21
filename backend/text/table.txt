@@ -60,7 +60,7 @@ create table roomuser(
 create table chatting(
    `room_no` int NOT NULL,
    `chat` varchar(50) NOT NULL,
-   primary key(`roomno`, `chat`)
+   primary key(`room_no`, `chat`)
 );
 
 create table dict(
