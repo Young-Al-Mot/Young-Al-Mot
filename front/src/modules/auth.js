@@ -29,7 +29,7 @@ const initialState = {
 };
 
 //thunk (middleware)
-export function registerRequest(userid, password, nickname, email) {
+export function registerRequest(userid, password, nickname) {
   return (dispatch) => {
     // Inform Register API is starting
     dispatch(register());
@@ -39,7 +39,6 @@ export function registerRequest(userid, password, nickname, email) {
         userid: userid,
         password: password,
         nickname: nickname,
-        email: email,
       })
       .then((response) => {
         //성공

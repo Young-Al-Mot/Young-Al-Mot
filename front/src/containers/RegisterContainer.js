@@ -12,10 +12,8 @@ const RegisterContainer = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  //이메일 체크
-  const [isValideEmail,setIsValidEmail]=useState(false);
-  const [emailError, setEmailError] = useState(false);
+
+
   //패스워드 같은지
   const [isSame, setIsSame] = useState(false);
   const [isSameMessage, setIsSameMessage] = useState("");
@@ -41,11 +39,6 @@ const RegisterContainer = () => {
     return ret1 && ret2 && ret3;
   };
 
-  const isEmail = (email) => {
-    const emailreg = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    return emailreg.test(email);
-  };
-
   const handleChangePassword = useCallback(
     (e) => {
       setPassword(e.target.value);
@@ -68,20 +61,6 @@ const RegisterContainer = () => {
     [setNickname]
   );
 
-  const handleChangeEmail = useCallback(
-    (e) => {
-      setEmail(e.target.value);
-      if (!isEmail(e.target.value)) {
-        setEmailError("이메일 형식에 맞춰주세요");
-        setIsValidEmail(false);
-      } else {
-        setEmailError("");
-        setIsValidEmail(true);
-      }
-    },
-    [setEmail, setEmailError, setIsValidEmail]
-  );
-
   const handleSubmit = useCallback(
     (e) => {
       //e.preventDefault();     
@@ -100,7 +79,7 @@ const RegisterContainer = () => {
       }else if(!isValideEmail){
         alert("이메일이 유효한 형식이 아닙니다");
       } else {
-        dispatch(registerRequest(username, password, nickname, email)).then(
+        dispatch(registerRequest(username, password, nickname)).then(
           (res) => {
             //백엔드에서 어떻게 넘어오는지 보고 수정해
             if (res.type == "AUTH_REGISTER_SUCCESS") history.push("/login");
@@ -116,7 +95,7 @@ const RegisterContainer = () => {
         );
       }
     },
-    [dispatch, isValidPassword, isSame, username, password, nickname, email]
+    [dispatch, isValidPassword, isSame, username, password, nickname]
   );
 
   const passwordConfirm = useCallback(
@@ -137,15 +116,11 @@ const RegisterContainer = () => {
       username={username}
       password={password}
       nickname={nickname}
-      email={email}
       passwordError={passwordError}
-      isSame={isSame}
-      emailError={emailError}
       passwordIsSame={isSameMessage}
       handleChangeUsername={handleChangeUsername}
       handleChangePassword={handleChangePassword}
       handleChangeNickname={handleChangeNickname}
-      handleChangeEmail={handleChangeEmail}
       handleSubmit={handleSubmit}
       passwordConfirm={passwordConfirm}
     />
