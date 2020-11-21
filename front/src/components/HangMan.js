@@ -140,6 +140,7 @@ const HangMan = ({
       setround(1);
       setfailAlp([]);
       setalp([]);
+      setorder("");
       setlife(7);
       setroomUser(tmp);
     });
