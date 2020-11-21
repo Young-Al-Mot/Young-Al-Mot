@@ -5,7 +5,7 @@ import { getSocket } from "../socket/SocketFunc";
 import ScoreBoarder from "./ScoreBoarder";
 import modenine from "./MODENINE.TTF";
 
-const gmaeroundtime = 20;
+const gameroundtime = 20;
 
 const AllContent = styled.div`
   display: flex;
@@ -119,7 +119,7 @@ const fill = keyframes`
 const ProgressBar = styled.div`
   background-color: #fdcb85;
   height: 100%;
-  animation: ${fill} ${gmaeroundtime}s linear;
+  animation: ${fill} ${gameroundtime}s linear;
   animation-duration: 1;
   animation-direction: reverse;
   animation-fill-mode: forwards;
@@ -257,7 +257,7 @@ const AStandFor = ({
   });
 
   const timerBar = () => {
-    if (timer <= gmaeroundtime && timer > 0 && isStart == 1) {
+    if (timer <= gameroundtime && timer > 0 && isStart == 1) {
       return (
         <ProgressBarWrapper colors="gray">
           <ProgressBar />
