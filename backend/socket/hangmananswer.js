@@ -49,11 +49,22 @@ var hangmananswer = function (roomno, msg, username) {
                 db.query(sql2, roomno, (err2, row, f) => {
                     if (err2) throw err2;
 
-                    yam.io.to(roomno).emit('hangend', row);
-                    let sql3 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
-                    db.query(sql3, roomno, (err3) => {
-                        if (err3) throw err3;
-                    });
+                    var nexttime = 0;
+                    var nextwait = setInterval(() => {
+                        nexttime++;
+                        //3초 쉬고 점수
+                        if (nexttime == 3) {
+                            clearInterval(nextwait);
+                            yam.W[roomno].shift();
+
+                            yam.io.to(roomno).emit('hangend', row);
+                            let sql3 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
+                            db.query(sql3, roomno, (err3) => {
+                                if (err3) throw err3;
+                            });
+                        }
+                    }, 1000);
+                    yam.W[roomno].push(nextwait);
                 })
             }
             else { //다음 라운드
@@ -67,8 +78,19 @@ var hangmananswer = function (roomno, msg, username) {
                     var num = Math.floor(Math.random() * row.length);
                     yam.nowword[roomno] = row[num].word; //라운드 단어
 
-                    //시작하는사람닉네임, 라운드 단어, 라운드
-                    yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
+                    var nexttime = 0;
+                    var nextwait = setInterval(() => {
+                        nexttime++;
+                        //3초 쉬고 시작
+                        if (nexttime == 3) {
+                            clearInterval(nextwait);
+                            yam.W[roomno].shift();
+                            
+                            //시작하는사람닉네임, 라운드 단어, 라운드
+                            yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
+                        }
+                    }, 1000);
+                    yam.W[roomno].push(nextwait);
                 })
             }
         }
@@ -88,11 +110,22 @@ var hangmananswer = function (roomno, msg, username) {
                     db.query(sql, roomno, (err, row, f) => {
                         if (err) throw err;
 
-                        yam.io.to(roomno).emit('hangend', row);
-                        let sql2 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
-                        db.query(sql2, roomno, (err2) => {
-                            if (err2) throw err2;
-                        });
+                        var nexttime = 0;
+                        var nextwait = setInterval(() => {
+                            nexttime++;
+                            //3초 쉬고 점수
+                            if (nexttime == 3) {
+                                clearInterval(nextwait);
+                                yam.W[roomno].shift();
+
+                                yam.io.to(roomno).emit('hangend', row);
+                                let sql2 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
+                                db.query(sql2, roomno, (err2) => {
+                                    if (err2) throw err2;
+                                });
+                            }
+                        }, 1000);
+                        yam.W[roomno].push(nextwait);
                     })
                 }
                 else { //다음 라운드
@@ -106,8 +139,19 @@ var hangmananswer = function (roomno, msg, username) {
                         var num = Math.floor(Math.random() * row.length);
                         yam.nowword[roomno] = row[num].word; //라운드 단어
 
-                        //시작하는사람닉네임, 라운드 단어, 라운드
-                        yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
+                        var nexttime = 0;
+                        var nextwait = setInterval(() => {
+                            nexttime++;
+                            //3초 쉬고 시작
+                            if (nexttime == 3) {
+                                clearInterval(nextwait);
+                                yam.W[roomno].shift();
+                                
+                                //시작하는사람닉네임, 라운드 단어, 라운드
+                                yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
+                            }
+                        }, 1000);
+                        yam.W[roomno].push(nextwait);
                     })
                 }
             }
@@ -153,11 +197,22 @@ var hangmananswer = function (roomno, msg, username) {
                     db.query(sql2, roomno, (err2, row, f) => {
                         if (err2) throw err2;
 
-                        yam.io.to(roomno).emit('hangend', row);
-                        let sql3 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
-                        db.query(sql3, roomno, (err3) => {
-                            if (err3) throw err3;
-                        });
+                        var nexttime = 0;
+                        var nextwait = setInterval(() => {
+                            nexttime++;
+                            //3초 쉬고 점수
+                            if (nexttime == 3) {
+                                clearInterval(nextwait);
+                                yam.W[roomno].shift();
+
+                                yam.io.to(roomno).emit('hangend', row);
+                                let sql3 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
+                                db.query(sql3, roomno, (err3) => {
+                                    if (err3) throw err3;
+                                });
+                            }
+                        }, 1000);
+                        yam.W[roomno].push(nextwait);
                     })
                 }
                 else { //다음 라운드
@@ -171,8 +226,19 @@ var hangmananswer = function (roomno, msg, username) {
                         var num = Math.floor(Math.random() * row.length);
                         yam.nowword[roomno] = row[num].word; //라운드 단어
 
-                        //시작하는사람닉네임, 라운드 단어, 라운드
-                        yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
+                        var nexttime = 0;
+                        var nextwait = setInterval(() => {
+                            nexttime++;
+                            //3초 쉬고 시작
+                            if (nexttime == 3) {
+                                clearInterval(nextwait);
+                                yam.W[roomno].shift();
+                                
+                                //시작하는사람닉네임, 라운드 단어, 라운드
+                                yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
+                            }
+                        }, 1000);
+                        yam.W[roomno].push(nextwait);
                     })
                 }
             }
@@ -197,11 +263,22 @@ var hangmananswer = function (roomno, msg, username) {
                     db.query(sql, roomno, (err, row, f) => {
                         if (err) throw err;
 
-                        yam.io.to(roomno).emit('hangend', row);
-                        let sql2 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
-                        db.query(sql2, roomno, (err2) => {
-                            if (err2) throw err2;
-                        });
+                        var nexttime = 0;
+                        var nextwait = setInterval(() => {
+                            nexttime++;
+                            //3초 쉬고 점수
+                            if (nexttime == 3) {
+                                clearInterval(nextwait);
+                                yam.W[roomno].shift();
+                                
+                                yam.io.to(roomno).emit('hangend', row);
+                                let sql2 = `UPDATE roomuser SET score=0 WHERE room_no=?`;
+                                db.query(sql2, roomno, (err2) => {
+                                    if (err2) throw err2;
+                                });
+                            }
+                        }, 1000);
+                        yam.W[roomno].push(nextwait);
                     })
                 }
                 else { //다음 라운드
@@ -215,8 +292,19 @@ var hangmananswer = function (roomno, msg, username) {
                         var num = Math.floor(Math.random() * row.length);
                         yam.nowword[roomno] = row[num].word; //라운드 단어
 
-                        //시작하는사람닉네임, 라운드 단어, 라운드
-                        yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
+                        var nexttime = 0;
+                        var nextwait = setInterval(() => {
+                            nexttime++;
+                            //3초 쉬고 시작
+                            if (nexttime == 3) {
+                                clearInterval(nextwait);
+                                yam.W[roomno].shift();
+                                
+                                //시작하는사람닉네임, 라운드 단어, 라운드
+                                yam.io.to(roomno).emit('hangstart', yam.roomuserlist[roomno][yam.roomuseridx[roomno]], row[num].word, yam.round[roomno]);
+                            }
+                        }, 1000);
+                        yam.W[roomno].push(nextwait);
                     })
                 }
             }
