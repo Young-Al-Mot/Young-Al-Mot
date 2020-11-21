@@ -112,8 +112,14 @@ const HangMan = ({
   const room = useSelector(state => state.room.room);
 
   const [failAlp, setfailAlp] = useState([]); //틀렷던 알파벳,단어
+<<<<<<< HEAD
   const [life, setlife] = useState(7);
   const [lifeAlp, setlifeAlp] = useState([]);
+=======
+  const [life, setlife] = useState(10);
+  const [roundend, setroundend] = useState(false);
+
+>>>>>>> a9c626a0b8cc2837c4a1764f66337b7664d3f646
   //start,end소켓
   useEffect(() => {
     socket.off("hangstart");
@@ -123,18 +129,21 @@ const HangMan = ({
       setisStart(1); //게임중인거 나타냄
       setgameStart(0); //방장 게임 시작버튼 비활성화
       setisReady(0);
-
-      setlife(7);
+      setroundend(false);
+      setlife(10);
       setfailAlp([]);
       setorder(gameorder);
       setround(gameround);
       setword(gameword);
       let i = 0;
       const tmp = [];
+      const tmp2=[];
       for (i = 0; i < gameword.length; i++) {
         tmp.push({ key: i, alp: "" });
+        tmp2.push({key:i,alp:gameword[i]});
       }
       setalp(tmp); //단어 배열로 설정
+      setword(tmp2);
     });
 
     socket.off("hangend");
@@ -152,12 +161,13 @@ const HangMan = ({
         });
       }
 
+      setroundend(false);
       setisStart(-1); //스코어 화면표시는 -1
       setround(1);
       setfailAlp([]);
       setalp([]);
       setorder("");
-      setlife(7);
+      setlife(10);
       setroomUser(tmp);
     });
   });
@@ -168,6 +178,11 @@ const HangMan = ({
     socket.on(
       "hanganswer",
       (isAnswer, gamealp, nextuser, gamelife, answeridx) => {
+        //라운드 끝낫을때 정답 표시해줌
+        if (gamelife == 0) {
+          roundend(true);
+        }
+
         //알파벳 정답일경우
         if (isAnswer == 1) {
           const tmp = alp;
@@ -194,9 +209,21 @@ const HangMan = ({
   }, [failAlp, alp]);
 
   const showAlp = () => {
+<<<<<<< HEAD
     return alp.map(val => {
       return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
     });
+=======
+    if (roundend) {
+      return word.map((val)=>{
+        return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
+      })
+    } else {
+      return alp.map((val) => {
+        return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
+      });
+    }
+>>>>>>> a9c626a0b8cc2837c4a1764f66337b7664d3f646
   };
 
   const lifebar = () => {

@@ -48,7 +48,8 @@ const room_out=(req, res) => {
         db.query(sql1, row[0].user_no, (err2, row2, field2) => {
             if (err2) throw err2;
             if (!row2[0])//아무것도안들엇으면 그냥 리턴해
-                return res.status(400).json();
+                return;
+                // return res.status(400).json();
             //이제 클라이언트에서 방번호 안주니까 여기서 꺼내옴
             roomno = row2[0].room_no;
 
@@ -61,7 +62,8 @@ const room_out=(req, res) => {
                     if (err2) throw err2;
 
                     if (!row3[0])//아무것도 안들어잇으면 리턴해
-                        return res.status(400).json();
+                        return;
+                        // return res.status(400).json();
                     console.log(row2[0].master);
 
                     if (row3[0].nowplayer > 1) {//사람 한명 나갔으니 nowplayer-1
