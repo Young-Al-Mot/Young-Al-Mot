@@ -7,7 +7,6 @@ create table user(
    `user_id` varchar(20) NOT NULL,
    `password` varchar(20) NOT NULL,
    `user_name` varchar(12) NOT NULL,
-   `email` varchar(40) NOT NULL,
    primary key(`user_no`)
 );
 
