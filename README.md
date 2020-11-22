@@ -3,6 +3,9 @@
 ## Notion
 * https://www.notion.so/af5196ca8c214b77988f2cff14688075
 
+## 배포 주소
+* http://yam-dev-build-test-1.s3-website.us-east-2.amazonaws.com/
+
 ## Requirement
 ### front
 * react-dom
