@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 import Logo from "./Logo.png";
-
+import kotra from './KOTRA_BOLD.ttf';
 import Logout from "./Logout";
 
 const flexCenterAlign = css`
@@ -11,6 +11,11 @@ const flexCenterAlign = css`
   align-items: center;
 `;
 const HeaderLabel = styled.div`
+  @font-face {
+    font-family: kotra;
+    src: local("kotra"), url(${kotra});
+  }
+  font-family: kotra;
   border-bottom: solid;
   height: 55px;
   width: 96%;
