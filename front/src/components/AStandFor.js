@@ -69,7 +69,7 @@ const MidContent = styled.div`
   width: 55%;
   border: solid thin;
   font-size: 200%;
-  background-color: #2f70a8;
+  background-color: #565273;
   color: white;
   border-radius: 50px;
 `;
@@ -89,6 +89,7 @@ const MidContent1 = styled.div`
   justify-content: flex-start;
 `;
 const MidContent2 = styled.div`
+  margin-top:5%;
   display: flex;
   justify-content: center;
   align-content: center;

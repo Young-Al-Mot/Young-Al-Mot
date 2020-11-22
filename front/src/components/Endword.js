@@ -53,7 +53,7 @@ const MidContent = styled.div`
   height: 60%;
   width: 40%;
   margin-bottom: 10px;
-  background-color: #2f70a8;
+  background-color: #565273;
   border-radius: 50px 0px 50px 0px;
   font-size: 300%;
   justify-content: center;
@@ -69,7 +69,7 @@ const BotContent = styled.div`
   width: 40%;
   height: 35%;
   font-size: 2em;
-  background-color: #2f70a8;
+  background-color: #565273;
   border-radius: 15px;
   margin-top: 10px;
 `;

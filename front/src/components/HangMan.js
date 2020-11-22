@@ -46,7 +46,7 @@ const MidContent = styled.div`
   height: 60%;
   width: 55%;
   font-size: 200%;
-  background-color: #2f70a8;
+  background-color: #565273;
 `;
 
 const MidTopContent = styled.div`
