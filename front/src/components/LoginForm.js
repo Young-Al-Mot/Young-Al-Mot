@@ -1,8 +1,13 @@
 import React from "react";
 
 import styled from "styled-components";
-
+import kotra from './KOTRA_BOLD.ttf';
 const LoginLabel = styled.div`
+@font-face {
+    font-family: kotra;
+    src: local("kotra"), url(${kotra});
+  }
+  font-family: kotra;
   display: flex;
   height: 85vh;
   flex-direction: column;
