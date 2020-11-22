@@ -13,9 +13,11 @@ const AllContent = styled.div`
   }
   font-family: modenine;
   display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: space-between;
+
+  height: 90%;
+  width: 90%;
+  margin-left:5%;
+  justify-content: flex-end;
   align-items: center;
   flex-direction: column;
 `;
@@ -24,10 +26,10 @@ const TopContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 70px;
-  margin-bottom: 60px;
+  margin-top: min(70px,7vh);
+  margin-bottom: min(60px,6vh);
   height: 5%;
-  font-size: 45px;
+  font-size: min(45px,3.3vw);
 `;
 const TopTopContent = styled.div`
   display: flex;
@@ -50,12 +52,13 @@ const MiddleBotContent = styled.div`
 `;
 const MidContent = styled.div`
   display: flex;
-  height: 60%;
+  height: 30%;
   width: 40%;
+  min-width:250px;
   margin-bottom: 10px;
   background-color: #565273;
   border-radius: 50px 0px 50px 0px;
-  font-size: 300%;
+  font-size: min(300%,3.3vw);
   justify-content: center;
   align-items: center;
   color: white;
@@ -64,10 +67,14 @@ const MidContent2 = styled.div`
   text-align: center;
 `;
 const BotContent = styled.div`
+  display:flex;
+  align-items:center;
   text-align: center;
   font-family: sans-serif;
   width: 40%;
+  min-width:250px;
   height: 35%;
+  max-height:40px;
   font-size: 2em;
   background-color: #565273;
   border-radius: 15px;
@@ -80,6 +87,7 @@ const BotContent2 = styled.div`
   margin-top: 1.5%;
   width: 90%;
   height: 65%;
+  max-height:20px;
   background-color: white;
   font-size: 0.8em;
   border-radius: 15px;
@@ -296,7 +304,7 @@ const Endword = ({
       <BotContent>
         <BotContent2>{message}</BotContent2>
       </BotContent>
-      <MiddleBotContent></MiddleBotContent>
+
       {showScoreBoarder()}
     </AllContent>
   );
