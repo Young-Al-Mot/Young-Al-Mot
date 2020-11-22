@@ -5,8 +5,14 @@ import RoomCreateContainer from "../containers/RoomCreateContainer";
 import modenine from "./MODENINE.TTF";
 import Refresh from "./refresh.png";
 import Lock from "./lock.png";
+import kotra from './KOTRA_BOLD.ttf';
 
 const AllContent = styled.div`
+  @font-face {
+    font-family: kotra;
+    src: local("kotra"), url(${kotra});
+  }
+  font-family: kotra;
   margin-left: 25%;
   margin-right: 25%;
 `;
@@ -51,12 +57,12 @@ const TopRoomList = styled.div`
   border-radius: 50px;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #2f70a8;
+  background-color: #565273;
   box-shadow: 3px 3px 3px gray;
 `;
 
 const MiddleContent = styled.div`
-  background-color: #2f70a8;
+  background-color: #565273;
   padding-bottom: 2%;
   box-shadow: 3px 3px 3px gray;
 `;

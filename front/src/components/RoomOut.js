@@ -13,7 +13,7 @@ const Out = styled.div`
   height: 50px;
   font-size: 40px;
   margin-top:50px;
-  color: #2f70a8;
+  color: #565273;
 `;
 
 const RoomOut = ({ roomOut }) => {

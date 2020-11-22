@@ -21,7 +21,7 @@ const TextContent = styled.div`
   width: 100%;
   min-width: 300px;
   border-radius:50px 0px 50px 0px;
-  background-color: #2f70a8;
+  background-color: #565273;
   font-size:105%;
   margin-bottom:4%;
 `;
@@ -32,7 +32,7 @@ const MessageContent = styled.div`
   align-items:center;
   max-width:100%;
   height:100px;
-  background-color: #2f70a8;
+  background-color: #565273;
   border-radius:20px;
   margin-bottom:10%;
 `;
