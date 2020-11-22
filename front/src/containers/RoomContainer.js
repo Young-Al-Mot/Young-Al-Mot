@@ -53,13 +53,13 @@ const ChatBodyContent2 = styled.div`
 `;
 const TopContent = styled.div`
   height: 10%;
-  margin-left: 10%;
+  margin-left: 5%;
 `;
 const TopContentLeft = styled.div`
   margin-top: 10%;
 `;
 const TopContentRight = styled.div`
-  margin-left: 85%;
+  margin-left: 90%;
 `;
 const BodyContent = styled.div`
   margin: 15px;

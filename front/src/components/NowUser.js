@@ -38,14 +38,14 @@ const Children2 = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
-  flex: 1.5;
+  flex: 2.5;
   margin-bottom: 10%;
 `;
 const Children3 = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
-  flex: 1;
+  flex: 0.5;
   margin-bottom: 10%;
 `;
 
