@@ -4,13 +4,13 @@ import { darken, lighten } from 'polished';
 import modenine from './MODENINE.TTF'
 
 const ChatContent=styled.div`
-  height:100%;
-  width:80%;
-  margin-left:10%;
+  height:95%;
+  width:100%;
+
   display:flex;
   flex-direction:column;
   justify-content:space-around;
-  margin-bottom:20%;
+  margin-bottom:5%;
 `;
 
 const TextContent = styled.div`
@@ -24,8 +24,8 @@ const TextContent = styled.div`
   font-family: youth;
   color: black;
   overflow: auto;
-  height: 100%;
-  min-height:200px;
+  height: 80%;
+  /* min-height:200px; */
   width: 100%;
   min-width: 300px;
   border-radius:50px 0px 50px 0px;
@@ -39,10 +39,11 @@ const MessageContent = styled.div`
   justify-content:space-around;
   align-items:center;
   max-width:100%;
-  height:100px;
+  height:80px;
+
   background-color: #565273;
   border-radius:20px;
-  margin-bottom:10%;
+  margin-bottom:10px;
 `;
 
 const MessageInput = styled.input`
@@ -70,7 +71,7 @@ const SendButton = styled.div`
   width:15%;
   max-width: 90px;
   min-width:50px;
-  font-size: 200%;
+  font-size: 2.5vw;
   line-height:270%;
   padding-right:2%;
 `;

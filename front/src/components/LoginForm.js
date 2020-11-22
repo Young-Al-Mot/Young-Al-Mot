@@ -1,9 +1,9 @@
 import React from "react";
 
 import styled from "styled-components";
-import kotra from './KOTRA_BOLD.ttf';
+import kotra from "./KOTRA_BOLD.ttf";
 const LoginLabel = styled.div`
-@font-face {
+  @font-face {
     font-family: kotra;
     src: local("kotra"), url(${kotra});
   }
@@ -14,34 +14,39 @@ const LoginLabel = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const StateLabel =styled.div`
+const StateLabel = styled.div`
   text-align: left;
-  width:330px;
+  width: 50%;
+  max-width: 330px;
   font-size: 18px;
   font-weight: 900;
 `;
 const UsernameInput = styled.input`
-  width:320px;
-  height: 50px;
-  margin:4px;
-  font-size:15px;
+  width: 50%;
+  height: 10%;
+  max-width:320px;
+  max-height: 50px;
+  margin: 4px;
+  font-size: 15px;
 `;
 const PasswordInput = styled.input`
-  width:320px;
-  height: 50px;
-  margin:4px;
-  font-size:15px;
+  width: 50%;
+  height: 10%;
+  max-width:320px;
+  max-height: 50px;
+  margin: 4px;
+  font-size: 15px;
 `;
-const LoginButton =styled.a`
+const LoginButton = styled.a`
   display: flex;
-  width:200px;
+  width: 40%;
+  max-width: 200px;
   height: 40px;
-  margin-top:30px;
+  margin-top: 30px;
   background-color: gray;
-  align-items:center;
-  justify-content:center;
+  align-items: center;
+  justify-content: center;
 `;
-
 
 const LoginForm = ({
   username,
@@ -61,7 +66,7 @@ const LoginForm = ({
   return (
     <LoginLabel>
       <StateLabel>로그인</StateLabel>
-      
+
       <UsernameInput
         type="text"
         name="username"
