@@ -84,7 +84,7 @@ exports.MT = maxtime;
 app.post('/user_create', create.create);
 app.post('/loginchk', main.main);
 app.post('/roomnumber', roomnumber.roomnumber);
-app.post('/roomlist', roomlist.roomlist);
+app.get('/roomlist', roomlist.roomlist);
 app.post('/roominchk', roominchk.roominchk);
 app.post('/roomout', roomout.roomout);
 app.post('/ready', ready.ready);
