@@ -15,6 +15,9 @@ const Content = styled.div`
   height: 100%;
   width: 15%;
   flex-direction: column;
+  background-color: #8E88BF;
+  padding-left:15px;
+  border-radius:30px 0px 30px 0px;
   font-size: 20px;
 `;
 const Child = styled.div`
