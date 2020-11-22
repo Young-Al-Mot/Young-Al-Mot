@@ -14,6 +14,14 @@ const ChatContent=styled.div`
 `;
 
 const TextContent = styled.div`
+  @font-face {
+    font-family: youth;
+    font-style: normal;
+    font-weight: 400;
+    src: url('//cdn.jsdelivr.net/korean-webfonts/1/orgs/othrs/kywa/Youth/Youth.woff2') format('woff2'),
+    url('//cdn.jsdelivr.net/korean-webfonts/1/orgs/othrs/kywa/Youth/Youth.woff') format('woff');
+  }
+  font-family: youth;
   color: black;
   overflow: auto;
   height: 100%;
