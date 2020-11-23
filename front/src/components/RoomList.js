@@ -13,16 +13,13 @@ const AllContent = styled.div`
     src: local("kotra"), url(${kotra});
   }
   font-family: kotra;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  margin-left: 25%;
+  margin-right: 25%;
 `;
 
 const RoomContent = styled.div`
   position: relative;
   margin-top: 30px;
-  width:60%;
-  min-width:320px;
 `;
 
 const RoomCreateContent = styled.div`
@@ -31,7 +28,6 @@ const RoomCreateContent = styled.div`
   margin-left: 10%;
   padding: 20px;
   width: 30%;
-  max-width:400px;
   border-radius: 30px;
   background-color: #97cfcb;
   border : 1px solid black;

@@ -9,9 +9,9 @@ const Ready = styled.div`
     url(${modenine});
   }
   font-family: modenine;
-  width: min(300px,10vw);
+  width: 300px;
   height: 40px;
-  font-size: min(50px,4vw);
+  font-size: 50px;
   color: white;
 `;
 
