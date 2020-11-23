@@ -4,7 +4,6 @@ import Crown from "./Crown.png";
 import Check from "./Check.png";
 import Nope from "./Nope.png";
 import modenine from "./MODENINE.TTF";
-import Empty from "./Empty.png";
 
 const Content = styled.div`
   @font-face {
@@ -16,9 +15,9 @@ const Content = styled.div`
   height: 100%;
   width: 15%;
   flex-direction: column;
-  background-color: #8e88bf;
-  padding-left: 15px;
-  border-radius: 30px 0px 30px 0px;
+  background-color: #8E88BF;
+  padding-left:15px;
+  border-radius:30px 0px 30px 0px;
   font-size: 20px;
 `;
 const Child = styled.div`
@@ -73,7 +72,7 @@ const NowUser = ({ roomUser, order }) => {
           <Children2 style={{ color: "#fdcb85" }}>
             {val.user}:{val.score}
           </Children2>
-          <Children3>{<img src={Empty} />}</Children3>
+          <Children3></Children3>
         </Child>
       );
     } else {
@@ -85,7 +84,7 @@ const NowUser = ({ roomUser, order }) => {
           <Children2>
             {val.user}:{val.score}
           </Children2>
-          <Children3>{<img src={Empty} />}</Children3>
+          <Children3></Children3>
         </Child>
       );
     }
