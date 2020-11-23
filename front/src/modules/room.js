@@ -68,7 +68,7 @@ export const roomCreateRequest = (
     },
   })
     .then((res) => {
-      socketConnect(JSON.parse(sessionStorage.userInfo).username);
+      socketConnect();
       return dispatch(
         roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround, count)
       );
@@ -94,7 +94,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
     .then((res) => {
       if (res.data.success) {
         const roominfo = res.data.roominfo;
-        socketConnect(JSON.parse(sessionStorage.userInfo).username);
+        socketConnect();
         return dispatch(
           roomin(
             roomid,
