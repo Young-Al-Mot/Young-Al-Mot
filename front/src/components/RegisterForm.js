@@ -23,15 +23,19 @@ const FormLabel = styled.div`
 `;
 
 const StateLabel = styled.div`
-  text-align: left;
-  width: 370px;
-  font-size: 18px;
+  text-align: center;
+  width:50vw;
+  max-width: 370px;
+  font-size: 30px;
   font-weight: 900;
 `;
 
 const RegisterInput = styled.input`
-  width: 280px;
-  height: 30px;
+  max-width: 280px;
+  max-height: 30px;
+
+  width:45vw;
+  height:8vw;
   margin: 4px;
   font-size: 15px;
   border: 2px solid;
@@ -40,6 +44,7 @@ const RegisterInput = styled.input`
 const LineLabel = styled.div`
   margin-top: 10px;
   margin-bottom:10px;
+  font-size:min(100%,3vw);
 `;
 
 const RegisterButton = styled.a`
