@@ -32,9 +32,9 @@ const ChatBodyContent = styled.div`
   margin-left: 10%;
   padding-left: 5%;
   width: 75%;
-  margin-top: 0.87%;
+  margin-top: 1%;
   height: 20%;
-  font-size: 105%;
+  font-size: min(3vw, 100%);
   align-items: center;
 `;
 
@@ -43,7 +43,7 @@ const ChatBodyContent2 = styled.div`
   border: 1px solid thin;
   border-radius: 50px;
   margin-left: 10%;
-  font-size: 105%;
+  font-size: min(3vw, 100%);
   width: 75%;
   margin-top: 0.87%;
   height: 20%;
@@ -52,21 +52,32 @@ const ChatBodyContent2 = styled.div`
   padding-right: 5%;
 `;
 const TopContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   height: 10%;
   margin-left: 5%;
+  width: 90%;
 `;
 const TopContentLeft = styled.div`
-  margin-top: 10%;
+  margin-top: 15%;
 `;
+const TopContentLeft2 = styled.div`
+
+`;
+
 const TopContentRight = styled.div`
-  margin-left: 90%;
+  justify-self: flex-end;
+  /* margin-left: 10vw; */
 `;
 const BodyContent = styled.div`
   margin: 15px;
-  height: 50%;
+  min-height: 40%;
 `;
 const BottomContent = styled.div`
-  height: 40%;
+  max-height: 40%;
+  min-height: 40%;
+  padding-bottom:5%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -76,9 +87,9 @@ const BotLeft = styled.div`
   margin-bottom: 1%;
 `;
 const BotMid = styled.div`
-  height: 99%;
-  flex: 3;
-  margin-bottom: 3%;
+  height: 95%;
+  width: 98%;
+  flex: 1.8;
 `;
 const BotRight = styled.div`
   flex: 1;
@@ -91,8 +102,8 @@ const socket = getSocket();
 const RoomContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.status);
-  const room = useSelector(state => state.room.room);
+  const user = useSelector((state) => state.auth.status);
+  const room = useSelector((state) => state.room.room);
   const [message, setMessage] = useState("");
   const [logs, setLogs] = useState([]);
   const [allmessage, setAllmessage] = useState("");
@@ -117,12 +128,12 @@ const RoomContainer = () => {
 
   //행맨
   const [alp, setalp] = useState([]);
-  const handleChangeMessage = e => {
+  const handleChangeMessage = (e) => {
     setMessage(e.target.value);
   };
 
   //게임준비, 게임시작
-  const handleReadyClick = e => {
+  const handleReadyClick = (e) => {
     console.log("click ready");
     if (isMaster) {
       if (gameStart) {
@@ -141,10 +152,10 @@ const RoomContainer = () => {
           roomid: room.roomid,
         },
       })
-        .then(res => {
+        .then((res) => {
           setisReady(res.data.ready);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log("서버와 통신에 실패했습니다");
         });
     }
@@ -152,7 +163,7 @@ const RoomContainer = () => {
 
   //msg소켓 보내는거
   //gameanswer소켓 보내는건
-  const send = e => {
+  const send = (e) => {
     if (message != "") {
       socket.emit("msg", {
         roomno: room.roomid,
@@ -223,7 +234,7 @@ const RoomContainer = () => {
     };
 
     //창 닫거나 새로고침할때 이벤트
-    window.onbeforeunload = e => {
+    window.onbeforeunload = (e) => {
       e.returnValue = "";
       return "";
     };
@@ -240,7 +251,7 @@ const RoomContainer = () => {
     //소켓연결이 되면 서버에서 'socketConection'이벤트가오고
     //그럼 클라이언트에서는 유저id를 보내줌
     socket.off("socketConection");
-    socket.on("socketConection", val => {
+    socket.on("socketConection", (val) => {
       if (val) socket.emit("socketin", user.currentUser);
     });
   });
@@ -249,7 +260,7 @@ const RoomContainer = () => {
   useEffect(() => {
     console.log("roomcontainer mount");
     //msg소켓 받는거
-    socket.on("msg", obj => {
+    socket.on("msg", (obj) => {
       console.log("msg");
       if (sessionStorage.count == 0) {
         sessionStorage.setItem("count", 1);
@@ -261,7 +272,7 @@ const RoomContainer = () => {
       obj.key = "key_" + (logs.length + 1);
       logs2.unshift(obj); // 로그에 추가하기
       setLogs(logs2);
-      const tmp = logs.map(e => {
+      const tmp = logs.map((e) => {
         if (user.currentNickname == e.name) {
           return (
             <ChatBodyContent2
@@ -296,7 +307,7 @@ const RoomContainer = () => {
     //join이벤트 받으면 소켓에서 현재 유저정보 받아서 배열로 만들어서 넣어줘
     //ready해도 여기서 처리함 (ready 0은 레디 안한거 1은 레디한거)
     socket.off("join"); //왜인지 모르겟지만 2번 실행되길레 한번 꺼줌(어디서 실행되는지 모르겟음)
-    socket.on("join", val => {
+    socket.on("join", (val) => {
       //val에 roomuser정보 받아옴
       console.log("join", val);
       let tmp = [];
@@ -418,12 +429,12 @@ const RoomContainer = () => {
   return (
     <AllContent>
       <TopContent>
-        <TopContentRight>
-          <RoomOut roomOut={roomOut} />
-        </TopContentRight>
         <TopContentLeft>
           <NowUser roomUser={roomUser} order={order} />
         </TopContentLeft>
+        <TopContentRight>
+          <RoomOut roomOut={roomOut} />
+        </TopContentRight>
       </TopContent>
       <BodyContent>{game()}</BodyContent>
       <BottomContent>

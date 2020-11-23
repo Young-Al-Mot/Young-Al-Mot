@@ -14,7 +14,7 @@ const AllContent = styled.div`
   display: flex;
   height: 100%;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   flex-direction: column;
 `;
@@ -32,8 +32,8 @@ const TopContent = styled.div`
 const TopChildContent = styled.div`
   margin: 8px;
   border-bottom: solid thin;
-  width: 25px;
-  height: 25px;
+  width: min(25px,3.3vw);
+  height: min(25px,3.3vw);
   text-align: center;
 `;
 
@@ -42,14 +42,15 @@ const MidContent = styled.div`
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
-  overflow: auto;
-  height: 60%;
+  overflow: hidden;
+  height: 55%;
   width: 55%;
   font-size: 200%;
   background-color: #565273;
 `;
 
 const MidTopContent = styled.div`
+  margin-left:40%;
   display: flex;
   justify-content: center;
 `;
@@ -62,7 +63,8 @@ const MidMainContent = styled.div`
 `;
 const MidSubContent = styled.div`
   width: 15%;
-  font-size: 18px;
+  font-size: min(18px,3vw);
+  color: white;
 `;
 const BotContent = styled.div`
   display: flex;
@@ -79,13 +81,15 @@ const LifeContent = styled.div`
   flex-direction: row;
   justify-content:center;
   align-items:center;
+  margin-top:20px;
+  margin-bottom:20px;
 `;
 const LifeContent2 = styled.div`
   display: flex;
-  margin-right: 20px;
+  margin-right: min(20px,3vw);
   background-color:${props=>props.backcolor};
   color:${props=>props.color};
-  font-size:150%;
+  font-size: min(150%,3.3vw);
 `;
 
 

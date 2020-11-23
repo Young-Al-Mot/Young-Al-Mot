@@ -13,21 +13,25 @@ const AllContent = styled.div`
     src: local("kotra"), url(${kotra});
   }
   font-family: kotra;
-  margin-left: 25%;
-  margin-right: 25%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 `;
 
 const RoomContent = styled.div`
   position: relative;
   margin-top: 30px;
+  width:50%;
+  min-width:320px;
 `;
 
 const RoomCreateContent = styled.div`
   position: absolute;
   top: 200px;
-  margin-left: 10%;
+  margin-left: 0%;
   padding: 20px;
-  width: 30%;
+  width: 40%;
+  max-width:400px;
   border-radius: 30px;
   background-color: #97cfcb;
   border : 1px solid black;

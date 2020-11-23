@@ -11,7 +11,7 @@ const AllContent = styled.div`
   display: flex;
   height: 100%;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   flex-direction: column;
 `;
@@ -31,7 +31,7 @@ const TopContent = styled.div`
   font-family: sans-serif;
 `;
 const TopTopContent = styled.div`
-  font-size: 30px;
+  font-size: min(30px,3.3vw);
   text-transform: uppercase;
   margin-bottom: 5px;
 `;
@@ -65,21 +65,20 @@ const MidContent = styled.div`
   justify-content: flex-start;
   flex-direction:column;
   overflow: auto;
-  height: 70%;
+  height: min(35vw,60%);
   width: 55%;
   border: solid thin;
-  font-size: 200%;
+  font-size: min(200%,3.3vw);
   background-color: #565273;
   color: white;
   border-radius: 50px;
 `;
 const MidTopContent = styled.div`
-
   margin-top:5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  font-size: min(20px,3vw);
 `;
 const MidContent1 = styled.div`
   display: flex;
@@ -89,7 +88,7 @@ const MidContent1 = styled.div`
   justify-content: flex-start;
 `;
 const MidContent2 = styled.div`
-  margin-top:5%;
+  margin-top:4%;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -102,9 +101,8 @@ const BotContent = styled.div`
   align-items: center;
   height: 10%;
   width: 50%;
-  font-size: 130%;
+  font-size: min(130%,3vw);
   padding-top: 1%;
-  margin-bottom: 4%;
 `;
 const ProgressBarWrapper = styled.div`
   height: 1vh;
