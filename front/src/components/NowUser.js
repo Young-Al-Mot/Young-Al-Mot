@@ -4,6 +4,7 @@ import Crown from "./Crown.png";
 import Check from "./Check.png";
 import Nope from "./Nope.png";
 import modenine from "./MODENINE.TTF";
+import Empty from './Empty.png';
 
 const Content = styled.div`
   @font-face {
@@ -14,41 +15,38 @@ const Content = styled.div`
   display: flex;
   /* height: 30vw; */
   width: 100%;
-  overflow:auto;
+  overflow: auto;
   /* max-width:250px; */
   flex-direction: column;
-  background-color: #8E88BF;
-  padding-left:15px;
-  border-radius:30px 0px 30px 0px;
-  font-size: min(20px,3.3vw);
+  background-color: #8e88bf;
+  padding-left: 15px;
+  border-radius: 30px 0px 30px 0px;
+  font-size: min(20px, 3.3vw);
 `;
 const Child = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
   flex-direction: row;
-  flex:0.25;
+  flex: 0.25;
 `;
 const Children1 = styled.div`
   display: flex;
   align-content: left;
   align-items: left;
   flex: 0.5;
-
 `;
 const Children2 = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
   flex: 2.5;
-
 `;
 const Children3 = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
   flex: 0.5;
-
 `;
 
 const NowUser = ({ roomUser, order }) => {
@@ -74,7 +72,7 @@ const NowUser = ({ roomUser, order }) => {
           <Children2 style={{ color: "#fdcb85" }}>
             {val.user}:{val.score}
           </Children2>
-          <Children3></Children3>
+          <Children3>{<img src={Empty} />}</Children3>
         </Child>
       );
     } else {
@@ -86,7 +84,7 @@ const NowUser = ({ roomUser, order }) => {
           <Children2>
             {val.user}:{val.score}
           </Children2>
-          <Children3></Children3>
+          <Children3>{<img src={Empty} />}</Children3>
         </Child>
       );
     }
