@@ -32,10 +32,10 @@ const TopContent = styled.div`
   background-color:#565273;
 `;
 const Gameguide = styled.div`
-  height: 500px;
   width: 100%;
   border: solid thin;
   border-top: none;
+  font-size:(100%,3.3vw);
   padding-left:10px;
   padding-right:10px;
 `;
