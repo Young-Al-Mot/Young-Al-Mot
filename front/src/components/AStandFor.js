@@ -11,7 +11,7 @@ const AllContent = styled.div`
   display: flex;
   height: 100%;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
 `;
@@ -31,7 +31,7 @@ const TopContent = styled.div`
   font-family: sans-serif;
 `;
 const TopTopContent = styled.div`
-  font-size: min(30px,3.3vw);
+  font-size: 30px;
   text-transform: uppercase;
   margin-bottom: 5px;
 `;
@@ -65,10 +65,10 @@ const MidContent = styled.div`
   justify-content: flex-start;
   flex-direction:column;
   overflow: auto;
-  height: min(35vw,60%);
-  width: 60%;
+  height: 70%;
+  width: 55%;
   border: solid thin;
-  font-size: min(200%,3.3vw);
+  font-size: 200%;
   background-color: #565273;
   color: white;
   border-radius: 50px;
@@ -79,7 +79,7 @@ const MidTopContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: min(20px,3vw);
+  font-size: 20px;
 `;
 const MidContent1 = styled.div`
   display: flex;
@@ -102,8 +102,9 @@ const BotContent = styled.div`
   align-items: center;
   height: 10%;
   width: 50%;
-  font-size: min(130%,3vw);
+  font-size: 130%;
   padding-top: 1%;
+  margin-bottom: 4%;
 `;
 const ProgressBarWrapper = styled.div`
   height: 1vh;

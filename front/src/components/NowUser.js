@@ -12,43 +12,41 @@ const Content = styled.div`
   }
   font-family: modenine;
   display: flex;
-  /* height: 30vw; */
-  width: 100%;
-  overflow:auto;
-  /* max-width:250px; */
+  height: 100%;
+  width: 15%;
   flex-direction: column;
   background-color: #8E88BF;
   padding-left:15px;
   border-radius:30px 0px 30px 0px;
-  font-size: min(20px,3.3vw);
+  font-size: 20px;
 `;
 const Child = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
+  flex: 1;
   flex-direction: row;
-  flex:0.25;
 `;
 const Children1 = styled.div`
   display: flex;
   align-content: left;
   align-items: left;
   flex: 0.5;
-
+  margin-bottom: 10%;
 `;
 const Children2 = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
   flex: 2.5;
-
+  margin-bottom: 10%;
 `;
 const Children3 = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
   flex: 0.5;
-
+  margin-bottom: 10%;
 `;
 
 const NowUser = ({ roomUser, order }) => {
