@@ -72,9 +72,9 @@ exports.roominchk = app.post('/roominchk', upload.single(), (req, res) =>{
                                 let sql6 = `INSERT INTO roomuser VALUES (?,?,?,?,?,?,now())`;
                                 db.query(sql6, [row[0].user_no, row[0].user_name, rows[0].room_no, 0, 0, 0], (err6, r, f) => {
                                     if(err6) throw err6;
+
+                                    return res.json({ success: true, roominfo:rows[0], count:yam.MT[roomno] });
                                 })
-            
-                                return res.json({ success: true, roominfo:rows[0], count:yam.MT[roomno] });
                             })
                         }
                     }

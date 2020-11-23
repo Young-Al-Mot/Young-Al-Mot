@@ -15,26 +15,32 @@ var yam = require('../yam');
 var standdictionary = require('./astandsfordictionary');
 
 var standanswer = function (roomno, message, username) {
-    let sql = `SELECT * FROM chatting WHERE chat=?`;
-    let list = [message];
-    db.query(sql, list, (err, row, f) => {
-        if (err) throw err;
+    if (message.length == 1) {
+        //한 글자, 실패 -> 틀린 단어, 0(실패), 닉네임
+        yam.io.to(roomno).emit('standanswer', message, 0, username);
+    }
+    else {
+        let sql = `SELECT * FROM chatting WHERE chat=?`;
+        let list = [message];
+        db.query(sql, list, (err, row, f) => {
+            if (err) throw err;
 
-        if (!row[0]) {
-            //중복아님, 성공
-            if (yam.nowword[roomno][0] == message[0]) { //끝말 일치
-                //끝말 일치, 설공
-                standdictionary.standdictionary(roomno, message, username);
+            if (!row[0]) {
+                //중복아님, 성공
+                if (yam.nowword[roomno][0] == message[0]) { //끝말 일치
+                    //끝말 일치, 설공
+                    standdictionary.standdictionary(roomno, message, username);
+                }
+                else {
+                    //끝말 불일치, 실패 -> 틀린 단어, 0(실패), 닉네임
+                    yam.io.to(roomno).emit('standanswer', message, 0, username);
+                }
             }
             else {
-                //끝말 불일치, 실패 -> 틀린 단어, 0(실패), 닉네임
+                //중복, 실패 -> 틀린 단어, 0(실패), 닉네임
                 yam.io.to(roomno).emit('standanswer', message, 0, username);
             }
-        }
-        else {
-            //중복, 실패 -> 틀린 단어, 0(실패), 닉네임
-            yam.io.to(roomno).emit('standanswer', message, 0, username);
-        }
-    })
+        })
+    }
 }
 exports.standanswer = standanswer;

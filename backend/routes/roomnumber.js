@@ -67,18 +67,18 @@ exports.roomnumber = app.post('/roomnumber', upload.single(), (req, res) => {
                                 let sql6 = `INSERT INTO roomuser VALUES (?,?,?,?,?,?,now())`;
                                 db.query(sql6, [row[0].user_no, row[0].user_name, rows[0].room_no, 1, 0, 0], (err6) => {
                                     if (err6) throw err6;
+
+                                    yam.maxround[rows[0].room_no] = round;
+                                    if(gamename == '끝말잇기'){
+                                        yam.MT[rows[0].room_no] = count;
+                                    }
+        
+                                    return res.json({
+                                        success: true,
+                                        roomnum: rows[0].room_no
+                                    });
                                 })
                             })
-
-                            yam.maxround[rows[0].room_no] = round;
-                            if(gamename == '끝말잇기'){
-                                yam.MT[rows[0].room_no] = count;
-                            }
-
-                            return res.json({
-                                success: true,
-                                roomnum: rows[0].room_no
-                            });
                         })
                     }
                 })

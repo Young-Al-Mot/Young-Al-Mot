@@ -11,7 +11,7 @@ const Ready = styled.div`
   font-family: modenine;
   width: min(400px,40vw);
   height: 40px;
-  font-size: min(50px,4vw);
+  font-size: 50px;
   color: white;
 `;
 

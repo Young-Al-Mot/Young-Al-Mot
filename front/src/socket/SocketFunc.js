@@ -4,8 +4,9 @@ import {config} from "../config";
 
 const socket = socketio.connect(config.api);
 
-export const socketConnect = () => {
+export const socketConnect = (userid) => {
   socket.connect();
+  socket.emit("socketin", userid);
 };
 
 export const socketIn = (roomid, nickname) => {
