@@ -56,7 +56,7 @@ export const roomCreateRequest = (
   count
 ) => (dispatch) => {
   socketConnect();
-  socket.emit("socketin", user.currentUser);
+  socket.emit("socketin", JSON.parse(sessionStorage.userInfo).username);
 
   //방 만들면 방번호 서버에서 리턴해줘야됨
   return axios({
@@ -73,12 +73,12 @@ export const roomCreateRequest = (
     },
   })
     .then((res) => {
-      socket.disconnect();
       return dispatch(
         roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround, count)
       );
     })
     .catch((e) => {
+      socket.disconnect();
       //이미 게임중인 아이디일경우
       if (e.response.data.error == 6) {
         return { roomid: 0, error: 6 };
@@ -88,7 +88,7 @@ export const roomCreateRequest = (
 
 export const roomInRequest = (roomid, password) => (dispatch) => {
   socketConnect();
-  socket.emit("socketin", user.currentUser);
+  socket.emit("socketin", JSON.parse(sessionStorage.userInfo).username);
   return axios({
     method: "POST",
     url: `${config.api}/roominchk`,
