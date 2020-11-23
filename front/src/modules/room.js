@@ -1,6 +1,8 @@
 import axios from "axios";
-import { socketConnect } from "../socket/SocketFunc";
+import { socketConnect,getSocket } from "../socket/SocketFunc";
 import { config } from "../config";
+
+const socket=getSocket();
 
 // 액션타입
 const ROOM_IN = "ROOM_IN";
@@ -53,6 +55,9 @@ export const roomCreateRequest = (
   maxround,
   count
 ) => (dispatch) => {
+  socketConnect();
+  socket.emit("socketin", user.currentUser);
+
   //방 만들면 방번호 서버에서 리턴해줘야됨
   return axios({
     method: "POST",
@@ -68,7 +73,7 @@ export const roomCreateRequest = (
     },
   })
     .then((res) => {
-      socketConnect();
+      socket.disconnect();
       return dispatch(
         roomin(res.data.roomnum, title, gametype, peoplemaxnum, maxround, count)
       );
@@ -82,6 +87,8 @@ export const roomCreateRequest = (
 };
 
 export const roomInRequest = (roomid, password) => (dispatch) => {
+  socketConnect();
+  socket.emit("socketin", user.currentUser);
   return axios({
     method: "POST",
     url: `${config.api}/roominchk`,
@@ -94,7 +101,6 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
     .then((res) => {
       if (res.data.success) {
         const roominfo = res.data.roominfo;
-        socketConnect();
         return dispatch(
           roomin(
             roomid,
@@ -108,6 +114,7 @@ export const roomInRequest = (roomid, password) => (dispatch) => {
       }
     })
     .catch((e) => {
+      socket.disconnect();
       //e.response.data
       if (e.response.data.error == 4) {
         return { roomid: 0, error: 4 };
