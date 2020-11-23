@@ -66,7 +66,7 @@ const MidContent = styled.div`
   flex-direction:column;
   overflow: auto;
   height: min(35vw,60%);
-  width: 60%;
+  width: 55%;
   border: solid thin;
   font-size: min(200%,3.3vw);
   background-color: #565273;
@@ -74,7 +74,6 @@ const MidContent = styled.div`
   border-radius: 50px;
 `;
 const MidTopContent = styled.div`
-
   margin-top:5%;
   display: flex;
   justify-content: center;
@@ -89,7 +88,7 @@ const MidContent1 = styled.div`
   justify-content: flex-start;
 `;
 const MidContent2 = styled.div`
-  margin-top:5%;
+  margin-top:4%;
   display: flex;
   justify-content: center;
   align-content: center;

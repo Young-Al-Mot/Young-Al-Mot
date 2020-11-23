@@ -71,13 +71,10 @@ const SendButton = styled.div`
   width:15%;
   max-width: 90px;
   min-width:50px;
-  font-size: 2.5vw;
+  font-size: min(200%,5vw);
   line-height:270%;
   padding-right:2%;
 `;
-
-
-
 
 const RoomChat = ({
   user,

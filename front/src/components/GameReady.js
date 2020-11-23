@@ -9,7 +9,7 @@ const Ready = styled.div`
     url(${modenine});
   }
   font-family: modenine;
-  width: min(300px,10vw);
+  width: min(400px,40vw);
   height: 40px;
   font-size: min(50px,4vw);
   color: white;

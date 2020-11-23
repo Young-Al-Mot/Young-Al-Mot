@@ -32,9 +32,9 @@ const ChatBodyContent = styled.div`
   margin-left: 10%;
   padding-left: 5%;
   width: 75%;
-  margin-top: 0.87%;
+  margin-top: 1%;
   height: 20%;
-  font-size: min(3vw, 105%);
+  font-size: min(3vw, 100%);
   align-items: center;
 `;
 
@@ -43,7 +43,7 @@ const ChatBodyContent2 = styled.div`
   border: 1px solid thin;
   border-radius: 50px;
   margin-left: 10%;
-  font-size: min(3vw, 105%);
+  font-size: min(3vw, 100%);
   width: 75%;
   margin-top: 0.87%;
   height: 20%;
@@ -72,10 +72,12 @@ const TopContentRight = styled.div`
 `;
 const BodyContent = styled.div`
   margin: 15px;
-  height: 50%;
+  min-height: 40%;
 `;
 const BottomContent = styled.div`
-  height: 40%;
+  max-height: 40%;
+  min-height: 40%;
+  padding-bottom:5%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -85,9 +87,9 @@ const BotLeft = styled.div`
   margin-bottom: 1%;
 `;
 const BotMid = styled.div`
-  height: 99%;
+  height: 95%;
   width: 98%;
-  flex: 3;
+  flex: 1.8;
 `;
 const BotRight = styled.div`
   flex: 1;
@@ -428,9 +430,7 @@ const RoomContainer = () => {
     <AllContent>
       <TopContent>
         <TopContentLeft>
-
-            <NowUser roomUser={roomUser} order={order} />
-
+          <NowUser roomUser={roomUser} order={order} />
         </TopContentLeft>
         <TopContentRight>
           <RoomOut roomOut={roomOut} />

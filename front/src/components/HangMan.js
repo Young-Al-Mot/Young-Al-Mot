@@ -33,7 +33,7 @@ const TopChildContent = styled.div`
   margin: 8px;
   border-bottom: solid thin;
   width: min(25px,3.3vw);
-  height:  min(25px,3.3vw);
+  height: min(25px,3.3vw);
   text-align: center;
 `;
 
@@ -42,7 +42,7 @@ const MidContent = styled.div`
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
-  overflow: auto;
+  overflow: hidden;
   height: 55%;
   width: 55%;
   font-size: 200%;
@@ -50,6 +50,7 @@ const MidContent = styled.div`
 `;
 
 const MidTopContent = styled.div`
+  margin-left:40%;
   display: flex;
   justify-content: center;
 `;
@@ -80,7 +81,8 @@ const LifeContent = styled.div`
   flex-direction: row;
   justify-content:center;
   align-items:center;
-  margin-bottom:10px;
+  margin-top:20px;
+  margin-bottom:20px;
 `;
 const LifeContent2 = styled.div`
   display: flex;

@@ -52,7 +52,7 @@ const MiddleBotContent = styled.div`
 `;
 const MidContent = styled.div`
   display: flex;
-  height: 30%;
+  height: 50%;
   width: 40%;
   min-width:250px;
   margin-bottom: 10px;
@@ -64,7 +64,10 @@ const MidContent = styled.div`
   color: white;
 `;
 const MidContent2 = styled.div`
+  display:flex;
   text-align: center;
+  justify-content:center;
+  align-items: center;
 `;
 const BotContent = styled.div`
   display:flex;
@@ -73,8 +76,8 @@ const BotContent = styled.div`
   font-family: sans-serif;
   width: 40%;
   min-width:250px;
-  height: 35%;
-  max-height:40px;
+  height: 40%;
+  max-height:60px;
   font-size: 2em;
   background-color: #565273;
   border-radius: 15px;
@@ -84,10 +87,10 @@ const BotContent = styled.div`
 const BotContent2 = styled.div`
   text-align: center;
   margin-left: 5%;
-  margin-top: 1.5%;
+  margin-top: 0%;
   width: 90%;
-  height: 65%;
-  max-height:20px;
+  height: 75%;
+  max-height:40px;
   background-color: white;
   font-size: 0.8em;
   border-radius: 15px;

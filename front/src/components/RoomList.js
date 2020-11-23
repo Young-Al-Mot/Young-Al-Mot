@@ -21,16 +21,16 @@ const AllContent = styled.div`
 const RoomContent = styled.div`
   position: relative;
   margin-top: 30px;
-  width:60%;
+  width:50%;
   min-width:320px;
 `;
 
 const RoomCreateContent = styled.div`
   position: absolute;
   top: 200px;
-  margin-left: 10%;
+  margin-left: 0%;
   padding: 20px;
-  width: 30%;
+  width: 40%;
   max-width:400px;
   border-radius: 30px;
   background-color: #97cfcb;
