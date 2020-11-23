@@ -36,7 +36,7 @@ exports.ready = app.post('/ready', upload.single(), (req, res) =>{
         db.query(sql2, username, (err2, row2, field2) => {
             if(err2) throw err2;
 
-            let sql3 = `SELECT * FROM roomuser WHERE room_no=?`;
+            let sql3 = `SELECT * FROM roomuser WHERE room_no=? ORDER BY intime ASC`;
             db.query(sql3,row2[0].room_no,(err3,row3,field3)=>{
                 if(err3)throw err3;
                 
