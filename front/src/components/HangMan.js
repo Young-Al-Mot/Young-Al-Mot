@@ -32,8 +32,8 @@ const TopContent = styled.div`
 const TopChildContent = styled.div`
   margin: 8px;
   border-bottom: solid thin;
-  width: min(25px,3.3vw);
-  height: min(25px,3.3vw);
+  width: min(25px, 3.3vw);
+  height: min(25px, 3.3vw);
   text-align: center;
 `;
 
@@ -50,7 +50,7 @@ const MidContent = styled.div`
 `;
 
 const MidTopContent = styled.div`
-  margin-left:40%;
+  margin-left: 40%;
   display: flex;
   justify-content: center;
 `;
@@ -63,7 +63,7 @@ const MidMainContent = styled.div`
 `;
 const MidSubContent = styled.div`
   width: 15%;
-  font-size: min(18px,3vw);
+  font-size: min(18px, 3vw);
   color: white;
 `;
 const BotContent = styled.div`
@@ -79,19 +79,18 @@ const LifeContent = styled.div`
   display: flex;
   width: 60%;
   flex-direction: row;
-  justify-content:center;
-  align-items:center;
-  margin-top:20px;
-  margin-bottom:20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 const LifeContent2 = styled.div`
   display: flex;
-  margin-right: min(20px,3vw);
-  background-color:${props=>props.backcolor};
-  color:${props=>props.color};
-  font-size: min(150%,3.3vw);
+  margin-right: min(20px, 3vw);
+  background-color: ${(props) => props.backcolor};
+  color: ${(props) => props.color};
+  font-size: min(150%, 3.3vw);
 `;
-
 
 const socket = getSocket();
 
@@ -113,7 +112,7 @@ const HangMan = ({
   setisReady,
   readybutton,
 }) => {
-  const room = useSelector(state => state.room.room);
+  const room = useSelector((state) => state.room.room);
 
   const [failAlp, setfailAlp] = useState([]); //틀렷던 알파벳,단어
   const [lifeAlp, setlifeAlp] = useState([]);
@@ -137,17 +136,17 @@ const HangMan = ({
       setword(gameword);
       let i = 0;
       const tmp = [];
-      const tmp2=[];
+      const tmp2 = [];
       for (i = 0; i < gameword.length; i++) {
         tmp.push({ key: i, alp: "" });
-        tmp2.push({key:i,alp:gameword[i]});
+        tmp2.push({ key: i, alp: gameword[i] });
       }
       setalp(tmp); //단어 배열로 설정
       setword(tmp2);
     });
 
     socket.off("hangend");
-    socket.on("hangend", val => {
+    socket.on("hangend", (val) => {
       console.log("gameend");
       let tmp = [];
       for (let i = 0; i < val.length; i++) {
@@ -180,14 +179,14 @@ const HangMan = ({
       (isAnswer, gamealp, nextuser, gamelife, answeridx) => {
         //라운드 끝낫을때 정답 표시해줌
         if (gamelife == 0) {
-          roundend(true);
+          setroundend(true);
         }
 
         //알파벳 정답일경우
         if (isAnswer == 1) {
           const tmp = alp;
           //상단 알파벳 배열에 맞춘 알파벳 업데이트
-          answeridx.map(val => {
+          answeridx.map((val) => {
             tmp[val].alp = gamealp;
           });
           setalp(tmp);
@@ -209,9 +208,15 @@ const HangMan = ({
   }, [failAlp, alp]);
 
   const showAlp = () => {
-    return alp.map(val => {
-      return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
-    });
+    if (roundend) {
+      return word.map((val) => {
+        return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
+      });
+    } else {
+      return alp.map((val) => {
+        return <TopChildContent key={val.key}>{val.alp}</TopChildContent>;
+      });
+    }
   };
 
   const lifebar = () => {
@@ -221,15 +226,23 @@ const HangMan = ({
       tmp.push(<LifeContent2>Life : </LifeContent2>);
       for (i = 0; i < 10; i++) {
         if (i < life) {
-          tmp.push(<LifeContent2 backcolor='#97cfcb' color='#97cfcb'>　</LifeContent2>);
+          tmp.push(
+            <LifeContent2 backcolor="#97cfcb" color="#97cfcb">
+              　
+            </LifeContent2>
+          );
         } else {
-          tmp.push(<LifeContent2 backcolor='white' color='white'>　</LifeContent2>);
+          tmp.push(
+            <LifeContent2 backcolor="white" color="white">
+              　
+            </LifeContent2>
+          );
         }
       }
     }
     return tmp;
   };
-  const showFailAlp = failAlp.map(val => {
+  const showFailAlp = failAlp.map((val) => {
     return <div key={val.key}>{val.alp}</div>;
   });
 
@@ -258,8 +271,7 @@ const HangMan = ({
           {showFailAlp}
           {/* 틀렷던 알파벳,단어 보여줌 */}
         </MidSubContent>
-        <MidMainContent>
-        </MidMainContent>
+        <MidMainContent></MidMainContent>
       </MidContent>
       <BotContent></BotContent>
       {showScoreBoarder()}
