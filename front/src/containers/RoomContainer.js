@@ -338,6 +338,7 @@ const RoomContainer = () => {
 
   const roomOut = () => {
     socket.disconnect();
+    socket.emit("disconnect",user.currentNickname);
     history.push("/roomList");
   };
 
